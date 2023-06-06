@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ContactsApp.Services;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -34,9 +35,9 @@ namespace ContactsApp.Views
 
         private void btnSaveChanges_Click(object sender, RoutedEventArgs e)
         {
-            if(!DateOnly.TryParse(txtbxBirthday.Text, out DateOnly birthday)){
-                WarningException we = new ();
-            };
+            //if(!DateOnly.TryParse(txtbxBirthday.Text, out DateOnly birthday)){
+            //    WarningException we = new ("Date Error");
+            //};
             Contact edit = new()
             {
                 FirstName = txtbxFirst.Text,
@@ -44,18 +45,22 @@ namespace ContactsApp.Views
                 NickName = txtbxNick.Text,
                 LastName = txtbxLast.Text,
                 Title = txtbxTitle.Text,
-                Birthday = birthday,
+                Birthday = txtbxBirthday.Text,
                 Email= txtbxEmail.Text,
                 PhoneNumber = txtbxPhone.Text,
                 Street = txtbxStreet.Text,
                 City = txtbxCity.Text,
                 State = txtbxState.Text,
-                Zip = txtbxZip.Text,
+                ZipCode = txtbxZip.Text,
                 Country = txtbxCountry.Text,
                 Website = txtbxWebsite.Text,
                 Notes = txtbxNotes.Text
-
             };
+            DataAccess conn = new();
+            conn.UpdateContact(edit);
+            ViewSetter.SetView(View.contact);
+            ViewSetter.ClearView(View.edit);
+            Contact.CurrentContact = edit;
         }
     }
 }

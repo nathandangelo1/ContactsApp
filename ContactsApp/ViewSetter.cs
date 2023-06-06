@@ -12,7 +12,6 @@ namespace ContactsApp
     {
         static ContactView contactView = new();
         static EditView editView = new();
-        public static Contact CurrentContact { get; set; }
         // public static DeleteView deleteView = new();
         // public static SettingsView settingsView = new();
 
@@ -66,13 +65,13 @@ namespace ContactsApp
         }
         public static void PopulateContactView()
         {
-            Contact contact = CurrentContact;
+            Contact contact = Contact.CurrentContact;
 
             contactView.txtfullName.Text = (contact.FullName is not null) ? contact.FullName.Trim() : "";
             contactView.txtStreet.Text = (contact.Street is not null) ? contact.Street : "";
             contactView.txtCity.Text = (contact.City is not null) ? contact.City : "";
             contactView.txtState.Text = (contact.State is not null) ? contact.State : "";
-            contactView.txtZip.Text = (contact.Zip is not null) ? contact.Zip : "";
+            contactView.txtZip.Text = (contact.ZipCode is not null) ? contact.ZipCode : "";
             contactView.txtEmail.Text = (contact.Email is not null) ? contact.Email : "";
             contactView.txtPhone.Text = (contact.PhoneNumber is not null) ? contact.PhoneNumber : "";
             contactView.txtWebsite.Text = (contact.Website is not null) ? contact.Website : "";
@@ -80,7 +79,7 @@ namespace ContactsApp
         }
         public static void PopulateEditView()
         {
-            Contact contact = CurrentContact;
+            Contact contact = Contact.CurrentContact;
 
             editView.txtbxFirst.Text = (contact.FirstName is not null) ? contact.FirstName.Trim() : "";
             editView.txtbxMiddle.Text = (contact.MiddleName is not null) ? contact.MiddleName : "";
@@ -93,7 +92,7 @@ namespace ContactsApp
             editView.txtbxStreet.Text = (contact.Street is not null) ? contact.Street : "";
             editView.txtbxCity.Text = (contact.City is not null) ? contact.City : "";
             editView.txtbxState.Text = (contact.State is not null) ? contact.State : "";
-            editView.txtbxZip.Text= (contact.Zip is not null) ? contact.Zip : "";
+            editView.txtbxZip.Text= (contact.ZipCode is not null) ? contact.ZipCode : "";
             editView.txtbxCountry.Text= (contact.Country is not null) ? contact.Country : "";
 
             editView.txtbxWebsite.Text = (contact.Website is not null) ? contact.Website : "";

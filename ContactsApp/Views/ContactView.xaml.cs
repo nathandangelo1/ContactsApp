@@ -20,7 +20,7 @@ namespace ContactsApp.Views
     /// </summary>
     public partial class ContactView : UserControl
     {
-        public static Contact CurrentContact;
+        //public static Contact CurrentContact;
         public ContactView()
         {
             InitializeComponent();
