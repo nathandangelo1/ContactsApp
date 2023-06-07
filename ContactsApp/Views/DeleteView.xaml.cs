@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace ContactsApp.Views
 {
     /// <summary>
-    /// Interaction logic for TestPage.xaml
+    /// Interaction logic for DeleteView.xaml
     /// </summary>
-    public partial class TestPage : Page
+    public partial class DeleteView : UserControl
     {
-        public TestPage()
+        public DeleteView()
         {
             InitializeComponent();
         }

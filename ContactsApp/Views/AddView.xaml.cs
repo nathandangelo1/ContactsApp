@@ -1,7 +1,5 @@
-﻿using ContactsApp.Services;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,15 +12,19 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Dapper;
+using Microsoft.Data.SqlClient;
+using System.Reflection;
+using ContactsApp.Services;
 
 namespace ContactsApp.Views
 {
     /// <summary>
-    /// Interaction logic for EditView.xaml
+    /// Interaction logic for AddView.xaml
     /// </summary>
-    public partial class EditView : UserControl
+    public partial class AddView : UserControl
     {
-        public EditView()
+        public AddView()
         {
             InitializeComponent();
             //EditPanel = Contact.CurrentContact;
@@ -60,6 +62,8 @@ namespace ContactsApp.Views
                 IsActive = 1,
                 IsFavorite = ((bool)checkbxFav.IsChecked) ? 1 : 0
             };
+
+
             DataAccess conn = new();
             conn.UpdateContact(edit);
             ViewSetter.SetView(View.contact);

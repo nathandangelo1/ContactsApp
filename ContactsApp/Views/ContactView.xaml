@@ -19,7 +19,6 @@
             <RowDefinition/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <CheckBox x:Name="checkbxFav" FontFamily="Unispace" FontSize="11" Content="Favorites" Grid.ColumnSpan="2" Margin="30,30,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
 
         <Image x:Name="imgContact" Margin="12,60,0,0" HorizontalAlignment="Right" VerticalAlignment="Top" Width="100" Height="100" Grid.RowSpan="1"  Grid.Row="0" Grid.Column="0" >
             <Image.Clip>

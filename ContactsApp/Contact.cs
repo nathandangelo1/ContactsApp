@@ -9,6 +9,7 @@ namespace ContactsApp
     public class Contact
     {
         public static Contact CurrentContact;
+        public static List<Contact> contacts;
 
         //public int Index { get; set; }
         public int Id { get; set; }
@@ -46,6 +47,21 @@ namespace ContactsApp
                     return (NickName is not null) ? $"   {NickName} {LastName}" : $"{FirstName} {LastName}";
 
                 }
+            }
+        }
+        public bool Equals(Contact? obj)
+        {
+            // Check for null values and compare types
+            if (obj == null || GetType() != obj.GetType())
+                return false;
+            // Check Values
+            else if (obj.Id.Equals(Id))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
             }
         }
     }

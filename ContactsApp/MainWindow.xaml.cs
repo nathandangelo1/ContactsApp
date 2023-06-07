@@ -31,7 +31,7 @@ namespace ContactsApp
     }
     public partial class MainWindow : Window
     {
-        List<Contact> contacts = new();
+        //contacts = new();
         //public static Contact CurrentContact { get; set; }
 
         public MainWindow()
@@ -44,9 +44,9 @@ namespace ContactsApp
 
             DataAccess db = new();
 
-            contacts = db.GetContacts();
+            Contact.contacts = db.GetContacts();
 
-            contactsListView.ItemsSource = contacts;
+            contactsListView.ItemsSource = Contact.contacts;
             //contactsListView.DisplayMemberPath = "FullName";
         }
 

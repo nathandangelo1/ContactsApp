@@ -12,21 +12,11 @@ namespace ContactsApp
     {
         static ContactView contactView = new();
         static EditView editView = new();
-        static DeleteView deleteView = new();
-        static SettingsView settingsView = new();
-
+        //static DeleteView deleteView = new();
+        //static SettingsView settingsView = new();
+        //static AddView addView = new();
         public static ContentControl ContentArea {get;set;}
-        //public static UserControl CurrentView 
-        //{
-        //    get
-        //    {
-        //        return CurrentView;
-        //    }
-        //    private set
-        //    {
-        //        CurrentView = value;
-        //    }
-        //}
+
         public static void ClearView(View view)
         {
             switch (view)
@@ -40,7 +30,6 @@ namespace ContactsApp
                 //deleteView=new(); break;
                 // case UserControls.settings:
                 // settingsView=new(); break;
-
             }
         }
         public static void SetView(View view)
@@ -48,9 +37,6 @@ namespace ContactsApp
             switch (view)
             {
                 case View.contact:
-                    //ContentArea.Content = contactView; break;
-                    //PopulateContactView();
-
                     ContentArea.Content = contactView; break;
                 case View.edit:
                     PopulateEditView();
@@ -69,6 +55,8 @@ namespace ContactsApp
         {
             Contact contact = Contact.CurrentContact;
 
+           // if (contact.IsFavorite == 1) { contactView.checkbxFav.IsChecked = true; }
+
             contactView.txtfullName.Text = (contact.FullName is not null) ? contact.FullName.Trim() : "";
             contactView.txtStreet.Text = (contact.Street is not null) ? contact.Street : "";
             contactView.txtCity.Text = (contact.City is not null) ? contact.City : "";
@@ -82,6 +70,7 @@ namespace ContactsApp
         public static void PopulateEditView()
         {
             Contact contact = Contact.CurrentContact;
+            if (Contact.CurrentContact.IsFavorite == 1) { editView.checkbxFav.IsChecked = true; }
 
             editView.txtbxFirst.Text = (contact.FirstName is not null) ? contact.FirstName.Trim() : "";
             editView.txtbxMiddle.Text = (contact.MiddleName is not null) ? contact.MiddleName : "";
