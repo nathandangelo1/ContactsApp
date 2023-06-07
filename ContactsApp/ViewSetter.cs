@@ -12,8 +12,8 @@ namespace ContactsApp
     {
         static ContactView contactView = new();
         static EditView editView = new();
-        // public static DeleteView deleteView = new();
-        // public static SettingsView settingsView = new();
+        static DeleteView deleteView = new();
+        static SettingsView settingsView = new();
 
         public static ContentControl ContentArea {get;set;}
         //public static UserControl CurrentView 
@@ -49,9 +49,11 @@ namespace ContactsApp
             {
                 case View.contact:
                     //ContentArea.Content = contactView; break;
+                    //PopulateContactView();
+
                     ContentArea.Content = contactView; break;
                 case View.edit:
-                    // ContentArea.Content = editView; break;
+                    PopulateEditView();
                     ContentArea.Content = editView; break;
                 //case Views.delete:
                 //CurrentView = deleteView; break;

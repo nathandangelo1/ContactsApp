@@ -25,6 +25,8 @@ namespace ContactsApp.Views
         public EditView()
         {
             InitializeComponent();
+
+            //EditPanel = Contact.CurrentContact;
         }
 
         private void btnCancel_Click(object sender, RoutedEventArgs e)
@@ -40,27 +42,35 @@ namespace ContactsApp.Views
             //};
             Contact edit = new()
             {
-                FirstName = txtbxFirst.Text,
-                MiddleName = txtbxMiddle.Text,
-                NickName = txtbxNick.Text,
-                LastName = txtbxLast.Text,
-                Title = txtbxTitle.Text,
-                Birthday = txtbxBirthday.Text,
-                Email= txtbxEmail.Text,
-                PhoneNumber = txtbxPhone.Text,
-                Street = txtbxStreet.Text,
-                City = txtbxCity.Text,
-                State = txtbxState.Text,
-                ZipCode = txtbxZip.Text,
-                Country = txtbxCountry.Text,
-                Website = txtbxWebsite.Text,
-                Notes = txtbxNotes.Text
+                Id = Contact.CurrentContact.Id,
+                FirstName = !string.IsNullOrWhiteSpace(txtbxFirst.Text) ? txtbxFirst.Text : null,
+                MiddleName = !string.IsNullOrWhiteSpace(txtbxMiddle.Text) ? txtbxMiddle.Text : null,
+                NickName = !string.IsNullOrWhiteSpace(txtbxNick.Text) ? txtbxNick.Text : null,
+                LastName = !string.IsNullOrWhiteSpace(txtbxLast.Text) ? txtbxLast.Text : null,
+                Title = !string.IsNullOrWhiteSpace(txtbxTitle.Text) ? txtbxTitle.Text : null,
+                Birthday = !string.IsNullOrWhiteSpace(txtbxBirthday.Text) ? txtbxBirthday.Text : null,
+                Email = !string.IsNullOrWhiteSpace(txtbxEmail.Text) ? txtbxEmail.Text : null,
+                PhoneNumber = !string.IsNullOrWhiteSpace(txtbxPhone.Text) ? txtbxPhone.Text : null,
+                Street = !string.IsNullOrWhiteSpace(txtbxNick.Text) ? txtbxStreet.Text : null,
+                City = !string.IsNullOrWhiteSpace(txtbxCity.Text) ? txtbxCity.Text : null,
+                State = !string.IsNullOrWhiteSpace(txtbxState.Text) ? txtbxState.Text : null,
+                ZipCode = !string.IsNullOrWhiteSpace(txtbxZip.Text) ? txtbxZip.Text : null,
+                Country = !string.IsNullOrWhiteSpace(txtbxCountry.Text) ? txtbxCountry.Text : null,
+                Website = !string.IsNullOrWhiteSpace(txtbxWebsite.Text) ? txtbxWebsite.Text : null,
+                Notes = !string.IsNullOrWhiteSpace(txtbxNotes.Text) ? txtbxNotes.Text : null,
+                IsActive = 1,
+                IsFavorite = ((bool)checkbxFav.IsChecked) ? 1 : 0
             };
             DataAccess conn = new();
             conn.UpdateContact(edit);
             ViewSetter.SetView(View.contact);
             ViewSetter.ClearView(View.edit);
             Contact.CurrentContact = edit;
+        }
+
+        private void btnUpload_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

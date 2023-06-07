@@ -23,26 +23,30 @@ namespace ContactsApp.Services
 
             }
         }
-        public void UpdateContact(Contact Contact)
+        public void UpdateContact(Contact edit)
         {
             int success;
             // GETS CONNECTION STRING FOR MOVIES DB FROM HELPER CLASS
             using (var connection = new SqlConnection(Helper.CnnVal("contacts")))
             {
+                foreach (PropertyInfo propertyInfo in edit.GetType().GetProperties())
+                {
+                    // do stuff here
+                }
                 var sql = " exec [dbo].[spUpdateContact] " +
                     "@Id,@FirstName,@MiddleName,@NickName,@LastName,@Title,@Birthday," +
                     "@Email,@PhoneNumber,@Street,@City,@State,@ZipCode,@Country," +
                     "@Website,@Notes,@IsFavorite ";
                 var values = new { 
-                    Id = Contact.Id, FirstName = Contact.FirstName, 
-                    MiddleName = Contact.MiddleName, NickName = Contact.NickName, 
-                    LastName = Contact.LastName, Title = Contact.Title, 
-                    Birthday = Contact.Birthday.ToString(), Email = Contact.Email, 
-                    PhoneNumber = Contact.PhoneNumber, Street = Contact.Street, 
-                    City = Contact.City, State = Contact.State, 
-                    ZipCode = Contact.ZipCode, Country = Contact.Country, 
-                    Website = Contact.Website, Notes = Contact.Notes, 
-                    IsFavorite = Contact.IsFavorite };
+                    Id = edit.Id, FirstName = edit.FirstName, 
+                    MiddleName = edit.MiddleName, NickName = edit.NickName, 
+                    LastName = edit.LastName, Title = edit.Title, 
+                    Birthday = edit.Birthday, Email = edit.Email, 
+                    PhoneNumber = edit.PhoneNumber, Street = edit.Street, 
+                    City = edit.City, State = edit.State, 
+                    ZipCode = edit.ZipCode, Country = edit.Country, 
+                    Website = edit.Website, Notes = edit.Notes, 
+                    IsFavorite = edit.IsFavorite };
                 var result = connection.Query(sql, values);
                 Console.WriteLine(result.ToString());
 

@@ -29,7 +29,7 @@ namespace ContactsApp.Views
         private void btnEdit_Click(object sender, RoutedEventArgs e)
         {
             ViewSetter.SetView(View.edit);
-            ViewSetter.PopulateEditView();
+            //ViewSetter.PopulateEditView();
         }
 
         private void btnDelete_Click(object sender, RoutedEventArgs e)

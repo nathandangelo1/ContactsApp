@@ -10,7 +10,7 @@ namespace ContactsApp
     {
         public static Contact CurrentContact;
 
-        public int Index { get; set; }
+        //public int Index { get; set; }
         public int Id { get; set; }
         public string? FirstName { get; set; }
         public string? MiddleName { get; set; }
@@ -29,15 +29,15 @@ namespace ContactsApp
         public string? Notes { get; set; }
         public BinaryData? Picture { get; set; }
 
-        public bool IsFavorite { get; set; }
-        public bool IsActive { get; set; }
+        public int IsFavorite { get; set; }
+        public int IsActive { get; set; }
 
 
         public string FullName
         {
             get
             {
-                if (IsFavorite)
+                if (IsFavorite==1)
                 {
                     return (NickName is not null) ? $"\U0001f9e1 {NickName} {LastName}" : $"{FirstName} {LastName}";
                 }
