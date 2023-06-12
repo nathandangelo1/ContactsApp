@@ -5,7 +5,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:ContactsApp.Views"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="375">
+             d:DesignHeight="600" d:DesignWidth="520">
+    
     <Grid Background="white">
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
@@ -21,12 +22,11 @@
         </Grid.RowDefinitions>
 
         <Image x:Name="imgContact" Margin="12,60,0,0" HorizontalAlignment="Right" VerticalAlignment="Top" Width="100" Height="100" Grid.RowSpan="1"  Grid.Row="0" Grid.Column="0" >
-            <Image.Clip>
+            <!--<Image.Clip>
                 <EllipseGeometry Center="150,160" RadiusX="120" RadiusY="120" />
-            </Image.Clip>
+            </Image.Clip>-->
         </Image>
-        <TextBlock x:Name="hiddenID" Visibility="Hidden"/>
-        <StackPanel Margin="20,30,10,2" Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" Grid.ColumnSpan="2" >
+        <StackPanel x:Name="contactPanel" Margin="20,30,10,2" Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" Grid.ColumnSpan="2" >
             <TextBlock x:Name="txtfullName" Margin="0,0,0,10" FontFamily="Unispace" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Full Name"  MinWidth="88" />
             <TextBlock x:Name="txtStreet" FontFamily="Unispace" HorizontalAlignment="Left"  TextWrapping="Wrap" Text="Street"  MinWidth="88" />
             <WrapPanel Margin="0,5,0,0">
@@ -44,7 +44,7 @@
             <Label Content="Notes:" Margin="0,15,0,5" FontFamily="Unispace"/>
             <TextBlock x:Name="txtNotes" Grid.ColumnSpan="2" Margin="5,0,0,0" FontFamily="Unispace" HorizontalAlignment="Left" TextWrapping="Wrap" Text="The Dude, that or His Dudeness, or Duder, or, you know, El duderino, if you're not into the whole brevity thing."  MinWidth="40" />
         </StackPanel>
-        <Button x:Name="btnEdit" Content="Edit Contact" HorizontalAlignment="Center" Grid.Row="4" VerticalAlignment="Center" Click="btnEdit_Click"/>
-        <Button x:Name="btnDelete" Content="Delete Contact" HorizontalAlignment="Center" Grid.Row="4" Grid.Column="1" VerticalAlignment="Center" Click="btnDelete_Click"/>
+        <Button x:Name="btnEdit" Content="Edit Contact" HorizontalAlignment="Center"  Grid.Row="4" VerticalAlignment="Center" Click="btnEdit_Click"/>
+        <Button x:Name="btnDelete" Content="Delete Contact" HorizontalAlignment="Center" Grid.Row="4"  Grid.Column="1" VerticalAlignment="Center" Click="btnDelete_Click"/>
     </Grid>
 </UserControl>

@@ -8,86 +8,139 @@ using System.Windows.Controls;
 
 namespace ContactsApp
 {
-    public static class ViewSetter
+    public sealed class ViewSetter
     {
-        static ContactView contactView = new();
-        static EditView editView = new();
-        //static DeleteView deleteView = new();
-        //static SettingsView settingsView = new();
-        //static AddView addView = new();
-        public static ContentControl ContentArea {get;set;}
+        private static readonly ContactView contactView = new();
+        public static ContactView ContactView
+        {
+            get
+            {   
+                return contactView;
+            }
+        }
+        private static readonly EditView editView = new();
+        public static EditView EditView
+        {
+            get
+            {
+                return editView;
+            }
+        }
+        private static DeleteView deleteView = new();
+        public static DeleteView DeleteView
+        {
+            get
+            {
+                return deleteView;
+            }
+        }
+        private static SettingsView settingsView = new();
+        public static SettingsView SettingsView
+        {
+            get
+            {
+                return settingsView;
+            }
+        }
+        private static AddView addView = new();
+        public static AddView AddView
+        {
+            get
+            {
+                return addView;
+            }
+        }
+        private static HomeView homeView = new();
+        public static HomeView HomeView
+        {
+            get
+            {
+                return homeView;
+            }
+        }
+        public static ContentControl ContentArea { get; set; }
 
         public static void ClearView(View view)
         {
             switch (view)
             {
-                case View.contact:
+                case View.Contact:
                     Contact.CurrentContact = null;
-                    contactView = new(); break;
-                case View.edit:
-                    editView = new(); break;
-                //case Views.delete:
-                //deleteView=new(); break;
-                // case UserControls.settings:
-                // settingsView=new(); break;
+                    //ContactView = new(); break;
+                    break;
+                case View.Edit:
+                    EditView.Reset();
+                    break;
+                case View.Add:
+                    //AddView = new(); break;
+                case View.Delete:
+                    //DeleteView = new(); break;
+                case View.Settings:
+                    //SettingsView = new(); break;
+                case View.Home:
+                    //HomeView = new(); break;
+                    break;
             }
         }
         public static void SetView(View view)
         {
             switch (view)
             {
-                case View.contact:
-                    ContentArea.Content = contactView; break;
-                case View.edit:
+                case View.Contact:
+                    ContentArea.Content = ContactView; break;
+                case View.Edit:
                     PopulateEditView();
-                    ContentArea.Content = editView; break;
-                //case Views.delete:
-                //CurrentView = deleteView; break;
-                //break;
-                // case UserControls.settings:
-                // CurrentView = settingsView; break;
-                //break;
+                    ContentArea.Content = EditView; break;
+                case View.Add:
+                    ContentArea.Content = AddView; break;
+                case View.Delete:
+                    ContentArea.Content = DeleteView; break;
+                case View.Settings:
+                    ContentArea.Content = SettingsView; break;
+                case View.Home:
+                    ContentArea.Content = HomeView; break;
                 default:
-                    ContentArea.Content = contactView; break;
+                    ContentArea.Content = ContactView; break;
             }
         }
         public static void PopulateContactView()
         {
-            Contact contact = Contact.CurrentContact;
-
+            Contact cc = Contact.CurrentContact;
+            SetView(View.Contact);
            // if (contact.IsFavorite == 1) { contactView.checkbxFav.IsChecked = true; }
 
-            contactView.txtfullName.Text = (contact.FullName is not null) ? contact.FullName.Trim() : "";
-            contactView.txtStreet.Text = (contact.Street is not null) ? contact.Street : "";
-            contactView.txtCity.Text = (contact.City is not null) ? contact.City : "";
-            contactView.txtState.Text = (contact.State is not null) ? contact.State : "";
-            contactView.txtZip.Text = (contact.ZipCode is not null) ? contact.ZipCode : "";
-            contactView.txtEmail.Text = (contact.Email is not null) ? contact.Email : "";
-            contactView.txtPhone.Text = (contact.PhoneNumber is not null) ? contact.PhoneNumber : "";
-            contactView.txtWebsite.Text = (contact.Website is not null) ? contact.Website : "";
-            contactView.txtNotes.Text = (contact.Notes is not null) ? contact.Notes : "";
+            ContactView.txtfullName.Text = (cc.FullName is not null) ? cc.FullName.Trim() : "";
+            ContactView.txtStreet.Text = (cc.Street is not null) ? cc.Street : "";
+            ContactView.txtCity.Text = (cc.City is not null) ? cc.City : "";
+            ContactView.txtState.Text = (cc.State is not null) ? cc.State : "";
+            ContactView.txtZip.Text = (cc.ZipCode is not null) ? cc.ZipCode : "";
+            ContactView.txtEmail.Text = (cc.Email is not null) ? cc.Email : "";
+            ContactView.txtPhone.Text = (cc.PhoneNumber is not null) ? cc.PhoneNumber : "";
+            ContactView.txtWebsite.Text = (cc.Website is not null) ? cc.Website : "";
+            ContactView.txtNotes.Text = (cc.Notes is not null) ? cc.Notes : "";
+
         }
         public static void PopulateEditView()
         {
-            Contact contact = Contact.CurrentContact;
-            if (Contact.CurrentContact.IsFavorite == 1) { editView.checkbxFav.IsChecked = true; }
+            Contact cc = Contact.CurrentContact;
+            if (cc.IsFavorite == 1)  EditView.checkbxFav.IsChecked = true;
 
-            editView.txtbxFirst.Text = (contact.FirstName is not null) ? contact.FirstName.Trim() : "";
-            editView.txtbxMiddle.Text = (contact.MiddleName is not null) ? contact.MiddleName : "";
-            editView.txtbxNick.Text = (contact.NickName is not null) ? contact.NickName : "";
-            editView.txtbxLast.Text = (contact.LastName is not null) ? contact.LastName : "";
-            editView.txtbxTitle.Text = (contact.Title is not null) ? contact.Title : "";
-            editView.txtbxBirthday.Text = (contact.Birthday is not null) ? contact.Birthday.ToString() : "";
-            editView.txtbxEmail.Text = (contact.Email is not null) ? contact.Email : "";
-            editView.txtbxPhone.Text = (contact.PhoneNumber is not null) ? contact.PhoneNumber : "";
-            editView.txtbxStreet.Text = (contact.Street is not null) ? contact.Street : "";
-            editView.txtbxCity.Text = (contact.City is not null) ? contact.City : "";
-            editView.txtbxState.Text = (contact.State is not null) ? contact.State : "";
-            editView.txtbxZip.Text= (contact.ZipCode is not null) ? contact.ZipCode : "";
-            editView.txtbxCountry.Text= (contact.Country is not null) ? contact.Country : "";
+            EditView.txtbxFirst.Text = (cc.FirstName is not null) ? cc.FirstName.Trim() : "";
+            EditView.txtbxMiddle.Text = (cc.MiddleName is not null) ? cc.MiddleName : "";
+            EditView.txtbxNick.Text = (cc.NickName is not null) ? cc.NickName : "";
+            EditView.txtbxLast.Text = (cc.LastName is not null) ? cc.LastName : "";
+            EditView.txtbxTitle.Text = (cc.Title is not null) ? cc.Title : "";
+            EditView.txtbxBirthday.Text = (cc.Birthday is not null) ? cc.Birthday.ToString() : "";
+            EditView.txtbxEmail.Text = (cc.Email is not null) ? cc.Email : "";
+            EditView.txtbxPhone.Text = (cc.PhoneNumber is not null) ? cc.PhoneNumber : "";
+            EditView.txtbxStreet.Text = (cc.Street is not null) ? cc.Street : "";
+            EditView.txtbxCity.Text = (cc.City is not null) ? cc.City : "";
+            EditView.txtbxState.Text = (cc.State is not null) ? cc.State : "";
+            EditView.txtbxZip.Text= (cc.ZipCode is not null) ? cc.ZipCode : "";
+            EditView.txtbxCountry.Text= (cc.Country is not null) ? cc.Country : "";
 
-            editView.txtbxWebsite.Text = (contact.Website is not null) ? contact.Website : "";
-            editView.txtbxNotes.Text = (contact.Notes is not null) ? contact.Notes : "";
+            EditView.txtbxWebsite.Text = (cc.Website is not null) ? cc.Website : "";
+            EditView.txtbxNotes.Text = (cc.Notes is not null) ? cc.Notes : "";
         }
     }
 }

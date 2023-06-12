@@ -16,23 +16,13 @@ using System.Windows.Shapes;
 namespace ContactsApp.Views
 {
     /// <summary>
-    /// Interaction logic for DeleteView.xaml
+    /// Interaction logic for HomeView.xaml
     /// </summary>
-    public partial class DeleteView : UserControl
+    public partial class HomeView : UserControl
     {
-        public DeleteView()
+        public HomeView()
         {
             InitializeComponent();
-        }
-
-        private void btnDelete_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void btnEdit_Click(object sender, RoutedEventArgs e)
-        {
-
         }
     }
 }

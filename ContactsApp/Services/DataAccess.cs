@@ -1,14 +1,22 @@
 ﻿using Dapper;
 using Microsoft.Data.SqlClient;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data.Common;
+using System.Data;
+using System.Diagnostics.Metrics;
+using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Reflection.Emit;
 using System.Runtime.ExceptionServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Documents;
+using static Azure.Core.HttpHeader;
 
 namespace ContactsApp.Services
 {
@@ -16,7 +24,7 @@ namespace ContactsApp.Services
     {
         public List<Contact> GetContacts()
         {
-            // GETS CONNECTION STRING FOR MOVIES DB FROM HELPER CLASS
+            // GETS CONNECTION STRING FOR CONTACT DB FROM HELPER CLASS
             using (var connection = new SqlConnection(Helper.CnnVal("contacts")))
             {
                // return connection.Query<Contact>("SELECT * FROM dbo.tblContacts WHERE FirstName LIKE @FirstName", new { FirstName = contactSearch }).ToList();
@@ -36,7 +44,7 @@ namespace ContactsApp.Services
                 var sql = " exec [dbo].[spUpdateContact] " +
                     "@Id,@FirstName,@MiddleName,@NickName,@LastName,@Title,@Birthday," +
                     "@Email,@PhoneNumber,@Street,@City,@State,@ZipCode,@Country," +
-                    "@Website,@Notes,@IsFavorite ";
+                    "@Website,@Notes,@IsFavorite";
 
                 var values = new { 
                     Id = edit.Id, FirstName = edit.FirstName, 
@@ -56,55 +64,93 @@ namespace ContactsApp.Services
                 { 
                     Contact.CurrentContact = edit;
                     Contact.contacts[Contact.contacts.FindIndex(x => x.Id == edit.Id)] = edit;
+                    Contact.favorites[Contact.favorites.FindIndex(x => x.Id == edit.Id)] = edit;
+                    Refresh();
                 }
-                //MessageBox.Show(result.ToString());
             }
         }
-        public void AddContact(Contact edit)
+        public void DeactivateContact(Contact edit)
         {
-            int success;
+            int newId;
             // GETS CONNECTION STRING FOR MOVIES DB FROM HELPER CLASS
             using (var connection = new SqlConnection(Helper.CnnVal("contacts")))
             {
-                foreach (PropertyInfo propertyInfo in edit.GetType().GetProperties())
+                //foreach (PropertyInfo propertyInfo in edit.GetType().GetProperties())
+                //{
+                //    // do stuff here
+                //}
+                // Create a DynamicParameters object
+                var parameters = new DynamicParameters();
+                // Add input parameters
+                parameters.Add("@id", edit.Id);
+                
+                // Add output parameter for new ID
+                //parameters.Add("@returnId", dbType: DbType.Int32, direction: ParameterDirection.Output);
+                // Execute the command using Dapper
+                var returns = connection.Execute("spDeactivateContact", parameters, commandType: CommandType.StoredProcedure);
+                // Get the output parameter value using Dapper
+                //newId = parameters.Get<int>("returnId");
+
+                if (returns == -1)
                 {
-                    // do stuff here
+                    
                 }
-                var sql = " exec [dbo].[spAddContact] " +
-                    "@Id,@FirstName,@MiddleName,@NickName,@LastName,@Title,@Birthday," + 
-                    "@Email,@PhoneNumber,@Street,@City,@State,@ZipCode,@Country," +
-                    "@Website,@Notes,@IsFavorite ";
+            }
+        }
 
-                var values = new
-                {
-                    Id = edit.Id,
-                    FirstName = edit.FirstName,
-                    MiddleName = edit.MiddleName,
-                    NickName = edit.NickName,
-                    LastName = edit.LastName,
-                    Title = edit.Title,
-                    Birthday = edit.Birthday,
-                    Email = edit.Email,
-                    PhoneNumber = edit.PhoneNumber,
-                    Street = edit.Street,
-                    City = edit.City,
-                    State = edit.State,
-                    ZipCode = edit.ZipCode,
-                    Country = edit.Country,
-                    Website = edit.Website,
-                    Notes = edit.Notes,
-                    IsFavorite = edit.IsFavorite
-                };
-
-                var result = connection.Query(sql, values);
-
-                if (result is not null)
+        public void AddContact(Contact edit)
+        {
+            int newId;
+            // GETS CONNECTION STRING FOR MOVIES DB FROM HELPER CLASS
+            using (var connection = new SqlConnection(Helper.CnnVal("contacts")))
+            {
+                //foreach (PropertyInfo propertyInfo in edit.GetType().GetProperties())
+                //{
+                //    // do stuff here
+                //}
+                // Create a DynamicParameters object
+                var parameters = new DynamicParameters();
+                // Add input parameters
+                parameters.Add("@first", edit.FirstName);
+                parameters.Add("@middle", edit.MiddleName);
+                parameters.Add("@nick", edit.NickName);
+                parameters.Add("@last", edit.LastName);
+                parameters.Add("@title", edit.Title);
+                parameters.Add("@birthday", edit.Birthday);
+                parameters.Add("@email", edit.Email);
+                parameters.Add("@phone", edit.PhoneNumber);
+                parameters.Add("@street", edit.Street);
+                parameters.Add("@city", edit.City);
+                parameters.Add("@state", edit.State);
+                parameters.Add("@zip", edit.ZipCode);
+                parameters.Add("@country", edit.Country);
+                parameters.Add("@website", edit.Website);
+                parameters.Add("@notes", edit.Notes);
+                parameters.Add("@fav", edit.IsFavorite);
+                parameters.Add("@pic", edit.Picture);
+                // Add output parameter for new ID
+                parameters.Add("@returnId", dbType: DbType.Int32, direction: ParameterDirection.Output);
+                // Execute the command using Dapper
+                var returns = connection.Execute("spAddContact", parameters, commandType: CommandType.StoredProcedure);
+                // Get the output parameter value using Dapper
+                newId = parameters.Get<int>("returnId");
+                         
+                if (newId > 0)
                 {
                     Contact.CurrentContact = edit;
-                    Contact.contacts[Contact.contacts.FindIndex(x => x.Id == edit.Id)] = edit;
-                }
-                //MessageBox.Show(result.ToString());
+                    Contact.contacts.Add(edit);
+                    Contact.contacts = Contact.contacts.OrderBy(x => x.FirstName).ToList();
+                    Contact.favorites = Contact.contacts.Where(x => x.IsFavorite == 1).ToList();
+                    Refresh();
+                } 
             }
+        }
+        private void Refresh()
+        {
+            MainWindow window = (MainWindow)Application.Current.MainWindow;
+
+            window.RefreshListView();
+            ViewSetter.PopulateContactView();
         }
     }
 }

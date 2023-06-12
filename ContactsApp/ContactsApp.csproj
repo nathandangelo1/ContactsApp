@@ -8,8 +8,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\AddContact.png" />
+    <None Remove="Resources\SettingsGear.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Dapper" Version="2.0.123" />
     <PackageReference Include="Microsoft.Data.SqlClient" Version="5.1.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\AddContact.png" />
+    <Resource Include="Resources\SettingsGear.png" />
   </ItemGroup>
 
 </Project>

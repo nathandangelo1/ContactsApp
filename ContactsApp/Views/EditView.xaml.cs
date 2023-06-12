@@ -1,4 +1,5 @@
 ﻿using ContactsApp.Services;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -22,6 +23,7 @@ namespace ContactsApp.Views
     /// </summary>
     public partial class EditView : UserControl
     {
+        private string? Picture { get; set; }
         public EditView()
         {
             InitializeComponent();
@@ -30,14 +32,16 @@ namespace ContactsApp.Views
 
         private void btnCancel_Click(object sender, RoutedEventArgs e)
         {
-            ViewSetter.ClearView(View.edit);
-            ViewSetter.SetView(View.contact);
+            //ViewSetter.ClearView(View.Edit);
+            Reset();
+            ViewSetter.SetView(View.Contact);
         }
 
         private void btnSaveChanges_Click(object sender, RoutedEventArgs e)
         {
-            //if(!DateOnly.TryParse(txtbxBirthday.Text, out DateOnly birthday)){
-            //    WarningException we = new ("Date Error");
+            //if (!Date.TryParse(txtbxBirthday.Text, out DateOnly birthday))
+            //{
+            //    WarningException we = new("Birthday Error");
             //};
             Contact edit = new()
             {
@@ -57,19 +61,47 @@ namespace ContactsApp.Views
                 Country = !string.IsNullOrWhiteSpace(txtbxCountry.Text) ? txtbxCountry.Text : null,
                 Website = !string.IsNullOrWhiteSpace(txtbxWebsite.Text) ? txtbxWebsite.Text : null,
                 Notes = !string.IsNullOrWhiteSpace(txtbxNotes.Text) ? txtbxNotes.Text : null,
+                Picture = !string.IsNullOrWhiteSpace(Picture) ? Picture : null,
                 IsActive = 1,
-                IsFavorite = ((bool)checkbxFav.IsChecked) ? 1 : 0
+                IsFavorite = (checkbxFav.IsChecked == true) ? (byte)1 : (byte)0
             };
             DataAccess conn = new();
             conn.UpdateContact(edit);
-            ViewSetter.SetView(View.contact);
-            ViewSetter.ClearView(View.edit);
+            ViewSetter.SetView(View.Contact);
+            ViewSetter.ClearView(View.Edit);
             //Contact.CurrentContact = edit;
         }
 
         private void btnUpload_Click(object sender, RoutedEventArgs e)
         {
-
+            // Create an open file dialog
+            OpenFileDialog ofd = new OpenFileDialog();
+            // Set the filter to show only image files
+            ofd.Filter = "Image files (*.jpg, *.png, *.bmp)|*.jpg;*.png;*.bmp";
+            // Show the dialog and check if the user selected a file
+            if (ofd.ShowDialog() == true)
+            {
+                // Create a bitmap image from the file path
+                BitmapImage bi = new BitmapImage(new Uri(ofd.FileName, UriKind.RelativeOrAbsolute));
+                // Set the image source to the bitmap image
+                imgContact.Source = bi;
+                Picture = ofd.FileName;
+            }
+        }
+        public void Reset()
+        {
+            foreach (WrapPanel wp in editPanel.Children)
+            {
+                foreach(Control con in wp.Children)
+                {
+                    if(con.GetType() == typeof(TextBox))
+                    {
+                        TextBox tx = (con as TextBox);
+                        tx.Clear();
+                    }
+                }
+            }
+            if ((bool)checkbxFav.IsChecked) checkbxFav.IsChecked = false;
         }
     }
 }
