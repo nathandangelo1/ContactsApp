@@ -1,12 +1,10 @@
 ﻿using Dapper;
 using Microsoft.Data.SqlClient;
-using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data.Common;
 using System.Data;
-using System.Diagnostics.Metrics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -16,7 +14,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Documents;
-using static Azure.Core.HttpHeader;
+
+using System.Collections.ObjectModel;
 
 namespace ContactsApp.Services
 {
@@ -37,10 +36,10 @@ namespace ContactsApp.Services
             // GETS CONNECTION STRING FOR MOVIES DB FROM HELPER CLASS
             using (var connection = new SqlConnection(Helper.CnnVal("contacts")))
             {
-                foreach (PropertyInfo propertyInfo in edit.GetType().GetProperties())
-                {
-                    // do stuff here
-                }
+                //foreach (PropertyInfo propertyInfo in edit.GetType().GetProperties())
+                //{
+                //    // do stuff here
+                //}
                 var sql = " exec [dbo].[spUpdateContact] " +
                     "@Id,@FirstName,@MiddleName,@NickName,@LastName,@Title,@Birthday," +
                     "@Email,@PhoneNumber,@Street,@City,@State,@ZipCode,@Country," +
@@ -63,10 +62,22 @@ namespace ContactsApp.Services
                 if(result is not null) 
                 { 
                     Contact.CurrentContact = edit;
-                    Contact.contacts[Contact.contacts.FindIndex(x => x.Id == edit.Id)] = edit;
-                    Contact.favorites[Contact.favorites.FindIndex(x => x.Id == edit.Id)] = edit;
-                    Refresh();
+                    int editId = edit.Id;
+                    for (int i = 0; i < MainWindow.CL.Contacts.Count; i++)
+                    {
+                        Contact con = MainWindow.CL.Contacts[i];
+                        int conId = con.Id;
+                        if (conId == editId)
+                        {
+                            MainWindow.CL.Contacts[i] = edit;
+                            break;
+                        }
+                    }
+                    
+                   // Contact.favorites[Contact.favorites.FindIndex(x => x.Id == edit.Id)] = edit;
+                    //Refresh();
                 }
+                //Refresh();
             }
         }
         public void DeactivateContact(Contact edit)
@@ -138,19 +149,19 @@ namespace ContactsApp.Services
                 if (newId > 0)
                 {
                     Contact.CurrentContact = edit;
-                    Contact.contacts.Add(edit);
-                    Contact.contacts = Contact.contacts.OrderBy(x => x.FirstName).ToList();
-                    Contact.favorites = Contact.contacts.Where(x => x.IsFavorite == 1).ToList();
-                    Refresh();
+                    MainWindow.CL.Contacts.Add(edit);
+                    //MainWindow.CL.Contacts = new ObservableCollection<Contact>(MainWindow.CL.Contacts.OrderBy(x => x.FirstName));
+                    //Contact.favorites = Contact.contacts.Where(x => x.IsFavorite == 1).ToList();
+                    //Refresh();
                 } 
             }
         }
-        private void Refresh()
-        {
-            MainWindow window = (MainWindow)Application.Current.MainWindow;
+        //private void Refresh()
+        //{
+        //    MainWindow window = (MainWindow)Application.Current.MainWindow;
 
-            window.RefreshListView();
-            ViewSetter.PopulateContactView();
-        }
+        //    window.RefreshListView();
+        //    ViewSetter.PopulateContactView();  <<<---- you need this
+        //}
     }
 }

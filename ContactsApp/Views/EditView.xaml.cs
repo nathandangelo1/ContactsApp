@@ -70,6 +70,7 @@ namespace ContactsApp.Views
             ViewSetter.SetView(View.Contact);
             ViewSetter.ClearView(View.Edit);
             //Contact.CurrentContact = edit;
+            //Refresh();
         }
 
         private void btnUpload_Click(object sender, RoutedEventArgs e)
@@ -102,6 +103,13 @@ namespace ContactsApp.Views
                 }
             }
             if ((bool)checkbxFav.IsChecked) checkbxFav.IsChecked = false;
+        }
+        private void Refresh()
+        {
+            MainWindow window = (MainWindow)Application.Current.MainWindow;
+
+            window.RefreshListView();
+            ViewSetter.PopulateContactView(); 
         }
     }
 }

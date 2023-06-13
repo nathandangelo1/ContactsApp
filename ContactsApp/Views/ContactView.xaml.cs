@@ -45,7 +45,7 @@ namespace ContactsApp.Views
                 // If the user clicked Yes, perform the delete operation
                 DeactivateContact(contact);
                 Contact.CurrentContact = null;
-                RefreshMainList();
+                //RefreshMainList();
                 ResetContactView();
                 ViewSetter.SetView(View.Home);
             }
@@ -61,16 +61,17 @@ namespace ContactsApp.Views
             {
                 DataAccess da = new();
                 da.DeactivateContact(contact);
-                Contact.contacts.Remove(contact);
+                MainWindow.CL.Contacts.Remove(contact);
+                
             }
         }
-        private void RefreshMainList()
-        {
-            MainWindow window = (MainWindow)Application.Current.MainWindow;
-            Contact.contacts = Contact.contacts.OrderBy(x => x.FirstName).ToList();
-            Contact.favorites = Contact.favorites.OrderBy(x=>x.FirstName).ToList();
-            window.RefreshListView();
-        }
+        //private void RefreshMainList()
+        //{
+        //    MainWindow window = (MainWindow)Application.Current.MainWindow;
+        //    MainWindow.CL.Contacts = MainWindow.CL.Contacts.OrderBy(x => x.FirstName).ToList();
+        //    Contact.favorites = Contact.favorites.OrderBy(x=>x.FirstName).ToList();
+        //    window.RefreshListView();
+        //}
         public void ResetContactView()
         {
             foreach (var child in contactPanel.Children)

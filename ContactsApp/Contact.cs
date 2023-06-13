@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data.SqlTypes;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -11,8 +12,8 @@ namespace ContactsApp
     public class Contact : INotifyPropertyChanged
     {
         public static Contact CurrentContact;
-        public static List<Contact> favorites;
-        public static List<Contact> contacts;
+        //public static List<Contact> favorites;
+        //public static List<Contact> contacts;
 
         //public int Index { get; set; }
 
@@ -311,7 +312,7 @@ namespace ContactsApp
         {
             get
             {
-                return IsFavorite;
+                return isFavorite;
             }
             set
             {
@@ -339,14 +340,18 @@ namespace ContactsApp
             }
         }
         public event PropertyChangedEventHandler PropertyChanged;
-        protected void OnPropertyChanged(string propertyName)
+        protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
-            var handler = PropertyChanged;
-            if (handler != null)
-            {
-                handler(this, new PropertyChangedEventArgs(propertyName));
-            }
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+        //protected void OnPropertyChanged(string propertyName)
+        //{
+        //    var handler = PropertyChanged;
+        //    if (handler != null)
+        //    {
+        //        handler(this, new PropertyChangedEventArgs(propertyName));
+        //    }
+        //}
 
 
         public string FullName

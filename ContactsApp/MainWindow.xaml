@@ -23,6 +23,12 @@
         </CollectionViewSource>
     </Window.Resources>-->
 
+    <!--<Window.Resources>
+        <local:Tasks x:Key="tasks" />
+        <CollectionViewSource x:Key="cvsTasks" Source="{StaticResource tasks}" Filter="CollectionViewSource_Filter">
+        </CollectionViewSource>
+    </Window.Resources>-->
+
     <Grid Background="AliceBlue">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="225*" MaxWidth="225"/>
@@ -38,7 +44,7 @@
                FontWeight="Bold" FontSize="24" FontFamily="Unispace"/>
         <Label Grid.Column="0" Grid.Row="1" Content="Search" VerticalAlignment="Center" Margin="40,0,0,0" FontFamily="Unispace"/>
         <TextBox x:Name="txtSearch" Grid.Column="0" Grid.Row="1" TextWrapping="Wrap" Text="" Width="125" VerticalAlignment="Center" 
-                 HorizontalAlignment="Right" Margin="10,0,10,0"/>
+                 HorizontalAlignment="Right" Margin="10,0,10,0" TextChanged="txtFilter_TextChanged"/>
         <Grid Margin="0,0,0,20" Grid.Column="0" Grid.Row="2" Grid.RowSpan="2" Background="white">
             <!--<Grid.ColumnDefinitions>
                 <ColumnDefinition />
@@ -51,8 +57,8 @@
 
             <StackPanel>
                 <Label Content="Favorites" Foreground="Black" FontFamily="Unispace" Height="30"/>
-                <!--ItemsSource="{Binding Source={StaticResource cvs}}"-->
-                <ListView x:Name="favoritesListView" MaxHeight="100" FontFamily="Unispace" PreviewMouseLeftButtonUp="listView_Click"  d:ItemsSource="{Binding Source= favorites}">
+                <ListView x:Name="favoritesListView" d:ItemsSource="{Binding Source= MainWindow.CL.Contacts}" MaxHeight="100" FontFamily="Unispace" PreviewMouseLeftButtonUp="listView_Click">
+                    <!--d:ItemsSource="{Binding Source= MainWindow.CL.Contacts}"-->
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal" Margin="2">
@@ -64,7 +70,7 @@
 
                 <Label Content="Contacts" FontFamily="unispace" Height="30"/>
                 <ListView x:Name="contactsListView" MaxHeight="380"  
-                          FontFamily="Unispace" d:ItemsSource="{Binding Source= contacts}" PreviewMouseLeftButtonUp="listView_Click" >
+                          FontFamily="Unispace" d:ItemsSource="{Binding Source= MainWindow.CL.Contacts}" PreviewMouseLeftButtonUp="listView_Click" >
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal" Margin="2">
