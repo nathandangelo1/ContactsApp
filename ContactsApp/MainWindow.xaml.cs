@@ -43,8 +43,9 @@ namespace ContactsApp
     //  allows you to sort, filter, group, or navigate the items in the collection. A collection can have multiple
     //  views associated with it, but only one default view.
         public ICollectionView contactsCollectionView;
-        private ICollectionView favoritesCollectionView;
+        public ListCollectionView favoritesCollectionView;
         public static CL CL { get; set; }
+        public bool HideUnhide { get; set; }
         //public static FL FL { get; set; }
         public MainWindow()
         {
@@ -75,7 +76,8 @@ namespace ContactsApp
             favoritesCollectionView = new ListCollectionView(CL.Contacts);
             favoritesCollectionView.Filter = item => (item as Contact).IsFavorite == 1;
             favoritesListView.ItemsSource = favoritesCollectionView;
-            favoritesCollectionView.Filter = UserFilter;
+            
+            //favoritesCollectionView.Filter = UserFilter;
             
             //this.DataContext = this;
         }
@@ -91,9 +93,8 @@ namespace ContactsApp
         private void txtFilter_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
         {
             CollectionViewSource.GetDefaultView(contactsListView.ItemsSource).Refresh();
-            CollectionViewSource.GetDefaultView(favoritesListView.ItemsSource).Refresh();
+            //CollectionViewSource.GetDefaultView(favoritesListView.ItemsSource).Refresh();
         }
-    
 
         private void listView_Click(object sender, RoutedEventArgs e)
         {

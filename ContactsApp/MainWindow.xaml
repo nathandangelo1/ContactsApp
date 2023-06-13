@@ -8,7 +8,7 @@
         xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
         x:Class="ContactsApp.MainWindow"
         mc:Ignorable="d"
-        Title="Contacts" Height="650" Width="800">
+        Title="Contacts" Height="750" Width="800">
     <Window.DataContext>
         <local:Contact />
     </Window.DataContext>
@@ -37,7 +37,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="40"/>
             <RowDefinition Height="30"/>
-            <RowDefinition Height="560"/>
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         
         <Label Grid.Column="0" Grid.Row="0" Content="CONTACTS" HorizontalAlignment="Center" Margin="1,1,0,0" VerticalAlignment="Top" 
@@ -57,7 +57,7 @@
 
             <StackPanel>
                 <Label Content="Favorites" Foreground="Black" FontFamily="Unispace" Height="30"/>
-                <ListView x:Name="favoritesListView" d:ItemsSource="{Binding Source= MainWindow.CL.Contacts}" MaxHeight="100" FontFamily="Unispace" PreviewMouseLeftButtonUp="listView_Click">
+                <ListView x:Name="favoritesListView" d:ItemsSource="{Binding Source= MainWindow.CL.Contacts}" MaxHeight="200" FontFamily="Unispace" PreviewMouseLeftButtonUp="listView_Click">
                     <!--d:ItemsSource="{Binding Source= MainWindow.CL.Contacts}"-->
                     <ListView.ItemTemplate>
                         <DataTemplate>
@@ -69,7 +69,7 @@
                 </ListView>
 
                 <Label Content="Contacts" FontFamily="unispace" Height="30"/>
-                <ListView x:Name="contactsListView" MaxHeight="380"  
+                <ListView x:Name="contactsListView" MaxHeight="355"  
                           FontFamily="Unispace" d:ItemsSource="{Binding Source= MainWindow.CL.Contacts}" PreviewMouseLeftButtonUp="listView_Click" >
                 <ListView.ItemTemplate>
                     <DataTemplate>

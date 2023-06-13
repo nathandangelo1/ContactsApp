@@ -46,15 +46,15 @@ namespace ContactsApp.Services
                     "@Website,@Notes,@IsFavorite";
 
                 var values = new { 
-                    Id = edit.Id, FirstName = edit.FirstName, 
-                    MiddleName = edit.MiddleName, NickName = edit.NickName, 
-                    LastName = edit.LastName, Title = edit.Title, 
-                    Birthday = edit.Birthday, Email = edit.Email, 
-                    PhoneNumber = edit.PhoneNumber, Street = edit.Street, 
-                    City = edit.City, State = edit.State, 
-                    ZipCode = edit.ZipCode, Country = edit.Country, 
-                    Website = edit.Website, Notes = edit.Notes, 
-                    IsFavorite = edit.IsFavorite 
+                    edit.Id, edit.FirstName, 
+                    edit.MiddleName, edit.NickName, 
+                    edit.LastName, edit.Title, 
+                    edit.Birthday, edit.Email, 
+                    edit.PhoneNumber, edit.Street, 
+                    edit.City, edit.State, 
+                    edit.ZipCode, edit.Country, 
+                    edit.Website, edit.Notes, 
+                    edit.IsFavorite 
                 };
 
                 var result = connection.Query(sql, values);
@@ -148,6 +148,7 @@ namespace ContactsApp.Services
                          
                 if (newId > 0)
                 {
+                    edit.Id = newId;
                     Contact.CurrentContact = edit;
                     MainWindow.CL.Contacts.Add(edit);
                     //MainWindow.CL.Contacts = new ObservableCollection<Contact>(MainWindow.CL.Contacts.OrderBy(x => x.FirstName));
