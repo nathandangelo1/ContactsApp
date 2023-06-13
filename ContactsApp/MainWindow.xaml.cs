@@ -75,6 +75,7 @@ namespace ContactsApp
             favoritesCollectionView = new ListCollectionView(CL.Contacts);
             favoritesCollectionView.Filter = item => (item as Contact).IsFavorite == 1;
             favoritesListView.ItemsSource = favoritesCollectionView;
+            favoritesCollectionView.Filter = UserFilter;
             
             //this.DataContext = this;
         }
@@ -84,12 +85,13 @@ namespace ContactsApp
             if (String.IsNullOrEmpty(txtSearch.Text))
                 return true;
             else
-                return ((item as Contact).FullName.IndexOf(txtSearch.Text, StringComparison.OrdinalIgnoreCase) >= 0);
+                return ((item as Contact).FullName.Contains(txtSearch.Text, StringComparison.OrdinalIgnoreCase));
         }
 
         private void txtFilter_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
         {
             CollectionViewSource.GetDefaultView(contactsListView.ItemsSource).Refresh();
+            CollectionViewSource.GetDefaultView(favoritesListView.ItemsSource).Refresh();
         }
     
 
