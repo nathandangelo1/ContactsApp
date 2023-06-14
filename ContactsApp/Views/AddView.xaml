@@ -5,8 +5,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:ContactsApp.Views"
              mc:Ignorable="d" 
- d:DesignHeight="600" d:DesignWidth="500">
-    <Grid Background="white">
+            d:DesignHeight="650" d:DesignWidth="500">
+    <Grid >
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
             <ColumnDefinition/>
@@ -20,7 +20,9 @@
             <RowDefinition/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <CheckBox x:Name="checkbxFav" FontFamily="Unispace" FontSize="11" Content="Favorites" Grid.ColumnSpan="2" Margin="30,30,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <CheckBox x:Name="checkbxFav" FontFamily="Unispace"  Content="Favorites" Grid.ColumnSpan="2" 
+                  Margin="30,30,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"
+                  Foreground="antiquewhite" FontSize="16" />
 
         <Image x:Name="imgContact" Margin="12,60,0,0" HorizontalAlignment="Right" VerticalAlignment="Top" Width="100" Height="100" Grid.RowSpan="1"  Grid.Row="0" Grid.Column="0" >
             <Image.Clip>
@@ -28,78 +30,100 @@
             </Image.Clip>
         </Image>
 
-        <Button x:Name="btnUpload" Margin="0,10,10,0" Content="Upload Photo" HorizontalAlignment="right" VerticalAlignment="Top" Grid.Column="0" Grid.Row="2" Height="20" Width="80" Click="btnUpload_Click"/>
+        <Button x:Name="btnUpload" Margin="0,0,0,0" Content="Upload Photo" HorizontalAlignment="right" 
+                VerticalAlignment="Top" Grid.Column="0" Grid.Row="2"  
+                Click="btnUpload_Click" Padding="5"/>
         <StackPanel Margin="10,0,0,0" Grid.Column="1" Grid.Row="0" Grid.RowSpan="6" Grid.ColumnSpan="2" >
-            <WrapPanel Margin="10,0,0,2">
-                <Label Content="First Name:" FontFamily="Unispace"/>
-                <TextBox x:Name="txtbxFirst" Grid.Column="2" FontFamily="Unispace" HorizontalAlignment="Right" MinHeight="5" MinWidth="120" />
+            <WrapPanel HorizontalAlignment="Right" Margin="0,0,0,3">
+                <Label Content="First Name:" FontFamily="Unispace" Foreground="antiquewhite" FontSize="16"/>
+                <TextBox x:Name="txtbxFirst" Grid.Column="2"  FontFamily="Unispace" HorizontalAlignment="Right" 
+                          MinWidth="150" />
             </WrapPanel>
-            <WrapPanel Margin="10,0,0,2">
-                <Label Content="Middle Name:" FontFamily="Unispace" Margin="0,0,0,0"/>
-                <TextBox x:Name="txtbxMiddle" FontFamily="Unispace" HorizontalAlignment="Left" MinHeight="15" MinWidth="100" />
+            <WrapPanel HorizontalAlignment="Right" Margin="0,0,0,3">
+                <Label Content="Middle Name:" FontFamily="Unispace" Margin="0,0,0,0" Foreground="antiquewhite"
+                       FontSize="16"/>
+                <TextBox x:Name="txtbxMiddle" FontFamily="Unispace" HorizontalAlignment="Right" MinHeight="15"
+                         MinWidth="150" />
             </WrapPanel>
-            <WrapPanel Margin="10,0,0,2">
-                <Label Content="Nick Name:" FontFamily="Unispace"/>
-                <TextBox x:Name="txtbxNick" FontFamily="Unispace" HorizontalAlignment="Left" MinHeight="15" MinWidth="100" />
+            <WrapPanel HorizontalAlignment="Right" Margin="0,0,0,3">
+                <Label Content="Nick Name:" FontFamily="Unispace" Foreground="antiquewhite" FontSize="16"/>
+                <TextBox x:Name="txtbxNick" FontFamily="Unispace" HorizontalAlignment="Right" MinHeight="15" 
+                         MinWidth="150" />
             </WrapPanel>
-            <WrapPanel Margin="10,0,0,2">
-                <Label Content="Last Name:" FontFamily="Unispace"/>
-                <TextBox x:Name="txtbxLast" FontFamily="Unispace" HorizontalAlignment="Left" MinHeight="15" MinWidth="100" />
+            <WrapPanel HorizontalAlignment="Right" Margin="0,0,0,3">
+                <Label Content="Last Name:" FontFamily="Unispace" Foreground="antiquewhite" FontSize="16"/>
+                <TextBox x:Name="txtbxLast" FontFamily="Unispace" HorizontalAlignment="Right" MinHeight="15"
+                         MinWidth="150" />
             </WrapPanel>
-            <WrapPanel Margin="10,0,0,2">
-                <Label Content="Title:" FontFamily="Unispace"/>
-                <TextBox x:Name="txtbxTitle" FontFamily="Unispace" HorizontalAlignment="Left" MinHeight="15" MinWidth="100" />
+            <WrapPanel HorizontalAlignment="Right" Margin="0,0,0,3">
+                <Label Content="Title:" FontFamily="Unispace" Foreground="antiquewhite" FontSize="16"/>
+                <TextBox x:Name="txtbxTitle" FontFamily="Unispace" HorizontalAlignment="Right" MinHeight="15"
+                         MinWidth="150" />
             </WrapPanel>
-            <WrapPanel Margin="10,0,0,2">
-                <Label Content="Birthday:" FontFamily="Unispace"/>
-                <TextBox x:Name="txtbxBirthday" FontFamily="Unispace" HorizontalAlignment="Left" MinHeight="15" MinWidth="120" />
+            <WrapPanel HorizontalAlignment="Right" Margin="0,0,0,3">
+                <Label Content="Birthday:" FontFamily="Unispace" Foreground="antiquewhite" FontSize="16"/>
+                <TextBox x:Name="txtbxBirthday" FontFamily="Unispace" HorizontalAlignment="Right" MinHeight="15"
+                         MinWidth="150" />
             </WrapPanel>
 
             <!--<TextBlock/>-->
-            <WrapPanel Margin="10,0,0,2">
-                <Label Content="Email:" FontFamily="Unispace"/>
-                <TextBox x:Name="txtbxEmail" FontFamily="Unispace" HorizontalAlignment="Left" MinHeight="15" MinWidth="150" />
+            <WrapPanel HorizontalAlignment="Right" Margin="0,0,0,3">
+                <Label Content="Email:" FontFamily="Unispace" Foreground="antiquewhite" FontSize="16"/>
+                <TextBox x:Name="txtbxEmail" FontFamily="Unispace" HorizontalAlignment="Right" MinHeight="15"
+                         MinWidth="150" />
             </WrapPanel>
-            <WrapPanel Margin="10,0,0,2">
-                <Label Content="Phone Number:" FontFamily="Unispace"/>
-                <TextBox x:Name="txtbxPhone" FontFamily="Unispace" HorizontalAlignment="Left" MinHeight="15" MinWidth="100" />
+            <WrapPanel HorizontalAlignment="Right" Margin="0,0,0,3">
+                <Label Content="Phone Number:" FontFamily="Unispace" Foreground="antiquewhite" FontSize="16"/>
+                <TextBox x:Name="txtbxPhone" FontFamily="Unispace" HorizontalAlignment="Right" MinHeight="15"
+                         MinWidth="150" />
             </WrapPanel>
-            <WrapPanel Margin="10,0,0,2">
-                <Label Content="Street:" FontFamily="Unispace"/>
-                <TextBox x:Name="txtbxStreet" FontFamily="Unispace" HorizontalAlignment="Left" MinHeight="15" MinWidth="100" />
+            <WrapPanel HorizontalAlignment="Right" Margin="0,0,0,3">
+                <Label Content="Street:" FontFamily="Unispace" Foreground="antiquewhite" FontSize="16"/>
+                <TextBox x:Name="txtbxStreet" FontFamily="Unispace" HorizontalAlignment="RIght" MinHeight="15"
+                         MinWidth="150" />
             </WrapPanel>
-            <WrapPanel Margin="10,0,0,2">
-                <Label Content="City:" FontFamily="Unispace"/>
-                <TextBox x:Name="txtbxCity" FontFamily="Unispace" HorizontalAlignment="Left" MinHeight="15" MinWidth="100" />
+            <WrapPanel HorizontalAlignment="Right" Margin="0,0,0,3">
+                <Label Content="City:" FontFamily="Unispace" Foreground="antiquewhite" FontSize="16"/>
+                <TextBox x:Name="txtbxCity" FontFamily="Unispace" HorizontalAlignment="Right" MinHeight="15"
+                         MinWidth="150" />
             </WrapPanel>
-            <WrapPanel Margin="10,0,0,2">
-                <Label Content="State:" FontFamily="Unispace"/>
-                <TextBox x:Name="txtbxState" FontFamily="Unispace" HorizontalAlignment="Left" MinHeight="15" MinWidth="100" />
+            <WrapPanel HorizontalAlignment="Right" Margin="0,0,0,3">
+                <Label Content="State:" FontFamily="Unispace" Foreground="antiquewhite" FontSize="16"/>
+                <TextBox x:Name="txtbxState" FontFamily="Unispace" HorizontalAlignment="Right" MinHeight="15"
+                         MinWidth="150" />
             </WrapPanel>
-            <WrapPanel Margin="10,0,0,2">
-                <Label Content="ZipCode:" FontFamily="Unispace"/>
-                <TextBox x:Name="txtbxZip" FontFamily="Unispace" HorizontalAlignment="Left" MinHeight="15" MinWidth="100" />
+            <WrapPanel HorizontalAlignment="Right" Margin="0,0,0,3">
+                <Label Content="ZipCode:" FontFamily="Unispace" Foreground="antiquewhite" FontSize="16"/>
+                <TextBox x:Name="txtbxZip" FontFamily="Unispace" HorizontalAlignment="Right" MinHeight="15"
+                         MinWidth="150" />
             </WrapPanel>
-            <WrapPanel Margin="10,0,0,2">
-                <Label Content="Country:" FontFamily="Unispace"/>
-                <TextBox x:Name="txtbxCountry" FontFamily="Unispace" HorizontalAlignment="Left" MinHeight="15" MinWidth="100" />
+            <WrapPanel HorizontalAlignment="Right" Margin="0,0,0,3">
+                <Label Content="Country:" FontFamily="Unispace" Foreground="antiquewhite" FontSize="16"/>
+                <TextBox x:Name="txtbxCountry" FontFamily="Unispace" HorizontalAlignment="Right" MinHeight="15"
+                         MinWidth="150" />
             </WrapPanel>
-            <WrapPanel Margin="10,0,0,2">
-                <Label Content="Website:" FontFamily="Unispace"/>
-                <TextBox x:Name="txtbxWebsite" FontFamily="Unispace" HorizontalAlignment="Left" MinHeight="15" MinWidth="100" />
+            <WrapPanel HorizontalAlignment="Right" Margin="0,0,0,3">
+                <Label Content="Website:" FontFamily="Unispace" Foreground="antiquewhite" FontSize="16"/>
+                <TextBox x:Name="txtbxWebsite" FontFamily="Unispace" HorizontalAlignment="Right" MinHeight="15"
+                         MinWidth="150" />
             </WrapPanel>
-            <WrapPanel Margin="10,0,0,2">
-                <Label Content="Notes:" FontFamily="Unispace"/>
-                <TextBox x:Name="txtbxNotes" FontFamily="Unispace" HorizontalAlignment="Left" MinHeight="50" MinWidth="150" />
+            <WrapPanel HorizontalAlignment="Right" Margin="0,0,0,3">
+                <Label Content="Notes:" FontFamily="Unispace" Foreground="antiquewhite" FontSize="16"/>
+                <TextBox x:Name="txtbxNotes" FontFamily="Unispace" HorizontalAlignment="Right" MinHeight="50"
+                         MinWidth="150" />
             </WrapPanel>
         </StackPanel>
 
         <DockPanel Grid.Row="5" Grid.Column="0">
-            <Button x:Name="btnCancel" Margin="5,0,0,20" Width="50" DockPanel.Dock="Bottom" Content="Cancel" HorizontalAlignment="Left"  VerticalAlignment="Bottom" Click="btnCancel_Click"/>
+            <Button x:Name="btnCancel" Margin="5,0,0,20" Width="50" DockPanel.Dock="Bottom" Content="Cancel" 
+                    HorizontalAlignment="Left"  VerticalAlignment="Bottom" Click="btnCancel_Click"
+                    Padding="5"/>
         </DockPanel>
 
         <DockPanel Grid.Row="5" Grid.Column="0">
-            <Button x:Name="btnSaveChanges" Margin="55,0,0,20" Grid.ColumnSpan="2" Width="50"  Content="Save" VerticalAlignment="Bottom" Click="btnSaveChanges_Click"/>
+            <Button x:Name="btnSaveChanges" Margin="55,0,0,20" Grid.ColumnSpan="2" Width="50"  Content="Save" 
+                    VerticalAlignment="Bottom" Click="btnSaveChanges_Click"
+                    Padding="5"/>
         </DockPanel>
     </Grid>
 </UserControl>

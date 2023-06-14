@@ -35,13 +35,13 @@ namespace ContactsApp
     }
     public partial class MainWindow : Window 
     {
-
-    //contacts = new();
-    //public static Contact CurrentContact { get; set; }
-    //  default view of the favoritesListView.ItemsSource using the CollectionViewSource.GetDefaultView method
-    //  and assigns it to the favoritesCollectionView variable. A view is a layer on top of a collection that
-    //  allows you to sort, filter, group, or navigate the items in the collection. A collection can have multiple
-    //  views associated with it, but only one default view.
+        //  U+1F382
+        //contacts = new();
+        //public static Contact CurrentContact { get; set; }
+        //  default view of the favoritesListView.ItemsSource using the CollectionViewSource.GetDefaultView method
+        //  and assigns it to the favoritesCollectionView variable. A view is a layer on top of a collection that
+        //  allows you to sort, filter, group, or navigate the items in the collection. A collection can have multiple
+        //  views associated with it, but only one default view.
         public ICollectionView contactsCollectionView;
         public ListCollectionView favoritesCollectionView;
         public static CL CL { get; set; }

@@ -1,10 +1,12 @@
 ﻿using ContactsApp.Views;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
+using System.Windows.Navigation;
 
 namespace ContactsApp
 {
@@ -76,7 +78,7 @@ namespace ContactsApp
                 case View.Delete:
                     //DeleteView = new(); break;
                 case View.Settings:
-                    //SettingsView = new(); break;
+                    break;
                 case View.Home:
                     //HomeView = new(); break;
                     break;
@@ -107,7 +109,7 @@ namespace ContactsApp
         {
             Contact cc = Contact.CurrentContact;
             SetView(View.Contact);
-           // if (contact.IsFavorite == 1) { contactView.checkbxFav.IsChecked = true; }
+            // if (contact.IsFavorite == 1) { contactView.checkbxFav.IsChecked = true; }
 
             ContactView.txtfullName.Text = (cc.FullName is not null) ? cc.FullName.Trim() : "";
             ContactView.txtStreet.Text = (cc.Street is not null) ? cc.Street : "";
@@ -119,6 +121,33 @@ namespace ContactsApp
             ContactView.txtWebsite.Text = (cc.Website is not null) ? cc.Website : "";
             ContactView.txtNotes.Text = (cc.Notes is not null) ? cc.Notes : "";
 
+            if (WithinRange(cc.Birthday))
+            {
+                ContactView.txtfullName.Text = $"\U0001F382" + ContactView.txtfullName.Text;
+            }
+        }
+        private static bool WithinRange(string? bday)
+        {
+            if (bday is null) return false;
+
+            // Parse the birthday string into a DateTime object
+            string[] split = bday.Split(" ");
+            string birthdayString = split[0];
+            DateTime birthday = DateTime.Parse(bday);
+
+            // Get the current date
+            DateTime currentDate = DateTime.Today;
+
+            // Define the range boundaries
+            int rangeInDays = Settings.BirthdayRange;
+            DateTime rangeStart = currentDate.AddDays(-rangeInDays);
+            DateTime rangeEnd = currentDate.AddDays(rangeInDays);
+
+            // Check if the birthday's day of year is within the range
+            return birthday.DayOfYear >= rangeStart.DayOfYear && birthday.DayOfYear <= rangeEnd.DayOfYear;
+
+            // Check if the birthday is within the range
+            //return birthday >= rangeStart && birthday <= rangeEnd;
         }
         public static void PopulateEditView()
         {

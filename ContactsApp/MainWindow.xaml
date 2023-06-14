@@ -29,7 +29,7 @@
         </CollectionViewSource>
     </Window.Resources>-->
 
-    <Grid Background="AliceBlue">
+    <Grid Background="Navy">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="225*" MaxWidth="225"/>
             <ColumnDefinition Width="*"/>
@@ -40,12 +40,13 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         
-        <Label Grid.Column="0" Grid.Row="0" Content="CONTACTS" HorizontalAlignment="Center" Margin="1,1,0,0" VerticalAlignment="Top" 
-               FontWeight="Bold" FontSize="24" FontFamily="Unispace"/>
-        <Label Grid.Column="0" Grid.Row="1" Content="Search" VerticalAlignment="Center" Margin="40,0,0,0" FontFamily="Unispace"/>
+        <Label x:Name="header" Grid.Column="0" Grid.Row="0" Content="CONTACTS" HorizontalAlignment="Center" Margin="1,1,20,0" VerticalAlignment="Top" 
+               FontWeight="Bold" FontSize="27"  Foreground="WhiteSmoke" FontFamily="Corbel Light"/>
+        <Label Grid.Column="0" Grid.Row="1" Content="Search" VerticalAlignment="Center" Margin="30,0,0,0" 
+               FontFamily="Unispace" Foreground="white"/>
         <TextBox x:Name="txtSearch" Grid.Column="0" Grid.Row="1" TextWrapping="Wrap" Text="" Width="125" VerticalAlignment="Center" 
-                 HorizontalAlignment="Right" Margin="10,0,10,0" TextChanged="txtFilter_TextChanged"/>
-        <Grid Margin="0,0,0,20" Grid.Column="0" Grid.Row="2" Grid.RowSpan="2" Background="white">
+                 HorizontalAlignment="Right" Margin="0,0,0,0" TextChanged="txtFilter_TextChanged"/>
+        <Grid Margin="0,0,0,0" Grid.Column="0" Grid.Row="2" Grid.RowSpan="2" Background="Transparent">
             <!--<Grid.ColumnDefinitions>
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
@@ -55,26 +56,30 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>-->
 
-            <StackPanel>
-                <Label Content="Favorites" Foreground="Black" FontFamily="Unispace" Height="30"/>
-                <ListView x:Name="favoritesListView" d:ItemsSource="{Binding Source= MainWindow.CL.Contacts}" MaxHeight="200" FontFamily="Unispace" PreviewMouseLeftButtonUp="listView_Click">
+            <StackPanel Background="Transparent">
+                <Label Content="Favorites" Foreground="WhiteSmoke" FontSize="16" FontFamily="Unispace" Height="30" Background="Transparent"/>
+                <ListView x:Name="favoritesListView" d:ItemsSource="{Binding Source= MainWindow.CL.Contacts}" MaxHeight="200"
+                          FontFamily="Unispace" PreviewMouseLeftButtonUp="listView_Click" Background="darkviolet"
+                          >
                     <!--d:ItemsSource="{Binding Source= MainWindow.CL.Contacts}"-->
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal" Margin="2">
-                                <TextBlock x:Name="favoriteItem" Text="{Binding FullName }" Margin="2"  />
+                                <TextBlock x:Name="favoriteItem" Text="{Binding FullName }" FontSize="14" Margin="2" Background="Transparent" Foreground="AntiqueWhite" />
                             </StackPanel>
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
 
-                <Label Content="Contacts" FontFamily="unispace" Height="30"/>
-                <ListView x:Name="contactsListView" MaxHeight="355"  
-                          FontFamily="Unispace" d:ItemsSource="{Binding Source= MainWindow.CL.Contacts}" PreviewMouseLeftButtonUp="listView_Click" >
+                <Label Content="Contacts" FontFamily="unispace" Height="30" Foreground="AntiqueWhite" FontWeight="Bold"
+                       FontSize="16"/>
+                <ListView x:Name="contactsListView" MaxHeight="355" Background="palevioletred" Foreground="AntiqueWhite"
+                          FontFamily="Unispace" d:ItemsSource="{Binding Source= MainWindow.CL.Contacts}" 
+                          PreviewMouseLeftButtonUp="listView_Click"  >
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <StackPanel Orientation="Horizontal" Margin="2">
-                            <TextBlock x:Name="contactItem" Text="{Binding FullName}" Margin="2"  />
+                            <StackPanel Orientation="Horizontal" Margin="2" Background="Transparent">
+                                <TextBlock x:Name="contactItem" Text="{Binding FullName}" FontSize="14" Margin="2" Background="Transparent" Foreground="AntiqueWhite" />
                         </StackPanel>
                     </DataTemplate>
                 </ListView.ItemTemplate>
@@ -84,15 +89,18 @@
             
         </Grid>
 
-        <Button x:Name="btnAdd" Background="white" HorizontalAlignment="Right" Grid.Column="0" Grid.Row="0"  Height="30" Width="30" Click="btnAdd_Click">
-            <Image Source="Resources\AddContact.png" Height="30" />
+        <Button x:Name="btnAdd" Margin="0,0,0,0" Background="transparent"  HorizontalAlignment="Right" 
+                Grid.Column="0" Grid.Row="0" Height="30" Width="30" Click="btnAdd_Click" Foreground="white">
+                <Image Source="Resources\AddContact.png" Height="30" />
         </Button>
-        <Button x:Name="btnSettings" Background="white" Grid.Column="1" Grid.Row="0" Margin="2,2,10,2" Height="30" Width="30" HorizontalAlignment="Right"
-                VerticalAlignment="Center" Click="btnSettings_Click">
+        <Button x:Name="btnSettings" Background="white" Grid.Column="1" Grid.Row="0" Margin="2,2,10,2" Height="30" 
+                Width="30" HorizontalAlignment="Right" VerticalAlignment="Center" Click="btnSettings_Click"
+                Foreground="white">
             <Image Source="Resources\SettingsGear.png"/>
         </Button>
 
-        <ContentControl x:Name="MainWindowContentArea" Grid.Column="1" Grid.Row="1" Grid.RowSpan="3" MinHeight="300" MinWidth="350" Margin="20,20,20,20"/>
+        <ContentControl x:Name="MainWindowContentArea" Grid.Column="1" Grid.Row="1" Grid.RowSpan="3" MinHeight="300" 
+                        MinWidth="350" Margin="20,20,20,20"/>
 
 
     </Grid>
