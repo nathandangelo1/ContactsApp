@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace ContactsApp
 {
-    public class CL : ObservableCollection<Contact>
+    public class ContactsList : ObservableCollection<Contact>
     {
         private ObservableCollection<Contact> contacts;
         public ObservableCollection<Contact> Contacts

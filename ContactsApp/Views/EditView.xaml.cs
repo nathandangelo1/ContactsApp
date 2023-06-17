@@ -69,8 +69,8 @@ namespace ContactsApp.Views
             conn.UpdateContact(edit);
             ViewSetter.SetView(View.Contact);
             ViewSetter.ClearView(View.Edit);
-            //Contact.CurrentContact = edit;
-            //Refresh();
+            Contact.CurrentContact = edit;
+            Refresh();
         }
 
         private void btnUpload_Click(object sender, RoutedEventArgs e)
@@ -106,9 +106,9 @@ namespace ContactsApp.Views
         }
         private void Refresh()
         {
-            MainWindow window = (MainWindow)Application.Current.MainWindow;
+            //MainWindow window = (MainWindow)Application.Current.MainWindow;
 
-            window.RefreshListView();
+            //window.RefreshListView();
             ViewSetter.PopulateContactView(); 
         }
     }

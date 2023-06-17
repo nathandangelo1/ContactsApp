@@ -30,6 +30,36 @@ namespace ContactsApp.Services
                 return connection.Query<Contact>("[dbo].[spGetContacts]").ToList();
             }
         }
+
+        public void DeleteContact(Contact edit)
+        {
+            int newId;
+            // GETS CONNECTION STRING FOR MOVIES DB FROM HELPER CLASS
+            using (var connection = new SqlConnection(Helper.CnnVal("contacts")))
+            {
+                //foreach (PropertyInfo propertyInfo in edit.GetType().GetProperties())
+                //{
+                //    // do stuff here
+                //}
+                // Create a DynamicParameters object
+                var parameters = new DynamicParameters();
+                // Add input parameters
+                parameters.Add("@id", edit.Id);
+
+                // Add output parameter for new ID
+                //parameters.Add("@returnId", dbType: DbType.Int32, direction: ParameterDirection.Output);
+                // Execute the command using Dapper
+                var returns = connection.Execute("spDeleteContact", parameters, commandType: CommandType.StoredProcedure);
+                // Get the output parameter value using Dapper
+                //newId = parameters.Get<int>("returnId");
+
+                if (returns == -1)
+                {
+
+                }
+            }
+        }
+
         public void UpdateContact(Contact edit)
         {
             int success;

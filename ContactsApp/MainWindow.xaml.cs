@@ -16,7 +16,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-
+using System.Windows.Shell;
 
 
 namespace ContactsApp
@@ -44,9 +44,12 @@ namespace ContactsApp
         //  views associated with it, but only one default view.
         public ICollectionView contactsCollectionView;
         public ListCollectionView favoritesCollectionView;
-        public static CL CL { get; set; }
-        public bool HideUnhide { get; set; }
-        //public static FL FL { get; set; }
+        public static ContactsList CL { get; set; }
+
+        public static class Icons
+        {
+            public const string IconName = "\u25A1";
+        }
         public MainWindow()
         {
             InitializeComponent();
@@ -56,7 +59,7 @@ namespace ContactsApp
 
             DataAccess db = new();
 
-            CL = new();
+            CL = new ContactsList();
             IEnumerable<Contact> results = db.GetContacts();
             CL.Contacts = new ObservableCollection<Contact>(results);
 
@@ -130,5 +133,39 @@ namespace ContactsApp
             //favoritesListView.Items.Refresh();
             favoritesListView.ItemsSource = CL.Contacts.Where(x => x.Id == 1);
         }
+
+
+
+            private void MinimizeButton_Click(object sender, RoutedEventArgs e)
+            {
+                this.WindowState = WindowState.Minimized;
+            }
+
+            private void MaximizeButton_Click(object sender, RoutedEventArgs e)
+            {
+                if (this.WindowState == WindowState.Maximized)
+                {
+                    this.WindowState = WindowState.Normal;
+                    //MaximizeButton.Content = "[ ]";
+                }
+                else
+                {
+                    this.WindowState = WindowState.Maximized;
+                    //MaximizeButton.Content = "[ ]";
+                }
+            }
+
+            private void CloseButton_Click(object sender, RoutedEventArgs e)
+            {
+                this.Close();
+            }
+        
+        private void Window_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ChangedButton == MouseButton.Left)
+                this.DragMove();
+        }
     }
+
 }
+

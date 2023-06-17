@@ -36,7 +36,7 @@
                            Text="Marina Del Rey"  MinWidth="30" FontSize="16" Foreground="AntiqueWhite"/>
                 <TextBlock Margin="0"  Text=", "/>
                 <TextBlock x:Name="txtState" FontFamily="Unispace" HorizontalAlignment="Left" TextWrapping="Wrap" 
-                           Text=", California"  MinWidth="40" FontSize="16" Foreground="AntiqueWhite"/>
+                           Text="California"  MinWidth="40" FontSize="16" Foreground="AntiqueWhite"/>
                 <TextBlock x:Name="txtZip" FontFamily="Unispace" Padding="10,0,0,0"  HorizontalAlignment="Left" 
                            TextWrapping="Wrap" Text="90250"  MinWidth="40" FontSize="16" Foreground="AntiqueWhite"/>
             </WrapPanel>

@@ -1,4 +1,5 @@
 ﻿using ContactsApp.Views;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -6,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
+using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 
 namespace ContactsApp
@@ -28,12 +30,20 @@ namespace ContactsApp
                 return editView;
             }
         }
-        private static DeleteView deleteView = new();
+        private static DeleteView deleteView;
         public static DeleteView DeleteView
         {
             get
             {
+                if(deleteView is null)
+                {
+                    return new DeleteView();
+                }
                 return deleteView;
+            }
+            set
+            {
+                deleteView = value;
             }
         }
         private static SettingsView settingsView = new();
@@ -50,6 +60,10 @@ namespace ContactsApp
             get
             {
                 return addView;
+            }
+            set
+            {
+                addView = value;
             }
         }
         private static HomeView homeView = new();
@@ -74,10 +88,7 @@ namespace ContactsApp
                     EditView.Reset();
                     break;
                 case View.Add:
-                    //AddView = new(); break;
-                case View.Delete:
-                    //DeleteView = new(); break;
-                case View.Settings:
+                    AddView = new(); 
                     break;
                 case View.Home:
                     //HomeView = new(); break;
@@ -105,12 +116,29 @@ namespace ContactsApp
                     ContentArea.Content = ContactView; break;
             }
         }
+        public static void PopulateDeleteView()
+        {
+            Contact cc = DeleteView.Selected;
+
+            if (cc is not null)
+            {
+                // If currentContact's property is not null, set the ContactView's equivalent control to value, else set it to null
+                DeleteView.txtfullName.Text = (cc.FullName is not null) ? cc.FullName.Trim() : "";
+                DeleteView.txtPhone.Text = (cc.PhoneNumber is not null) ? cc.PhoneNumber : "";
+                DeleteView.txtStreet.Text = (cc.Street is not null) ? cc.Street : "";
+                DeleteView.txtCity.Text = (cc.City is not null) ? cc.City : "";
+                DeleteView.txtState.Text = (cc.State is not null) ? cc.State : "";
+                DeleteView.txtZip.Text = (cc.ZipCode is not null) ? cc.ZipCode : "";
+                
+                DeleteView.imgContact.Source = (cc.Picture is not null) ? new BitmapImage(new Uri(cc.Picture)) : null;
+            }
+        }
         public static void PopulateContactView()
         {
             Contact cc = Contact.CurrentContact;
             SetView(View.Contact);
-            // if (contact.IsFavorite == 1) { contactView.checkbxFav.IsChecked = true; }
 
+            // If currentContact's property is not null, set the ContactView's equivalent control to value, else set it to null
             ContactView.txtfullName.Text = (cc.FullName is not null) ? cc.FullName.Trim() : "";
             ContactView.txtStreet.Text = (cc.Street is not null) ? cc.Street : "";
             ContactView.txtCity.Text = (cc.City is not null) ? cc.City : "";
@@ -120,10 +148,11 @@ namespace ContactsApp
             ContactView.txtPhone.Text = (cc.PhoneNumber is not null) ? cc.PhoneNumber : "";
             ContactView.txtWebsite.Text = (cc.Website is not null) ? cc.Website : "";
             ContactView.txtNotes.Text = (cc.Notes is not null) ? cc.Notes : "";
+            ContactView.imgContact.Source = (cc.Picture is not null) ? new BitmapImage(new Uri(cc.Picture)) : null;
 
             if (WithinRange(cc.Birthday))
             {
-                ContactView.txtfullName.Text = $"\U0001F382" + ContactView.txtfullName.Text;
+                ContactView.txtfullName.Text = $"\U0001F382 " + ContactView.txtfullName.Text;
             }
         }
         private static bool WithinRange(string? bday)
@@ -154,6 +183,9 @@ namespace ContactsApp
             Contact cc = Contact.CurrentContact;
             if (cc.IsFavorite == 1)  EditView.checkbxFav.IsChecked = true;
 
+            // If currentContact's property is not null,
+            // set the ContactView's equivalent control to value,
+            // else set it to null
             EditView.txtbxFirst.Text = (cc.FirstName is not null) ? cc.FirstName.Trim() : "";
             EditView.txtbxMiddle.Text = (cc.MiddleName is not null) ? cc.MiddleName : "";
             EditView.txtbxNick.Text = (cc.NickName is not null) ? cc.NickName : "";
@@ -170,6 +202,9 @@ namespace ContactsApp
 
             EditView.txtbxWebsite.Text = (cc.Website is not null) ? cc.Website : "";
             EditView.txtbxNotes.Text = (cc.Notes is not null) ? cc.Notes : "";
+
+            EditView.imgContact.Source = (cc.Picture is not null) ? new BitmapImage(new Uri(cc.Picture)) : null;
         }
+
     }
 }

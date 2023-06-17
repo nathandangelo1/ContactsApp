@@ -44,16 +44,13 @@ namespace ContactsApp.Views
         private void RadioButton_Checked(object sender, RoutedEventArgs e)
         {
             RadioButton rb = sender as RadioButton;
-            //MessageBox.Show(rb.Content + " is checked");
-            //throw new NotImplementedException();
             Settings.SortByFirstName = IsFirstName;
         }
-
 
         private void btnCleanUp_Click(object sender, RoutedEventArgs e)
         {
             ViewSetter.ClearView(View.Settings);
-            ViewSetter.SetView(View.Home);
+            ViewSetter.SetView(View.Delete);
         }
 
         private void btnExit_Click(object sender, RoutedEventArgs e)

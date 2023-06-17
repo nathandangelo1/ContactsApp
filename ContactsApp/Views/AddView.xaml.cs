@@ -5,6 +5,7 @@ using ContactsApp.Services;
 using System.ComponentModel;
 using Microsoft.Win32;
 using System.Media;
+using System.Windows.Media.Imaging;
 
 namespace ContactsApp.Views
 {
@@ -23,7 +24,15 @@ namespace ContactsApp.Views
         private void btnCancel_Click(object sender, RoutedEventArgs e)
         {
             ViewSetter.ClearView(View.Add);
-            ViewSetter.SetView(View.Contact);
+
+            if (Contact.CurrentContact is not null)
+            {
+                ViewSetter.SetView(View.Contact);
+            }
+            else
+            {
+                ViewSetter.SetView(View.Home);
+            }
         }
 
         private void btnSaveChanges_Click(object sender, RoutedEventArgs e)
@@ -68,7 +77,8 @@ namespace ContactsApp.Views
             OpenFileDialog openFileDialog = new OpenFileDialog();
 
             openFileDialog.DefaultExt = ".jpg";
-            openFileDialog.Filter = "JPG Files (.jpg)|*.jpg";
+            openFileDialog.Filter = "Image files|*.bmp;*.jpg;*.png";
+            openFileDialog.FilterIndex = 1;
 
             //SHOW FILE DIALOG
             bool? result = openFileDialog.ShowDialog();
@@ -79,7 +89,7 @@ namespace ContactsApp.Views
                 //STORE FILE PATH
                 string selectedFile = openFileDialog.FileName;
                 Picture = selectedFile;
-                //System.Media.ImageSource img = Picture;
+                imgContact.Source = new BitmapImage(new Uri(openFileDialog.FileName));
             }
             
         }

@@ -1,107 +1,269 @@
-﻿<Window
+﻿<Window xmlns:shell="clr-namespace:System.Windows.Shell;assembly=PresentationFramework"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        
         xmlns:local="clr-namespace:ContactsApp"
-        xmlns:Views="clr-namespace:ContactsApp.Views" 
-        xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
         x:Class="ContactsApp.MainWindow"
-        mc:Ignorable="d"
-        Title="Contacts" Height="750" Width="800">
+      
+        Title="Contacts" Height="700" Width="825"
+        Icon="/AddContact.png"
+        MouseLeftButtonDown="Window_MouseDown"
+        >
+
+    <Window.Style>
+        <Style TargetType="{x:Type Window}">
+            <Setter Property="shell:WindowChrome.WindowChrome">
+                <Setter.Value>
+                    <shell:WindowChrome CaptionHeight="1" />
+                </Setter.Value>
+            </Setter>
+
+        </Style>
+    </Window.Style>
+
     <Window.DataContext>
         <local:Contact />
     </Window.DataContext>
 
-    <!--<Window.Resources>
-        --><!-- Define a CollectionViewSource with GroupDescription --><!--
-        <CollectionViewSource x:Key="cvs" Source="{Binding Path=contacts}">
-            <CollectionViewSource.GroupDescriptions>
-                --><!-- Group by the first letter of the item name --><!--
-                <PropertyGroupDescription PropertyName="Text[0]" />
-            </CollectionViewSource.GroupDescriptions>
-        </CollectionViewSource>
-    </Window.Resources>-->
-
-    <!--<Window.Resources>
-        <local:Tasks x:Key="tasks" />
-        <CollectionViewSource x:Key="cvsTasks" Source="{StaticResource tasks}" Filter="CollectionViewSource_Filter">
-        </CollectionViewSource>
-    </Window.Resources>-->
-
-    <Grid Background="Navy">
+    <Grid x:Name="mainGrid" Background="Navy">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="225*" MaxWidth="225"/>
+            <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="*"/>
+
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="40"/>
+            <RowDefinition Height="30" MouseLeftButtonDown="Window_MouseDown"/>
+            <RowDefinition Height="40" MouseLeftButtonDown="Window_MouseDown"/>
             <RowDefinition Height="30"/>
+            <RowDefinition MaxHeight="200"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
+
+        <Label x:Name="header" 
+               Content="CONTACTS" 
+               Grid.Column="0" 
+               Grid.Row="0" 
+               Grid.RowSpan="2" 
+               HorizontalAlignment="Left" 
+               Margin="15,0,0,0" 
+               VerticalAlignment="Center" 
+               FontWeight="Bold" 
+               FontSize="27"  
+               Foreground="WhiteSmoke" 
+               FontFamily="Corbel Light" 
+               Height="43" Width="138" 
+               />
         
-        <Label x:Name="header" Grid.Column="0" Grid.Row="0" Content="CONTACTS" HorizontalAlignment="Center" Margin="1,1,20,0" VerticalAlignment="Top" 
-               FontWeight="Bold" FontSize="27"  Foreground="WhiteSmoke" FontFamily="Corbel Light"/>
-        <Label Grid.Column="0" Grid.Row="1" Content="Search" VerticalAlignment="Center" Margin="30,0,0,0" 
-               FontFamily="Unispace" Foreground="white"/>
-        <TextBox x:Name="txtSearch" Grid.Column="0" Grid.Row="1" TextWrapping="Wrap" Text="" Width="125" VerticalAlignment="Center" 
-                 HorizontalAlignment="Right" Margin="0,0,0,0" TextChanged="txtFilter_TextChanged"/>
-        <Grid Margin="0,0,0,0" Grid.Column="0" Grid.Row="2" Grid.RowSpan="2" Background="Transparent">
-            <!--<Grid.ColumnDefinitions>
-                <ColumnDefinition />
+        <Button x:Name="btnAdd"  
+                Background="transparent"  
+                Margin="150,0,0,0"
+                Grid.Column="0" 
+                Grid.Row="0" 
+                Grid.RowSpan="2" 
+                Width="35" 
+                Height="35" 
+                Click="btnAdd_Click" 
+                Foreground="white"
+                >
+            <Image Source="Resources\AddContact.png" Height="30" Width="30" />
+        </Button>
+        
+        <Label Grid.Column="0" Grid.Row="2" 
+               Content="Search" 
+               VerticalAlignment="Center" 
+               FontFamily="Unispace" 
+               Foreground="white" 
+               Height="24"
+               Margin="15,0,0,0"
+               />
+        <TextBox x:Name="txtSearch" 
+                 Grid.Column="0" Grid.Row="2" 
+                 TextWrapping="Wrap" 
+                 Text="" 
+                 Width="125" 
+                 Height="18"
+                 VerticalAlignment="Center" 
+                 HorizontalAlignment="Left" 
+                 Margin="70,0,0,0" 
+                 TextChanged="txtFilter_TextChanged" 
+                 />
+
+        <Grid x:Name="miniGrid" Grid.Column="0" Grid.Row="3" Grid.RowSpan="2" Margin="20,0,0,20">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition MaxWidth="225"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>-->
+                <RowDefinition MaxHeight="200"/>
+                <RowDefinition />
+            </Grid.RowDefinitions>
 
-            <StackPanel Background="Transparent">
-                <Label Content="Favorites" Foreground="WhiteSmoke" FontSize="16" FontFamily="Unispace" Height="30" Background="Transparent"/>
-                <ListView x:Name="favoritesListView" d:ItemsSource="{Binding Source= MainWindow.CL.Contacts}" MaxHeight="200"
-                          FontFamily="Unispace" PreviewMouseLeftButtonUp="listView_Click" Background="darkviolet"
-                          >
-                    <!--d:ItemsSource="{Binding Source= MainWindow.CL.Contacts}"-->
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="30"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+
+                <Label 
+                    Grid.Row="0" 
+                    Content="Favorites" 
+                    Foreground="WhiteSmoke" 
+                    FontSize="16" 
+                    FontFamily="Unispace" 
+                    Height="30"
+                    Background="Transparent"
+                    Margin="0,0,0,0"
+                />
+
+                <ListView 
+                    Grid.Row="1"      
+                    x:Name="favoritesListView" 
+                    ItemsSource="{ Binding Source= MainWindow.CL.Contacts }" 
+                    FontFamily="Unispace" 
+                    PreviewMouseLeftButtonUp="listView_Click" 
+                    Background="darkviolet" 
+                    Margin="0,0,0,0"
+                    >
                     <ListView.ItemTemplate>
                         <DataTemplate>
-                            <StackPanel Orientation="Horizontal" Margin="2">
-                                <TextBlock x:Name="favoriteItem" Text="{Binding FullName }" FontSize="14" Margin="2" Background="Transparent" Foreground="AntiqueWhite" />
-                            </StackPanel>
+                            <TextBlock 
+                                x:Name="favoriteItem" 
+                                Text="{ Binding FullName }" 
+                                FontSize="14" 
+                                Margin="2" 
+                                Background="Transparent"
+                                Foreground="AntiqueWhite" 
+                                />
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
+            </Grid>
 
-                <Label Content="Contacts" FontFamily="unispace" Height="30" Foreground="AntiqueWhite" FontWeight="Bold"
-                       FontSize="16"/>
-                <ListView x:Name="contactsListView" MaxHeight="355" Background="palevioletred" Foreground="AntiqueWhite"
-                          FontFamily="Unispace" d:ItemsSource="{Binding Source= MainWindow.CL.Contacts}" 
-                          PreviewMouseLeftButtonUp="listView_Click"  >
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                            <StackPanel Orientation="Horizontal" Margin="2" Background="Transparent">
-                                <TextBlock x:Name="contactItem" Text="{Binding FullName}" FontSize="14" Margin="2" Background="Transparent" Foreground="AntiqueWhite" />
-                        </StackPanel>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-                </ListView>
+            <Grid 
+                MinHeight="350" 
+                Grid.Column="0" 
+                Grid.Row="1" 
+                ScrollViewer.VerticalScrollBarVisibility="Auto">
                 
-            </StackPanel>
-            
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="30"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+
+                <Label 
+                    Content="Contacts" 
+                    Grid.Row="0" 
+                    FontFamily="unispace" 
+                    Height="30" 
+                    Foreground="AntiqueWhite" 
+                    FontWeight="Bold" 
+                    FontSize="16" 
+                    />
+                <ListView x:Name="contactsListView" 
+                          Grid.Row="1"  
+                          Background="palevioletred" 
+                          Foreground="AntiqueWhite" 
+                          FontFamily="Unispace"   
+                          ItemsSource="{Binding Source= MainWindow.CL.Contacts}" 
+                          PreviewMouseLeftButtonUp="listView_Click" 
+                          ScrollViewer.CanContentScroll="True" 
+                          >
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock 
+                                x:Name="contactItem" 
+                                Text="{Binding FullName}" 
+                                FontSize="14" 
+                                Margin="2" 
+                                Background="Transparent" 
+                                Foreground="AntiqueWhite" 
+                                />
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </Grid>
         </Grid>
 
-        <Button x:Name="btnAdd" Margin="0,0,0,0" Background="transparent"  HorizontalAlignment="Right" 
-                Grid.Column="0" Grid.Row="0" Height="30" Width="30" Click="btnAdd_Click" Foreground="white">
-                <Image Source="Resources\AddContact.png" Height="30" />
-        </Button>
-        <Button x:Name="btnSettings" Background="white" Grid.Column="1" Grid.Row="0" Margin="2,2,10,2" Height="30" 
-                Width="30" HorizontalAlignment="Right" VerticalAlignment="Center" Click="btnSettings_Click"
-                Foreground="white">
+        <Button x:Name="btnSettings" 
+                Background="AntiqueWhite" 
+                Grid.Column="1" 
+                Grid.Row="5"
+                Height="30" 
+                Width="30" 
+                HorizontalAlignment="Right"
+                VerticalAlignment="Bottom"
+                Margin="10"
+                Click="btnSettings_Click"
+                Foreground="Black" 
+                >
             <Image Source="Resources\SettingsGear.png"/>
         </Button>
 
-        <ContentControl x:Name="MainWindowContentArea" Grid.Column="1" Grid.Row="1" Grid.RowSpan="3" MinHeight="300" 
-                        MinWidth="350" Margin="20,20,20,20"/>
+        <ContentControl 
+            x:Name="MainWindowContentArea" 
+            Grid.Column="1" 
+            Grid.Row="2" 
+            Grid.RowSpan="3" 
+            Margin="46,22,38,7"
+            />
+        
+        <WrapPanel 
+            Grid.Column="2" 
+            Grid.Row="0" 
+            Grid.ColumnSpan="2" 
+            Grid.RowSpan="2"  
+            Margin="0,0,10,0" 
+            HorizontalAlignment="Right"
+            >
+            
+            <Button 
+                HorizontalAlignment="Right" 
+                VerticalAlignment="Top" 
+                FontWeight="Bold" 
+                FontSize="14"
+                Width="30" 
+                Height="30" 
+                Background="#282C4F" 
+                Content="-" 
+                Foreground="AntiqueWhite" 
+                MouseLeftButtonUp="MinimizeButton_Click" 
+                Grid.ColumnSpan="3" 
+                Padding="5" 
+                Margin="20,10,0,0"
+            />
 
+            <Button  
+                HorizontalAlignment="Right" 
+                VerticalAlignment="Top" 
+                Padding="5" 
+                FontSize="14"
+                Width="30" 
+                Height="30" 
+                Background="#282C4F" 
+                Content="[]" 
+                Foreground="AntiqueWhite" 
+                MouseLeftButtonUp="MaximizeButton_Click" 
+                Grid.ColumnSpan="3" 
+                Margin="20,10,0,0"
+            />
+
+            <Button 
+                x:Name="CloseButton" 
+                HorizontalAlignment="Right" 
+                VerticalAlignment="Top" 
+                Margin="20,10,0,0" 
+                Padding="5"
+                Width="30" 
+                Height="30" 
+                Background="#282C4F" 
+                Content="X" 
+                Foreground="AntiqueWhite" 
+                MouseLeftButtonUp="CloseButton_Click" 
+                Grid.ColumnSpan="3" 
+                FontSize="14"
+            />
+            
+        </WrapPanel>
 
     </Grid>
+
 </Window>
