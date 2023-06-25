@@ -43,7 +43,7 @@ namespace ContactsApp
         //  allows you to sort, filter, group, or navigate the items in the collection. A collection can have multiple
         //  views associated with it, but only one default view.
         public ICollectionView contactsCollectionView;
-        public ListCollectionView favoritesCollectionView;
+        public ICollectionView favoritesCollectionView;
         public static ContactsList CL { get; set; }
 
         public static class Icons
@@ -59,7 +59,7 @@ namespace ContactsApp
 
             DataAccess db = new();
 
-            CL = new ContactsList();
+            CL = new();
             IEnumerable<Contact> results = db.GetContacts();
             CL.Contacts = new ObservableCollection<Contact>(results);
 
@@ -93,7 +93,7 @@ namespace ContactsApp
                 return ((item as Contact).FullName.Contains(txtSearch.Text, StringComparison.OrdinalIgnoreCase));
         }
 
-        private void txtFilter_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
+        private void txtFilter_TextChanged(object sender, TextChangedEventArgs e)
         {
             CollectionViewSource.GetDefaultView(contactsListView.ItemsSource).Refresh();
             //CollectionViewSource.GetDefaultView(favoritesListView.ItemsSource).Refresh();

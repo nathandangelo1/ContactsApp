@@ -16,6 +16,8 @@
                    FontFamily="Unispace" 
                    Foreground="AntiqueWhite"
                    HorizontalAlignment="Left"
+                   FontSize="16"
+                   Margin="0,150,0,0"
                    />
             <ListView 
                     Grid.Row="1"      
@@ -23,11 +25,12 @@
                     ItemsSource="{ Binding Source= MainWindow.CL.Contacts }" 
                     FontFamily="Unispace" 
                     PreviewMouseLeftButtonUp="listView_Click" 
-                    Background="darkviolet" 
+                    Background="DarkSalmon"
                     Margin="0,0,0,0"
                     MaxHeight="250"
                     MaxWidth="225"
-                    MinHeight="100"
+                    MinHeight="100" MinWidth="225"
+                    HorizontalAlignment="Left"
                     >
                 <ListView.ItemTemplate>
                     <DataTemplate>
@@ -43,12 +46,12 @@
                 </ListView.ItemTemplate>
             </ListView>
             <Button x:Name="btnPurgeAll" 
-                Content="Empty Recycle Bin" 
-                HorizontalAlignment="Center" 
-                VerticalAlignment="Top" 
-                Click="btnPurgeAll_Click" 
+                    Content="Empty Recycle Bin" 
+                    HorizontalAlignment="Center" 
+                    VerticalAlignment="Top" 
+                    Click="btnPurgeAll_Click" 
                 
-                />
+            />
         </StackPanel>
 
         <StackPanel Margin="20,30,10,2" Grid.Column="1">

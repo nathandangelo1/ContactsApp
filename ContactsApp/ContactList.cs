@@ -12,6 +12,7 @@ namespace ContactsApp
     public class ContactsList : ObservableCollection<Contact>
     {
         private ObservableCollection<Contact> contacts;
+
         public ObservableCollection<Contact> Contacts
         {
             get { return contacts; }
@@ -22,6 +23,7 @@ namespace ContactsApp
             }
         }
         public event PropertyChangedEventHandler PropertyChanged;
+
         protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

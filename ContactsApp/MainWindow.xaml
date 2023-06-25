@@ -72,7 +72,7 @@
                Content="Search" 
                VerticalAlignment="Center" 
                FontFamily="Unispace" 
-               Foreground="white" 
+               Foreground="WhiteSmoke" 
                Height="24"
                Margin="15,0,0,0"
                />
@@ -88,7 +88,10 @@
                  TextChanged="txtFilter_TextChanged" 
                  />
 
-        <Grid x:Name="miniGrid" Grid.Column="0" Grid.Row="3" Grid.RowSpan="2" Margin="20,0,0,20">
+        <Grid x:Name="miniGrid" 
+              Grid.Column="0" Grid.Row="3" Grid.RowSpan="2" 
+              Margin="20,0,0,20">
+            
             <Grid.ColumnDefinitions>
                 <ColumnDefinition MaxWidth="225"/>
             </Grid.ColumnDefinitions>
@@ -154,14 +157,14 @@
                     Grid.Row="0" 
                     FontFamily="unispace" 
                     Height="30" 
-                    Foreground="AntiqueWhite" 
+                    Foreground="WhiteSmoke" 
                     FontWeight="Bold" 
                     FontSize="16" 
                     />
                 <ListView x:Name="contactsListView" 
                           Grid.Row="1"  
                           Background="palevioletred" 
-                          Foreground="AntiqueWhite" 
+                          Foreground="WhiteSmoke" 
                           FontFamily="Unispace"   
                           ItemsSource="{Binding Source= MainWindow.CL.Contacts}" 
                           PreviewMouseLeftButtonUp="listView_Click" 
@@ -175,7 +178,7 @@
                                 FontSize="14" 
                                 Margin="2" 
                                 Background="Transparent" 
-                                Foreground="AntiqueWhite" 
+                                Foreground="WhiteSmoke" 
                                 />
                         </DataTemplate>
                     </ListView.ItemTemplate>
@@ -184,7 +187,7 @@
         </Grid>
 
         <Button x:Name="btnSettings" 
-                Background="AntiqueWhite" 
+                Background="WhiteSmoke" 
                 Grid.Column="1" 
                 Grid.Row="5"
                 Height="30" 
@@ -224,7 +227,7 @@
                 Height="30" 
                 Background="#282C4F" 
                 Content="-" 
-                Foreground="AntiqueWhite" 
+                Foreground="WhiteSmoke" 
                 MouseLeftButtonUp="MinimizeButton_Click" 
                 Grid.ColumnSpan="3" 
                 Padding="5" 
@@ -240,7 +243,7 @@
                 Height="30" 
                 Background="#282C4F" 
                 Content="[]" 
-                Foreground="AntiqueWhite" 
+                Foreground="WhiteSmoke" 
                 MouseLeftButtonUp="MaximizeButton_Click" 
                 Grid.ColumnSpan="3" 
                 Margin="20,10,0,0"
@@ -256,7 +259,7 @@
                 Height="30" 
                 Background="#282C4F" 
                 Content="X" 
-                Foreground="AntiqueWhite" 
+                Foreground="WhiteSmoke" 
                 MouseLeftButtonUp="CloseButton_Click" 
                 Grid.ColumnSpan="3" 
                 FontSize="14"
