@@ -8,7 +8,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="AddContact.png" />
     <None Remove="Resources\AddContact.png" />
     <None Remove="Resources\SettingsGear.png" />
   </ItemGroup>
@@ -19,7 +18,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="AddContact.png" />
     <Resource Include="Resources\AddContact.png" />
     <Resource Include="Resources\SettingsGear.png" />
   </ItemGroup>

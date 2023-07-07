@@ -6,7 +6,7 @@
         x:Class="ContactsApp.MainWindow"
       
         Title="Contacts" Height="700" Width="825"
-        Icon="/AddContact.png"
+        Icon="Resources\AddContact.png"
         MouseLeftButtonDown="Window_MouseDown"
         >
 
@@ -38,7 +38,6 @@
             <RowDefinition MaxHeight="200"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-
         <Label x:Name="header" 
                Content="CONTACTS" 
                Grid.Column="0" 
