@@ -73,7 +73,7 @@ namespace ContactsApp.Services
                 var sql = " exec [dbo].[spUpdateContact] " +
                     "@Id,@FirstName,@MiddleName,@NickName,@LastName,@Title,@Birthday," +
                     "@Email,@PhoneNumber,@Street,@City,@State,@ZipCode,@Country," +
-                    "@Website,@Notes,@IsFavorite";
+                    "@Website,@Notes,@IsFavorite,@Picture";
 
                 var values = new { 
                     edit.Id, edit.FirstName, 
@@ -84,7 +84,8 @@ namespace ContactsApp.Services
                     edit.City, edit.State, 
                     edit.ZipCode, edit.Country, 
                     edit.Website, edit.Notes, 
-                    edit.IsFavorite 
+                    edit.IsFavorite, 
+                    edit.Picture
                 };
 
                 var result = connection.Query(sql, values);

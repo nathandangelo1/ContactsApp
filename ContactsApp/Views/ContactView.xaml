@@ -24,46 +24,166 @@
         <Image x:Name="imgContact" 
                VerticalAlignment="Top" 
                HorizontalAlignment="Right" 
-               Margin="0,30,100,0" 
+               Margin="0,30,135,0" 
                Height="200" Width="200"  
                Grid.Row="0" Grid.Column="0" 
                Grid.RowSpan="2" Grid.ColumnSpan="2"
+               Source="Resources/noImage.png"
                />
-        <StackPanel x:Name="contactPanel" Margin="90,30,10,2" Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" 
-                    Grid.ColumnSpan="2" >
-            <TextBlock x:Name="txtfullName" Margin="0,0,0,10" FontFamily="Unispace" HorizontalAlignment="Left" 
-                       TextWrapping="Wrap" Text="Full Name"  MinWidth="88" Foreground="white" FontSize="18" />
-            <TextBlock x:Name="txtStreet" FontFamily="Unispace" HorizontalAlignment="Left"  TextWrapping="Wrap" 
-                       Text="Street"  MinWidth="88" Foreground="white" FontSize="14" />
-            <WrapPanel Margin="0,5,0,0" >
-                <TextBlock x:Name="txtCity" FontFamily="Unispace" HorizontalAlignment="Left" TextWrapping="Wrap" 
-                           Text="City"  MinWidth="30" Foreground="white" FontSize="14" />
-                <TextBlock Margin="0"  Text=", " Foreground="white" FontSize="14" />
-                <TextBlock x:Name="txtState" FontFamily="Unispace" HorizontalAlignment="Left" TextWrapping="Wrap"
-                           Text=", State"  MinWidth="40" Foreground="white" FontSize="14" />
+        <StackPanel x:Name="contactPanel" 
+                    Margin="90,30,10,2" 
+                    Grid.Column="1" 
+                    Grid.Row="0" 
+                    Grid.RowSpan="2" 
+                    Grid.ColumnSpan="2" 
+                    >
+            <TextBlock x:Name="txtfullName" 
+                       Margin="0,0,0,10" 
+                       FontFamily="Unispace" 
+                       HorizontalAlignment="Left" 
+                       TextWrapping="Wrap" 
+                       Text="Full Name"  
+                       MinWidth="88" 
+                       Foreground="white" 
+                       FontSize="18" 
+                       />
+            <TextBlock x:Name="txtStreet" 
+                       FontFamily="Unispace" 
+                       HorizontalAlignment="Left"  
+                       TextWrapping="Wrap" 
+                       Text="Street"  
+                       MinWidth="88" 
+                       Foreground="white" 
+                       FontSize="14" 
+                       />
+            <WrapPanel Margin="0,5,0,0" 
+                       >
+                <TextBlock x:Name="txtCity" 
+                           FontFamily="Unispace" 
+                           HorizontalAlignment="Left" 
+                           TextWrapping="Wrap" 
+                           Text="City"  
+                           MinWidth="30" 
+                           Foreground="white" 
+                           FontSize="14" 
+                           />
+                <TextBlock Margin="0"  
+                           Text=", " 
+                           Foreground="white" 
+                           FontSize="14" 
+                           />
+                <TextBlock x:Name="txtState"
+                           Text="State"  
+                           FontFamily="Unispace" 
+                           HorizontalAlignment="Left" 
+                           TextWrapping="Wrap"
+                           MinWidth="40" 
+                           Foreground="white" 
+                           FontSize="14" 
+                           />
             </WrapPanel>
-            <TextBlock x:Name="txtZip" FontFamily="Unispace" Padding="0,10,0,0"  HorizontalAlignment="Left" 
-                           TextWrapping="Wrap" Text="Zipcode"  MinWidth="40" Foreground="white" FontSize="14" />
-            <TextBlock x:Name="txtEmail" Margin="0,10,0,0" FontFamily="Unispace" HorizontalAlignment="Left" 
-                       TextWrapping="Wrap" Text="Email Address"  MinWidth="40" Foreground="white" FontSize="14"  />
-            <TextBlock x:Name="txtPhone" Margin="0,10,0,0" FontFamily="Unispace" HorizontalAlignment="Left" 
-                       TextWrapping="Wrap" Text="Phone Number"  MinWidth="40" Foreground="white" FontSize="14" />
+            <TextBlock x:Name="txtZip" 
+                       FontFamily="Unispace" 
+                       Padding="0,10,0,0" 
+                       HorizontalAlignment="Left" 
+                       TextWrapping="Wrap" 
+                       Text="Zipcode"  
+                       MinWidth="40" 
+                       Foreground="white"
+                       FontSize="14" 
+                       />
+            <TextBlock x:Name="txtEmail" 
+                       Margin="0,10,0,0" 
+                       FontFamily="Unispace" 
+                       HorizontalAlignment="Left" 
+                       TextWrapping="Wrap" 
+                       Text="Email Address"  
+                       MinWidth="40" 
+                       Foreground="white" 
+                       FontSize="14"  
+                       />
+            <TextBlock x:Name="txtPhone" 
+                       Margin="0,10,0,0" 
+                       FontFamily="Unispace" 
+                       HorizontalAlignment="Left" 
+                       TextWrapping="Wrap"
+                       Text="Phone Number"  
+                       MinWidth="40" 
+                       Foreground="white" 
+                       FontSize="14" 
+                       />
         </StackPanel>
 
-        <StackPanel Grid.Column="0" Grid.Row="2" Margin="40,10,60,0" Grid.ColumnSpan="3" Grid.RowSpan="2">
-            <Label Content="Website" FontFamily="Unispace" Foreground="white" FontSize="14" />
-            <TextBlock x:Name="txtWebsite" Grid.ColumnSpan="2" Margin="5,0,0,0" FontFamily="Unispace" HorizontalAlignment="Left"
-                       TextWrapping="Wrap" Text="www.website.com"  MinWidth="40" Foreground="white" FontSize="14" />
-            <Label Content="Notes:" Margin="0,15,0,5" FontFamily="Unispace" Foreground="white" FontSize="14" />
-            <TextBlock x:Name="txtNotes" Grid.ColumnSpan="2" Margin="5,0,0,0" FontFamily="Unispace" HorizontalAlignment="Left" 
-                       TextWrapping="Wrap" Text=""  
-                       MinWidth="40" Foreground="white" FontSize="14" />
+        <StackPanel Grid.Column="0" 
+                    Grid.Row="2" 
+                    Margin="40,10,60,0" 
+                    Grid.ColumnSpan="3" 
+                    Grid.RowSpan="2"
+                    >
+            <Label Content="Website" 
+                   FontFamily="Unispace" 
+                   Foreground="white" 
+                   FontSize="14" 
+                   />
+            <TextBlock x:Name="txtWebsite" 
+                       Grid.ColumnSpan="2" 
+                       Margin="5,0,0,0" 
+                       FontFamily="Unispace" 
+                       HorizontalAlignment="Left"
+                       TextWrapping="Wrap" 
+                       Text="www.website.com"  
+                       MinWidth="40" 
+                       Foreground="white" 
+                       FontSize="14" 
+                       />
+            <Label Content="Notes:" 
+                   Margin="0,15,0,5" 
+                   FontFamily="Unispace" 
+                   Foreground="white" 
+                   FontSize="14" 
+                   />
+            <TextBlock x:Name="txtNotes" 
+                       Grid.ColumnSpan="2" 
+                       Margin="5,0,0,0" 
+                       FontFamily="Unispace" 
+                       HorizontalAlignment="Left" 
+                       TextWrapping="Wrap" 
+                       Text=""  
+                       MinWidth="40" 
+                       Foreground="white" 
+                       FontSize="14" 
+                       />
         </StackPanel>
-        <Button x:Name="btnEdit" Content="Edit Contact" HorizontalAlignment="Center"  Grid.Row="4" 
-                VerticalAlignment="Center" Click="btnEdit_Click" Padding="5"
-                Foreground="black" Background="White" FontSize="14"/>
-        <Button x:Name="btnDelete" Content="Delete Contact" HorizontalAlignment="Center" Grid.Row="4"  
-                Grid.Column="1" VerticalAlignment="Center" Click="btnDelete_Click" 
-                Foreground="black" Background="White" FontSize="14" Padding="5"/>
+        <StackPanel 
+            Orientation="Horizontal" 
+            Grid.Row="4" Grid.Column="0"
+            Grid.RowSpan="3" 
+            Grid.ColumnSpan="2"
+            >
+            <Button x:Name="btnEdit" 
+                    Content="Edit Contact" 
+                    Click="btnEdit_Click" 
+                    Margin="40,0,0,0"
+                    HorizontalAlignment="Center"  
+                    Grid.Row="4" 
+                    VerticalAlignment="Center" 
+                    Padding="5"
+                    Foreground="black" 
+                    Background="White" 
+                    FontSize="14"/>
+            <Button x:Name="btnDelete" 
+                    Content="Delete Contact" 
+                    Margin="40,0,0,0"
+                    HorizontalAlignment="Center" 
+                    Grid.Row="4"  
+                    Grid.Column="1" 
+                    VerticalAlignment="Center" 
+                    Click="btnDelete_Click" 
+                    Foreground="black" 
+                    Background="White" 
+                    FontSize="14" 
+                    Padding="5"/>
+        </StackPanel>
+        
     </Grid>
 </UserControl>

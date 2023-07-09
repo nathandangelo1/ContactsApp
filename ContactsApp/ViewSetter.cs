@@ -4,8 +4,10 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
@@ -101,9 +103,11 @@ namespace ContactsApp
             {
                 case View.Contact:
                     ContentArea.Content = ContactView; break;
+
                 case View.Edit:
                     PopulateEditView();
                     ContentArea.Content = EditView; break;
+                
                 case View.Add:
                     ContentArea.Content = AddView; break;
                 case View.Delete:
@@ -148,21 +152,30 @@ namespace ContactsApp
             ContactView.txtPhone.Text = (cc.PhoneNumber is not null) ? cc.PhoneNumber : "";
             ContactView.txtWebsite.Text = (cc.Website is not null) ? cc.Website : "";
             ContactView.txtNotes.Text = (cc.Notes is not null) ? cc.Notes : "";
-            ContactView.imgContact.Source = (cc.Picture is not null) ? new BitmapImage(new Uri(cc.Picture)) : null;
+            try
+            {
+                ContactView.imgContact.Source = new BitmapImage(new Uri(cc.Picture, UriKind.Absolute));
+            }
+            catch
+            {
+                MessageBoxResult result = MessageBox.Show("Photo error");
+
+                ContactView.imgContact.Source = new BitmapImage(new Uri("pack://application:,,,/Resources/noImage.png", UriKind.RelativeOrAbsolute));
+            }
 
             if (WithinRange(cc.Birthday))
             {
                 ContactView.txtfullName.Text = $"\U0001F382 " + ContactView.txtfullName.Text;
             }
         }
-        private static bool WithinRange(string? bday)
+        private static bool WithinRange(DateTime? bday)
         {
             if (bday is null) return false;
 
             // Parse the birthday string into a DateTime object
-            string[] split = bday.Split(" ");
-            string birthdayString = split[0];
-            DateTime birthday = DateTime.Parse(bday);
+            //string[] split = bday.Split(" ");
+            //string birthdayString = split[0];
+            DateTime birthday = (DateTime)bday;
 
             // Get the current date
             DateTime currentDate = DateTime.Today;
@@ -191,7 +204,8 @@ namespace ContactsApp
             EditView.txtbxNick.Text = (cc.NickName is not null) ? cc.NickName : "";
             EditView.txtbxLast.Text = (cc.LastName is not null) ? cc.LastName : "";
             EditView.txtbxTitle.Text = (cc.Title is not null) ? cc.Title : "";
-            EditView.txtbxBirthday.Text = (cc.Birthday is not null) ? cc.Birthday.ToString() : "";
+            EditView.datePickerBday.SelectedDate = (cc.Birthday is not null) ? cc.Birthday : null ;
+            //EditView.txtbxBirthday.Text = (cc.Birthday is not null) ? cc.Birthday.ToString() : "";
             EditView.txtbxEmail.Text = (cc.Email is not null) ? cc.Email : "";
             EditView.txtbxPhone.Text = (cc.PhoneNumber is not null) ? cc.PhoneNumber : "";
             EditView.txtbxStreet.Text = (cc.Street is not null) ? cc.Street : "";
@@ -203,7 +217,17 @@ namespace ContactsApp
             EditView.txtbxWebsite.Text = (cc.Website is not null) ? cc.Website : "";
             EditView.txtbxNotes.Text = (cc.Notes is not null) ? cc.Notes : "";
 
-            EditView.imgContact.Source = (cc.Picture is not null) ? new BitmapImage(new Uri(cc.Picture)) : null;
+            //EditView.imgContact.Source = (cc.Picture is not null) ? new BitmapImage(new Uri("Resources\\noImage.png", UriKind.RelativeOrAbsolute)) : null;
+            try
+            {
+                EditView.imgContact.Source = new BitmapImage(new Uri(cc.Picture, UriKind.RelativeOrAbsolute));
+            }
+            catch
+            {
+                //MessageBoxResult result = MessageBox.Show("Photo error");
+
+                ContactView.imgContact.Source = new BitmapImage(new Uri("pack://application:,,,/Resources/noImage.png", UriKind.RelativeOrAbsolute));
+            }
         }
 
     }

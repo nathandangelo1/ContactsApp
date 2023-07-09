@@ -79,7 +79,7 @@
                  Grid.Column="0" Grid.Row="2" 
                  TextWrapping="Wrap" 
                  Text="" 
-                 Width="125" 
+                 Width="140" 
                  Height="18"
                  VerticalAlignment="Center" 
                  HorizontalAlignment="Left" 
@@ -189,13 +189,14 @@
                 Background="WhiteSmoke" 
                 Grid.Column="1" 
                 Grid.Row="5"
-                Height="30" 
-                Width="30" 
+                Height="35" 
+                Width="35" 
                 HorizontalAlignment="Right"
                 VerticalAlignment="Bottom"
                 Margin="10"
                 Click="btnSettings_Click"
                 Foreground="Black" 
+                Padding="1"
                 >
             <Image Source="Resources\SettingsGear.png"/>
         </Button>

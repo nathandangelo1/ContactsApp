@@ -8,7 +8,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Resources\NewFolder\**" />
+    <EmbeddedResource Remove="Resources\NewFolder\**" />
+    <None Remove="Resources\NewFolder\**" />
+    <Page Remove="Resources\NewFolder\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="Resources\AddContact.png" />
+    <None Remove="Resources\noImage.png" />
     <None Remove="Resources\SettingsGear.png" />
   </ItemGroup>
 
@@ -19,6 +27,9 @@
 
   <ItemGroup>
     <Resource Include="Resources\AddContact.png" />
+    <Resource Include="Resources\noImage.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Resources\SettingsGear.png" />
   </ItemGroup>
 

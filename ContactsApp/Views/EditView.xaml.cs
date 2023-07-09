@@ -43,6 +43,13 @@ namespace ContactsApp.Views
             //{
             //    WarningException we = new("Birthday Error");
             //};
+            //DateTime? selectedDate = datePickerBday.SelectedDate.Value.Date;
+            //if(selectedDate is not null)
+            //{
+            DateTime? BdayDateTime = (datePickerBday.SelectedDate is not null) ? new DateTime(datePickerBday.SelectedDate.Value.Year, datePickerBday.SelectedDate.Value.Month, datePickerBday.SelectedDate.Value.Day) : null;
+
+            //}
+
             Contact edit = new()
             {
                 Id = Contact.CurrentContact.Id,
@@ -51,7 +58,10 @@ namespace ContactsApp.Views
                 NickName = !string.IsNullOrWhiteSpace(txtbxNick.Text) ? txtbxNick.Text : null,
                 LastName = !string.IsNullOrWhiteSpace(txtbxLast.Text) ? txtbxLast.Text : null,
                 Title = !string.IsNullOrWhiteSpace(txtbxTitle.Text) ? txtbxTitle.Text : null,
-                Birthday = !string.IsNullOrWhiteSpace(txtbxBirthday.Text) ? txtbxBirthday.Text : null,
+                
+                //Birthday = !string.IsNullOrWhiteSpace(txtbxBirthday.Text) ? txtbxBirthday.Text : null,
+                Birthday = (datePickerBday.SelectedDate != null) ? BdayDateTime : null,
+
                 Email = !string.IsNullOrWhiteSpace(txtbxEmail.Text) ? txtbxEmail.Text : null,
                 PhoneNumber = !string.IsNullOrWhiteSpace(txtbxPhone.Text) ? txtbxPhone.Text : null,
                 Street = !string.IsNullOrWhiteSpace(txtbxNick.Text) ? txtbxStreet.Text : null,

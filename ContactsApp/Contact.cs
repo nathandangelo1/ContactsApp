@@ -119,17 +119,23 @@ namespace ContactsApp
             }
         }
 
-        private string? birthday;
-        public string? Birthday
+        private DateTime? birthday;
+        public DateTime? Birthday
         {
             get
             {
                 return birthday;
+                
             }
             set
             {
-                if (birthday != value)
+                if (value is null) birthday = null;
+                else if (birthday != value)
                 {
+                    //if(value.GetType() == typeof(DateTime))
+                    //{
+                    //    birthday = new DateTime(value.Value.Year, value.Value.Month, value.Value.Day);
+                    //}
                     birthday = value;
                     OnPropertyChanged(nameof(Birthday));
                 }
@@ -294,7 +300,8 @@ namespace ContactsApp
         {
             get
             {
-                return picture;
+                if (picture is null) return "pack://application:,,,/Resources/noImage.png"; //@"/ContactsApp;component/Resources/noImage.png" ;
+                else return picture;
             }
             set
             {

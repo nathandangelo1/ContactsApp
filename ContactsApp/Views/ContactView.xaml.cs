@@ -61,7 +61,7 @@ namespace ContactsApp.Views
             {
                 DataAccess da = new();
                 da.DeactivateContact(contact);
-                MainWindow.CL.Contacts.Remove(contact);
+                MainWindow.CL.Contacts[MainWindow.CL.Contacts.IndexOf(contact)].IsActive = 0;
                 
             }
         }

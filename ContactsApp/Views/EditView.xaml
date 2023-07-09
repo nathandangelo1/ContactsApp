@@ -153,6 +153,7 @@
                          VerticalContentAlignment="Center" 
                          HorizontalAlignment="Left" 
                          MinHeight="15" Width="150" 
+                         Padding="5,0,0,0"
                 />
                 </WrapPanel>
             <WrapPanel HorizontalAlignment="Right" Margin="0,0,0,3">
@@ -161,12 +162,21 @@
                        Foreground="antiquewhite" 
                        FontSize="16"
                 />
-                <TextBox x:Name="txtbxBirthday" 
+                <DatePicker x:Name="datePickerBday" 
+                            SelectedDateFormat="Short" 
+                            SelectedDate=""
+                            Width="150"
+                            FontFamily="Unispace"
+                            Padding="0"
+                            TextBlock.LineHeight="25"
+                            VerticalContentAlignment="Center" 
+                            />
+                <!--<TextBox x:Name="txtbxBirthday" 
                          FontFamily="Unispace" 
                          VerticalContentAlignment="Center" 
                          HorizontalAlignment="Left" 
                          MinHeight="15" Width="150" 
-                />
+                />-->
                 </WrapPanel>
 
             <WrapPanel HorizontalAlignment="Right" Margin="0,0,0,3">

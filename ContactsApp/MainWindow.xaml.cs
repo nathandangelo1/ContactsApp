@@ -63,7 +63,7 @@ namespace ContactsApp
             IEnumerable<Contact> results = db.GetContacts();
             CL.Contacts = new ObservableCollection<Contact>(results);
 
-            contactsListView.ItemsSource = CL.Contacts ;
+            contactsListView.ItemsSource = CL.Contacts.Where(x => x.IsActive == 1 && x.IsFavorite == 0);
             var sortDescription1 = new SortDescription("NickName", ListSortDirection.Ascending);
             var sortDescription2 = new SortDescription("FirstName", ListSortDirection.Ascending);
             var sortDescription3 = new SortDescription("LastName", ListSortDirection.Ascending);
@@ -71,18 +71,25 @@ namespace ContactsApp
             contactsCollectionView.SortDescriptions.Add(sortDescription1);
             contactsCollectionView.SortDescriptions.Add(sortDescription2);
             contactsCollectionView.SortDescriptions.Add(sortDescription3);
-            contactsCollectionView.Filter = i => ((Contact)i).IsActive != 0;
+            contactsCollectionView.Filter = i => ((Contact)i).IsActive == 1 && ((Contact)i).IsFavorite == 0;
             
-            contactsCollectionView.Filter = UserFilter;
+            //contactsCollectionView.Filter = UserFilter;
 
 
             favoritesCollectionView = new ListCollectionView(CL.Contacts);
-            favoritesCollectionView.Filter = item => (item as Contact).IsFavorite == 1;
+            favoritesCollectionView.Filter = item => (item as Contact).IsFavorite == 1 && (item as Contact).IsActive == 1;
             favoritesListView.ItemsSource = favoritesCollectionView;
             
-            //favoritesCollectionView.Filter = UserFilter;
+            //favoritesCollectionView.Filter = FavoritesUserFilter;
             
             //this.DataContext = this;
+        }
+        private bool FavoritesUserFilter(object item)
+        {
+            if (String.IsNullOrEmpty(txtSearch.Text) && (item as Contact).IsFavorite == 1 && (item as Contact).IsActive == 1)
+                return true;
+            else
+                return ((item as Contact).FullName.Contains(txtSearch.Text, StringComparison.OrdinalIgnoreCase) && (item as Contact).IsFavorite == 1 && (item as Contact).IsActive == 1);
         }
 
         private bool UserFilter(object item)
@@ -95,6 +102,7 @@ namespace ContactsApp
 
         private void txtFilter_TextChanged(object sender, TextChangedEventArgs e)
         {
+            //contactsCollectionView.Filter = UserFilter;
             CollectionViewSource.GetDefaultView(contactsListView.ItemsSource).Refresh();
             //CollectionViewSource.GetDefaultView(favoritesListView.ItemsSource).Refresh();
         }
