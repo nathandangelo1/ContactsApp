@@ -42,10 +42,11 @@ namespace ContactsApp
         //  and assigns it to the favoritesCollectionView variable. A view is a layer on top of a collection that
         //  allows you to sort, filter, group, or navigate the items in the collection. A collection can have multiple
         //  views associated with it, but only one default view.
-        public ICollectionView contactsCollectionView;
-        public ICollectionView favoritesCollectionView;
+        //public ICollectionView contactsCollectionView;
+        //public ICollectionView favoritesCollectionView;
         public static ContactsList CL { get; set; }
-
+        public CollectionViewSource contactsViewSource;
+        public CollectionViewSource favoritesViewSource;
         public static class Icons
         {
             public const string IconName = "\u25A1";
@@ -63,39 +64,46 @@ namespace ContactsApp
             IEnumerable<Contact> results = db.GetContacts();
             CL.Contacts = new ObservableCollection<Contact>(results);
 
-            contactsListView.ItemsSource = CL.Contacts ;
-            var sortDescription1 = new SortDescription("NickName", ListSortDirection.Ascending);
-            var sortDescription2 = new SortDescription("FirstName", ListSortDirection.Ascending);
-            var sortDescription3 = new SortDescription("LastName", ListSortDirection.Ascending);
-            contactsCollectionView = CollectionViewSource.GetDefaultView(contactsListView.ItemsSource);
-            contactsCollectionView.SortDescriptions.Add(sortDescription1);
-            contactsCollectionView.SortDescriptions.Add(sortDescription2);
-            contactsCollectionView.SortDescriptions.Add(sortDescription3);
-            contactsCollectionView.Filter = i => ((Contact)i).IsActive != 0;
-            
-            contactsCollectionView.Filter = UserFilter;
+            //var contacts = new ObservableCollection<Contact>();
+            contactsViewSource = new CollectionViewSource() { Source = CL.Contacts };
+            contactsViewSource.Filter += (s, e) =>
+            {
+                if (e.Item is Contact contact)
+                {
+                    if (String.IsNullOrEmpty(txtSearch.Text) && contact.IsActive == 1 && contact.IsFavorite == 0)
+                        e.Accepted = true;
+                    else
+                        e.Accepted = contact.FullName.Contains(txtSearch.Text, StringComparison.OrdinalIgnoreCase) 
+                        && contact.IsActive == 1 && contact.IsFavorite == 0;
+                }
+            };
+            contactsViewSource.SortDescriptions.Add(new SortDescription("NickName", ListSortDirection.Ascending));
+            contactsViewSource.SortDescriptions.Add(new SortDescription("FirstName", ListSortDirection.Ascending));
+            contactsViewSource.SortDescriptions.Add(new SortDescription("LastName", ListSortDirection.Ascending));
+            contactsListView.ItemsSource = contactsViewSource.View;
 
 
-            favoritesCollectionView = new ListCollectionView(CL.Contacts);
-            favoritesCollectionView.Filter = item => (item as Contact).IsFavorite == 1;
-            favoritesListView.ItemsSource = favoritesCollectionView;
-            
-            //favoritesCollectionView.Filter = UserFilter;
-            
-            //this.DataContext = this;
-        }
-
-        private bool UserFilter(object item)
-        {
-            if (String.IsNullOrEmpty(txtSearch.Text))
-                return true;
-            else
-                return ((item as Contact).FullName.Contains(txtSearch.Text, StringComparison.OrdinalIgnoreCase));
+            favoritesViewSource = new CollectionViewSource() { Source = CL.Contacts };
+            favoritesViewSource.Filter += (s, e) =>
+            {
+                if (e.Item is Contact contact)
+                {
+                    if (String.IsNullOrEmpty(txtSearch.Text) && contact.IsActive == 1 && contact.IsFavorite == 1)
+                        e.Accepted = true;
+                    else
+                        e.Accepted = contact.FullName.Contains(txtSearch.Text, StringComparison.OrdinalIgnoreCase) 
+                        && contact.IsActive == 1 && contact.IsFavorite == 1;
+                }
+            };
+            favoritesViewSource.SortDescriptions.Add(new SortDescription("NickName", ListSortDirection.Ascending));
+            favoritesViewSource.SortDescriptions.Add(new SortDescription("FirstName", ListSortDirection.Ascending));
+            favoritesViewSource.SortDescriptions.Add(new SortDescription("LastName", ListSortDirection.Ascending));
+            favoritesListView.ItemsSource = favoritesViewSource.View;
         }
 
         private void txtFilter_TextChanged(object sender, TextChangedEventArgs e)
         {
-            CollectionViewSource.GetDefaultView(contactsListView.ItemsSource).Refresh();
+           contactsViewSource.View.Refresh();
             //CollectionViewSource.GetDefaultView(favoritesListView.ItemsSource).Refresh();
         }
 
@@ -119,20 +127,20 @@ namespace ContactsApp
         {
             ViewSetter.SetView(View.Settings);
         }
-        public void RefreshListView()
-        {
-            //var currentFavorites = new ObservableCollection<Contact>(FL.Favorites.Where(x => x.IsFavorite == 1);
-            //FL.Favorites = new ObservableCollection<Contact>( CL.Contacts.Where(x => x.IsFavorite == 1));
-            //CL.Contacts = new ObservableCollection<Contact>( CL.Contacts.Where(x => x.IsFavorite != 1));
-            // contactsListView.ItemsSource = CL.Contacts;
-            // favoritesListView.ItemsSource = FL.Favorites;
+        //public void RefreshListView()
+        //{
+        //    //var currentFavorites = new ObservableCollection<Contact>(FL.Favorites.Where(x => x.IsFavorite == 1);
+        //    //FL.Favorites = new ObservableCollection<Contact>( CL.Contacts.Where(x => x.IsFavorite == 1));
+        //    //CL.Contacts = new ObservableCollection<Contact>( CL.Contacts.Where(x => x.IsFavorite != 1));
+        //    // contactsListView.ItemsSource = CL.Contacts;
+        //    // favoritesListView.ItemsSource = FL.Favorites;
 
-            //contactsListView.Items.Refresh();
-            // contactsCollectionView.Refresh();
+        //    //contactsListView.Items.Refresh();
+        //    // contactsCollectionView.Refresh();
 
-            //favoritesListView.Items.Refresh();
-            favoritesListView.ItemsSource = CL.Contacts.Where(x => x.Id == 1);
-        }
+        //    //favoritesListView.Items.Refresh();
+        //    favoritesListView.ItemsSource = CL.Contacts.Where(x => x.Id == 1);
+        //}
 
 
 

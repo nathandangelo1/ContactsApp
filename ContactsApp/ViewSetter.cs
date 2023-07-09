@@ -148,7 +148,15 @@ namespace ContactsApp
             ContactView.txtPhone.Text = (cc.PhoneNumber is not null) ? cc.PhoneNumber : "";
             ContactView.txtWebsite.Text = (cc.Website is not null) ? cc.Website : "";
             ContactView.txtNotes.Text = (cc.Notes is not null) ? cc.Notes : "";
-            ContactView.imgContact.Source = (cc.Picture is not null) ? new BitmapImage(new Uri(cc.Picture)) : null;
+            try
+            {
+                ContactView.imgContact.Source = (cc.Picture is not null) ? new BitmapImage(new Uri(cc.Picture)) : null;
+            }
+            catch
+            {
+                ContactView.imgContact.Source = null;
+
+            }
 
             if (WithinRange(cc.Birthday))
             {
@@ -202,8 +210,15 @@ namespace ContactsApp
 
             EditView.txtbxWebsite.Text = (cc.Website is not null) ? cc.Website : "";
             EditView.txtbxNotes.Text = (cc.Notes is not null) ? cc.Notes : "";
+            try
+            {
+                EditView.imgContact.Source = (cc.Picture is not null) ? new BitmapImage(new Uri(cc.Picture)) : null;
+            }
+            catch
+            {
+                EditView.imgContact.Source = null;
 
-            EditView.imgContact.Source = (cc.Picture is not null) ? new BitmapImage(new Uri(cc.Picture)) : null;
+            }
         }
 
     }
