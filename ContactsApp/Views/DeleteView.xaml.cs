@@ -26,30 +26,33 @@ namespace ContactsApp.Views
     /// </summary>
     public partial class DeleteView : UserControl
     {
-        public ListCollectionView InactiveCollectionView;
+        //public ListCollectionView InactiveCollectionView;
         public Contact Selected;
+        public CollectionViewSource InactiveViewSource;
         public DeleteView()
         {
             InitializeComponent();
-            
-            InactiveCollectionView = new ListCollectionView(MainWindow.CL.Contacts);
 
-            var sortDescription1 = new SortDescription("NickName", ListSortDirection.Ascending);
-            var sortDescription2 = new SortDescription("FirstName", ListSortDirection.Ascending);
-            var sortDescription3 = new SortDescription("LastName", ListSortDirection.Ascending);
-            //InactiveCollectionView = CollectionViewSource.GetDefaultView(inactiveListView.ItemsSource);
-            InactiveCollectionView.SortDescriptions.Add(sortDescription1);
-            InactiveCollectionView.SortDescriptions.Add(sortDescription2);
-            InactiveCollectionView.SortDescriptions.Add(sortDescription3);
+            InactiveViewSource = new CollectionViewSource() { Source = MainWindow.CL.Contacts.Where(x => x.IsActive == 0) };
+            InactiveViewSource.Filter += (s, e) =>
+            {
+                if (e.Item is Contact contact)
+                {
+                    if (contact.IsActive == 0)
+                        e.Accepted = true;
+                }
+            };
+            InactiveViewSource.IsLiveFilteringRequested = true;
+            InactiveViewSource.SortDescriptions.Add(new SortDescription("NickName", ListSortDirection.Ascending));
+            InactiveViewSource.SortDescriptions.Add(new SortDescription("FirstName", ListSortDirection.Ascending));
+            InactiveViewSource.SortDescriptions.Add(new SortDescription("LastName", ListSortDirection.Ascending));
+            inactiveListView.ItemsSource = InactiveViewSource.View;
 
-
-            InactiveCollectionView.Filter = item => (item as Contact).IsActive == 0;
-            inactiveListView.ItemsSource = InactiveCollectionView;
         }
 
         private void btnDelete_Click(object sender, RoutedEventArgs e)
         {
-            var contact = Selected;
+            Contact contact = Selected;
 
             // Display a message box with Yes and No buttons and a question icon
             MessageBoxResult result = MessageBox.Show($"Are you sure you want to permanently delete {contact.FirstName} {contact.LastName}?", "Confirm Delete", MessageBoxButton.YesNo, MessageBoxImage.Question);
@@ -61,16 +64,12 @@ namespace ContactsApp.Views
                 DataAccess da = new();
                 da.DeleteContact(contact);
 
-                MainWindow.CL.Contacts.Remove(contact); 
+                MainWindow.CL.Contacts.Remove(contact);
                 Selected = null;
                 Clear();
+                InactiveViewSource.View.Refresh();
                 itemStackPanel.Visibility = Visibility.Hidden;
 
-            }
-            else
-            {
-                // If the user clicked No, cancel the delete operation
-                // CancelDelete();
             }
         }
         private void Clear()
@@ -82,7 +81,7 @@ namespace ContactsApp.Views
             txtCity.Text = "";
             txtState.Text = "";
             txtZip.Text = "";
-            itemStackPanel.Visibility = Visibility.Hidden;
+            //itemStackPanel.Visibility = Visibility.Hidden;
 
         }
 
@@ -109,16 +108,18 @@ namespace ContactsApp.Views
                     MainWindow.CL.Contacts.Remove(contact);
                 }
                 Selected = null;
+                InactiveViewSource.View.Refresh();
+
                 itemStackPanel.Visibility = Visibility.Hidden;
 
             }
         }
         private void listView_Click(object sender, RoutedEventArgs e)
         {
-            itemStackPanel.Visibility = Visibility.Visible;
             var item = (sender as ListView).SelectedItem;
             if (item != null)
             {
+                itemStackPanel.Visibility = Visibility.Visible;
                 var contact = item as Contact;
                 Selected = contact;
                 txtfullName.Text = (contact.FullName is not null) ? contact.FullName : null;
@@ -128,7 +129,7 @@ namespace ContactsApp.Views
                 txtCity.Text = (contact.City is not null) ? contact.City : null;
                 txtStreet.Text = (contact.Street is not null) ? contact.Street : null;
                 txtZip.Text = (contact.ZipCode is not null) ? contact.ZipCode : null;
-                
+
             }
         }
 
@@ -137,12 +138,42 @@ namespace ContactsApp.Views
             Contact contact = Selected;
             // If the user clicked Yes, perform the delete operation
             DataAccess da = new();
+            contact.IsActive = 1;
             da.UpdateContact(contact);
 
             MainWindow.CL.Contacts[MainWindow.CL.Contacts.IndexOf(contact)].IsActive = 1;
             Selected = null;
             Clear();
+            InactiveViewSource.View.Refresh();
             itemStackPanel.Visibility = Visibility.Hidden;
+        }
+
+        private void btnRestoreAll_Click(object sender, RoutedEventArgs e)
+        {
+            List<Contact> contacts = new();
+
+            // Display a message box with Yes and No buttons and a question icon
+            MessageBoxResult result = MessageBox.Show($"Are you sure you want to restore ALL?", "Confirm Restore", MessageBoxButton.YesNo, MessageBoxImage.Question);
+
+            // Check the result of the message box
+            if (result == MessageBoxResult.Yes)
+            {
+                DataAccess da = new();
+                // If the user clicked Yes, perform the delete operation
+                foreach (var item in inactiveListView.Items)
+                {
+                    Contact contact = item as Contact;
+                    contact.IsActive = 1;
+                    contacts.Add(contact);
+                }
+                foreach (var contact in contacts)
+                {
+                    da.UpdateContact(contact);
+                }
+                Selected = null;
+                InactiveViewSource.View.Refresh();
+                itemStackPanel.Visibility = Visibility.Hidden;
+            }
         }
     }
 }

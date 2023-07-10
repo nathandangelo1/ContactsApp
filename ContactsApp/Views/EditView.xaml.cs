@@ -58,7 +58,7 @@ namespace ContactsApp.Views
                 NickName = !string.IsNullOrWhiteSpace(txtbxNick.Text) ? txtbxNick.Text : null,
                 LastName = !string.IsNullOrWhiteSpace(txtbxLast.Text) ? txtbxLast.Text : null,
                 Title = !string.IsNullOrWhiteSpace(txtbxTitle.Text) ? txtbxTitle.Text : null,
-                
+
                 //Birthday = !string.IsNullOrWhiteSpace(txtbxBirthday.Text) ? txtbxBirthday.Text : null,
                 Birthday = (datePickerBday.SelectedDate != null) ? BdayDateTime : null,
 
@@ -103,9 +103,9 @@ namespace ContactsApp.Views
         {
             foreach (WrapPanel wp in editPanel.Children)
             {
-                foreach(Control con in wp.Children)
+                foreach (Control con in wp.Children)
                 {
-                    if(con.GetType() == typeof(TextBox))
+                    if (con.GetType() == typeof(TextBox))
                     {
                         TextBox tx = (con as TextBox);
                         tx.Clear();
@@ -119,7 +119,7 @@ namespace ContactsApp.Views
             //MainWindow window = (MainWindow)Application.Current.MainWindow;
 
             //window.RefreshListView();
-            ViewSetter.PopulateContactView(); 
+            ViewSetter.PopulateContactView();
         }
     }
 }

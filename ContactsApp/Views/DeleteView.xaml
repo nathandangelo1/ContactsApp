@@ -22,7 +22,7 @@
             <ListView 
                     Grid.Row="1"      
                     x:Name="inactiveListView" 
-                    ItemsSource="{ Binding Source= MainWindow.CL.Contacts }" 
+                   
                     FontFamily="Unispace" 
                     PreviewMouseLeftButtonUp="listView_Click" 
                     Background="DarkSalmon"
@@ -45,13 +45,22 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
-            <Button x:Name="btnPurgeAll" 
+            <Button x:Name="btnRestoreAll" 
                     Margin="0,20,0,0"
                     Padding="5"
-                    Content="Empty Recycle Bin" 
+                    Content="Restore All" 
+                    HorizontalAlignment="Left" 
+                    VerticalAlignment="Top" Click="btnRestoreAll_Click" 
+                
+            />
+            <Button x:Name="btnPurgeAll" 
+                    Margin="0,90,0,0"
+                    Padding="5"
+                    Content="Purge All" 
                     HorizontalAlignment="Left" 
                     VerticalAlignment="Top" 
                     Click="btnPurgeAll_Click" 
+                    Background="Red"
                 
             />
         </StackPanel>
@@ -81,10 +90,10 @@
                        Grid.Column="1" 
                        />
             </Border>
-            
+
             <StackPanel Margin="20,0,0,20">
-                    <!--<Label Content="Full Name" FontFamily="Unispace" />-->
-                    <TextBlock x:Name="txtfullName" 
+                <!--<Label Content="Full Name" FontFamily="Unispace" />-->
+                <TextBlock x:Name="txtfullName" 
                        
                        FontFamily="Unispace" 
                        HorizontalAlignment="Left" 
@@ -120,7 +129,7 @@
                            MinWidth="30" 
                            Foreground="Black"
                            />
-             
+
                 <TextBlock x:Name="txtState" 
                            FontFamily="Unispace" 
                            HorizontalAlignment="Left" 

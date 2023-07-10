@@ -12,10 +12,6 @@ namespace ContactsApp
     public class Contact : INotifyPropertyChanged
     {
         public static Contact CurrentContact;
-        //public static List<Contact> favorites;
-        //public static List<Contact> contacts;
-
-        //public int Index { get; set; }
 
         private int id;
         public int Id
@@ -125,7 +121,7 @@ namespace ContactsApp
             get
             {
                 return birthday;
-                
+
             }
             set
             {
@@ -160,7 +156,7 @@ namespace ContactsApp
         }
 
         private string? phoneNumber;
-        public string? PhoneNumber 
+        public string? PhoneNumber
         {
             get
             {
@@ -177,7 +173,7 @@ namespace ContactsApp
         }
 
         private string? street;
-        public string? Street 
+        public string? Street
         {
             get
             {
@@ -194,7 +190,7 @@ namespace ContactsApp
         }
 
         private string? city;
-        public string? City 
+        public string? City
         {
             get
             {
@@ -211,7 +207,7 @@ namespace ContactsApp
         }
 
         private string? state;
-        public string? State 
+        public string? State
         {
             get
             {
@@ -228,7 +224,7 @@ namespace ContactsApp
         }
 
         private string? zipCode;
-        public string? ZipCode 
+        public string? ZipCode
         {
             get
             {
@@ -245,7 +241,7 @@ namespace ContactsApp
         }
 
         private string? country;
-        public string? Country 
+        public string? Country
         {
             get
             {
@@ -262,7 +258,7 @@ namespace ContactsApp
         }
 
         private string? website;
-        public string? Website 
+        public string? Website
         {
             get
             {
@@ -277,9 +273,10 @@ namespace ContactsApp
                 }
             }
         }
-        
+
         private string? notes;
-        public string? Notes {
+        public string? Notes
+        {
             get
             {
                 return notes;
@@ -296,7 +293,7 @@ namespace ContactsApp
 
         private string? picture;
 
-        public string? Picture 
+        public string? Picture
         {
             get
             {
@@ -313,9 +310,9 @@ namespace ContactsApp
             }
 
         }
-        
+
         private int isFavorite;
-        public int IsFavorite 
+        public int IsFavorite
         {
             get
             {
@@ -331,7 +328,7 @@ namespace ContactsApp
             }
         }
         private int isActive;
-        public int IsActive 
+        public int IsActive
         {
             get
             {
@@ -351,28 +348,19 @@ namespace ContactsApp
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
-        //protected void OnPropertyChanged(string propertyName)
-        //{
-        //    var handler = PropertyChanged;
-        //    if (handler != null)
-        //    {
-        //        handler(this, new PropertyChangedEventArgs(propertyName));
-        //    }
-        //}
 
-
+        // Displays name based on whether Contact is favorite(adds Heart emoji) and whether Contact has a nickname
         public string FullName
         {
             get
             {
-                if (IsFavorite==1)
+                if (IsFavorite == 1)
                 {
                     return (NickName is not null) ? $"\U0001f9e1 {NickName} {LastName}" : $"\U0001f9e1 {FirstName} {LastName}";
                 }
                 else
                 {
                     return (NickName is not null) ? $"{NickName} {LastName}" : $"{FirstName} {LastName}";
-
                 }
             }
         }

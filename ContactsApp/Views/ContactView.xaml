@@ -22,8 +22,8 @@
         </Grid.RowDefinitions>
 
         <Image x:Name="imgContact" 
-               VerticalAlignment="Top" 
-               HorizontalAlignment="Right" 
+               VerticalAlignment="Center" 
+               HorizontalAlignment="Center" 
                Margin="0,30,135,0" 
                Height="200" Width="200"  
                Grid.Row="0" Grid.Column="0" 
@@ -56,7 +56,7 @@
                        Foreground="white" 
                        FontSize="14" 
                        />
-            <WrapPanel Margin="0,5,0,0" 
+            <StackPanel Margin="0,5,0,0" 
                        >
                 <TextBlock x:Name="txtCity" 
                            FontFamily="Unispace" 
@@ -67,11 +67,11 @@
                            Foreground="white" 
                            FontSize="14" 
                            />
-                <TextBlock Margin="0"  
-                           Text=", " 
+                <!--<TextBlock Margin="0"  
+                           Text=" " 
                            Foreground="white" 
                            FontSize="14" 
-                           />
+                           />-->
                 <TextBlock x:Name="txtState"
                            Text="State"  
                            FontFamily="Unispace" 
@@ -81,7 +81,7 @@
                            Foreground="white" 
                            FontSize="14" 
                            />
-            </WrapPanel>
+            </StackPanel>
             <TextBlock x:Name="txtZip" 
                        FontFamily="Unispace" 
                        Padding="0,10,0,0" 
@@ -131,11 +131,12 @@
                        FontFamily="Unispace" 
                        HorizontalAlignment="Left"
                        TextWrapping="Wrap" 
-                       Text="www.website.com"  
+                       Text = "www.website.com" 
                        MinWidth="40" 
                        Foreground="white" 
                        FontSize="14" 
                        />
+
             <Label Content="Notes:" 
                    Margin="0,15,0,5" 
                    FontFamily="Unispace" 
@@ -184,6 +185,6 @@
                     FontSize="14" 
                     Padding="5"/>
         </StackPanel>
-        
+
     </Grid>
 </UserControl>

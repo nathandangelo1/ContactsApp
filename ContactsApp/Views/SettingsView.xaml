@@ -20,7 +20,7 @@
                              FontSize="16" Foreground="AntiqueWhite"/>
             </StackPanel>
             <!--<Label Margin="10,20,0,0"  Content="Show Birthday Icon Range:" FontFamily="Unispace"/>-->
-            
+
             <WrapPanel HorizontalAlignment="Center">
                 <Label Margin="0,20,0,0" HorizontalAlignment="Center" Content="Show birthdays within" 
                        FontFamily="Unispace" FontSize="14" Foreground="AntiqueWhite"/>
@@ -30,13 +30,13 @@
                 <Label Margin="0,20,0,0" Content="days." FontFamily="Unispace" FontSize="14" 
                        Foreground="AntiqueWhite" />
             </WrapPanel>
-            
+
             <Slider x:Name="sliderBday" Minimum="1" Maximum="30" TickPlacement="BottomRight"  TickFrequency="3" 
                     Margin="20,10,20,0" ValueChanged="sliderBday_ValueChanged" Value="15" />
-            
+
             <Button x:Name="btnCleanUp" Margin="0,70,0,0"  Content="Clean-Up Deleted Contacts" 
                      Width="200" Height="30" Click="btnCleanUp_Click" />
-            
+
             <Button x:Name="btnExit" Margin="0,70,0,0" Content="Exit" Width="50" Height="25" 
                      Click="btnExit_Click"  />
 

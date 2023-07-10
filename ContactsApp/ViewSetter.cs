@@ -20,7 +20,7 @@ namespace ContactsApp
         public static ContactView ContactView
         {
             get
-            {   
+            {
                 return contactView;
             }
         }
@@ -37,7 +37,7 @@ namespace ContactsApp
         {
             get
             {
-                if(deleteView is null)
+                if (deleteView is null)
                 {
                     return new DeleteView();
                 }
@@ -90,7 +90,7 @@ namespace ContactsApp
                     EditView.Reset();
                     break;
                 case View.Add:
-                    AddView = new(); 
+                    AddView = new();
                     break;
                 case View.Home:
                     //HomeView = new(); break;
@@ -107,7 +107,7 @@ namespace ContactsApp
                 case View.Edit:
                     PopulateEditView();
                     ContentArea.Content = EditView; break;
-                
+
                 case View.Add:
                     ContentArea.Content = AddView; break;
                 case View.Delete:
@@ -133,8 +133,23 @@ namespace ContactsApp
                 DeleteView.txtCity.Text = (cc.City is not null) ? cc.City : "";
                 DeleteView.txtState.Text = (cc.State is not null) ? cc.State : "";
                 DeleteView.txtZip.Text = (cc.ZipCode is not null) ? cc.ZipCode : "";
-                
-                DeleteView.imgContact.Source = (cc.Picture is not null) ? new BitmapImage(new Uri(cc.Picture)) : null;
+                try
+                {
+                    DeleteView.imgContact.Source = new BitmapImage(new Uri(cc.Picture, UriKind.Absolute));
+                    //DeleteView.imgContact.Source = (cc.Picture is not null) ? new BitmapImage(new Uri(cc.Picture)) : null;
+                }
+                catch
+                {
+                    MessageBoxResult result = MessageBox.Show("Photo error");
+
+                    DeleteView.imgContact.Source = new BitmapImage(new Uri("pack://application:,,,/Resources/noImage.png", UriKind.RelativeOrAbsolute));
+                }
+                // if stock image, make smaller
+                if (DeleteView.imgContact.Source.ToString().Contains("noImage.png"))
+                {
+                    DeleteView.imgContact.Height = 75;
+                    DeleteView.imgContact.Width = 75;
+                }
             }
         }
         public static void PopulateContactView()
@@ -162,6 +177,16 @@ namespace ContactsApp
 
                 ContactView.imgContact.Source = new BitmapImage(new Uri("pack://application:,,,/Resources/noImage.png", UriKind.RelativeOrAbsolute));
             }
+            if (ContactView.imgContact.Source.ToString().Contains("noImage.png"))
+            {
+                ContactView.imgContact.Height = 75;
+                ContactView.imgContact.Width = 75;
+            }
+            else
+            {
+                ContactView.imgContact.Height = 200;
+                ContactView.imgContact.Width = 200;
+            }
 
             if (WithinRange(cc.Birthday))
             {
@@ -172,9 +197,6 @@ namespace ContactsApp
         {
             if (bday is null) return false;
 
-            // Parse the birthday string into a DateTime object
-            //string[] split = bday.Split(" ");
-            //string birthdayString = split[0];
             DateTime birthday = (DateTime)bday;
 
             // Get the current date
@@ -187,14 +209,11 @@ namespace ContactsApp
 
             // Check if the birthday's day of year is within the range
             return birthday.DayOfYear >= rangeStart.DayOfYear && birthday.DayOfYear <= rangeEnd.DayOfYear;
-
-            // Check if the birthday is within the range
-            //return birthday >= rangeStart && birthday <= rangeEnd;
         }
         public static void PopulateEditView()
         {
             Contact cc = Contact.CurrentContact;
-            if (cc.IsFavorite == 1)  EditView.checkbxFav.IsChecked = true;
+            if (cc.IsFavorite == 1) EditView.checkbxFav.IsChecked = true;
 
             // If currentContact's property is not null,
             // set the ContactView's equivalent control to value,
@@ -204,15 +223,15 @@ namespace ContactsApp
             EditView.txtbxNick.Text = (cc.NickName is not null) ? cc.NickName : "";
             EditView.txtbxLast.Text = (cc.LastName is not null) ? cc.LastName : "";
             EditView.txtbxTitle.Text = (cc.Title is not null) ? cc.Title : "";
-            EditView.datePickerBday.SelectedDate = (cc.Birthday is not null) ? cc.Birthday : null ;
+            EditView.datePickerBday.SelectedDate = (cc.Birthday is not null) ? cc.Birthday : null;
             //EditView.txtbxBirthday.Text = (cc.Birthday is not null) ? cc.Birthday.ToString() : "";
             EditView.txtbxEmail.Text = (cc.Email is not null) ? cc.Email : "";
             EditView.txtbxPhone.Text = (cc.PhoneNumber is not null) ? cc.PhoneNumber : "";
             EditView.txtbxStreet.Text = (cc.Street is not null) ? cc.Street : "";
             EditView.txtbxCity.Text = (cc.City is not null) ? cc.City : "";
             EditView.txtbxState.Text = (cc.State is not null) ? cc.State : "";
-            EditView.txtbxZip.Text= (cc.ZipCode is not null) ? cc.ZipCode : "";
-            EditView.txtbxCountry.Text= (cc.Country is not null) ? cc.Country : "";
+            EditView.txtbxZip.Text = (cc.ZipCode is not null) ? cc.ZipCode : "";
+            EditView.txtbxCountry.Text = (cc.Country is not null) ? cc.Country : "";
 
             EditView.txtbxWebsite.Text = (cc.Website is not null) ? cc.Website : "";
             EditView.txtbxNotes.Text = (cc.Notes is not null) ? cc.Notes : "";
@@ -226,7 +245,12 @@ namespace ContactsApp
             {
                 //MessageBoxResult result = MessageBox.Show("Photo error");
 
-                ContactView.imgContact.Source = new BitmapImage(new Uri("pack://application:,,,/Resources/noImage.png", UriKind.RelativeOrAbsolute));
+                EditView.imgContact.Source = new BitmapImage(new Uri("pack://application:,,,/Resources/noImage.png", UriKind.RelativeOrAbsolute));
+            }
+            if (EditView.imgContact.Source.ToString().Contains("noImage.png"))
+            {
+                EditView.imgContact.Height = 75;
+                EditView.imgContact.Width = 75;
             }
         }
 

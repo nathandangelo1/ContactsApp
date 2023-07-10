@@ -61,9 +61,9 @@ namespace ContactsApp.Views
                 Notes = !string.IsNullOrWhiteSpace(txtbxNotes.Text) ? txtbxNotes.Text : null,
                 Picture = !string.IsNullOrWhiteSpace(Picture) ? Picture : null,
                 IsActive = 1,
-                IsFavorite = (checkbxFav.IsChecked==true) ? (byte)1 : (byte)0
+                IsFavorite = (checkbxFav.IsChecked == true) ? (byte)1 : (byte)0
             };
-            
+
 
             DataAccess conn = new();
             conn.AddContact(edit);
@@ -91,7 +91,7 @@ namespace ContactsApp.Views
                 Picture = selectedFile;
                 imgContact.Source = new BitmapImage(new Uri(openFileDialog.FileName));
             }
-            
+
         }
     }
 }

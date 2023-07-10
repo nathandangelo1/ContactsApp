@@ -19,14 +19,14 @@ namespace ContactsApp.Views
     public partial class SettingsView : UserControl
     {
         public int bdaySliderValue { get; set; } = 15;
-        public bool IsFirstName 
+        public bool IsFirstName
         {
             get
             {
                 return (bool)rbFirstName.IsChecked;
             }
         }
-        
+
         public SettingsView()
         {
             InitializeComponent();

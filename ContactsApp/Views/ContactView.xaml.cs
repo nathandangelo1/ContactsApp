@@ -52,7 +52,7 @@ namespace ContactsApp.Views
             else
             {
                 // If the user clicked No, cancel the delete operation
-               // CancelDelete();
+                // CancelDelete();
             }
         }
         private void DeactivateContact(Contact contact)
@@ -62,7 +62,7 @@ namespace ContactsApp.Views
                 DataAccess da = new();
                 da.DeactivateContact(contact);
                 MainWindow.CL.Contacts[MainWindow.CL.Contacts.IndexOf(contact)].IsActive = 0;
-                
+
             }
         }
         //private void RefreshMainList()
