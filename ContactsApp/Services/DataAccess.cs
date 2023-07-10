@@ -1,21 +1,8 @@
 ﻿using Dapper;
 using Microsoft.Data.SqlClient;
-using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data.Common;
 using System.Data;
-using System.IO;
 using System.Linq;
-using System.Reflection;
-using System.Reflection.Emit;
-using System.Runtime.ExceptionServices;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Documents;
-
-using System.Collections.ObjectModel;
 
 namespace ContactsApp.Services
 {
@@ -37,10 +24,6 @@ namespace ContactsApp.Services
             // GETS CONNECTION STRING FOR MOVIES DB FROM HELPER CLASS
             using (var connection = new SqlConnection(Helper.CnnVal("contacts")))
             {
-                //foreach (PropertyInfo propertyInfo in edit.GetType().GetProperties())
-                //{
-                //    // do stuff here
-                //}
                 // Create a DynamicParameters object
                 var parameters = new DynamicParameters();
                 // Add input parameters
@@ -66,10 +49,6 @@ namespace ContactsApp.Services
             // GETS CONNECTION STRING FOR MOVIES DB FROM HELPER CLASS
             using (var connection = new SqlConnection(Helper.CnnVal("contacts")))
             {
-                //foreach (PropertyInfo propertyInfo in edit.GetType().GetProperties())
-                //{
-                //    // do stuff here
-                //}
                 var sql = " exec [dbo].[spUpdateContact] " +
                     "@Id,@FirstName,@MiddleName,@NickName,@LastName,@Title,@Birthday," +
                     "@Email,@PhoneNumber,@Street,@City,@State,@ZipCode,@Country," +
@@ -104,11 +83,7 @@ namespace ContactsApp.Services
                             break;
                         }
                     }
-                    
-                   // Contact.favorites[Contact.favorites.FindIndex(x => x.Id == edit.Id)] = edit;
-                    //Refresh();
                 }
-                //Refresh();
             }
         }
         public void DeactivateContact(Contact edit)
@@ -117,10 +92,6 @@ namespace ContactsApp.Services
             // GETS CONNECTION STRING FOR MOVIES DB FROM HELPER CLASS
             using (var connection = new SqlConnection(Helper.CnnVal("contacts")))
             {
-                //foreach (PropertyInfo propertyInfo in edit.GetType().GetProperties())
-                //{
-                //    // do stuff here
-                //}
                 // Create a DynamicParameters object
                 var parameters = new DynamicParameters();
                 // Add input parameters
@@ -132,11 +103,6 @@ namespace ContactsApp.Services
                 var returns = connection.Execute("spDeactivateContact", parameters, commandType: CommandType.StoredProcedure);
                 // Get the output parameter value using Dapper
                 //newId = parameters.Get<int>("returnId");
-
-                if (returns == -1)
-                {
-                    
-                }
             }
         }
 
@@ -146,10 +112,6 @@ namespace ContactsApp.Services
             // GETS CONNECTION STRING FOR MOVIES DB FROM HELPER CLASS
             using (var connection = new SqlConnection(Helper.CnnVal("contacts")))
             {
-                //foreach (PropertyInfo propertyInfo in edit.GetType().GetProperties())
-                //{
-                //    // do stuff here
-                //}
                 // Create a DynamicParameters object
                 var parameters = new DynamicParameters();
                 // Add input parameters
@@ -182,18 +144,8 @@ namespace ContactsApp.Services
                     edit.Id = newId;
                     Contact.CurrentContact = edit;
                     MainWindow.CL.Contacts.Add(edit);
-                    //MainWindow.CL.Contacts = new ObservableCollection<Contact>(MainWindow.CL.Contacts.OrderBy(x => x.FirstName));
-                    //Contact.favorites = Contact.contacts.Where(x => x.IsFavorite == 1).ToList();
-                    //Refresh();
                 } 
             }
         }
-        //private void Refresh()
-        //{
-        //    MainWindow window = (MainWindow)Application.Current.MainWindow;
-
-        //    window.RefreshListView();
-        //    ViewSetter.PopulateContactView();  <<<---- you need this
-        //}
     }
 }

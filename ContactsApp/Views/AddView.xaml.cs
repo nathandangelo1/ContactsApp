@@ -37,19 +37,26 @@ namespace ContactsApp.Views
 
         private void btnSaveChanges_Click(object sender, RoutedEventArgs e)
         {
-            //if (!DateOnly.TryParse(txtbxBirthday.Text, out DateOnly birthday))
-            //{
-            //    WarningException we = new("Birthday Error");
-            //};
+            // If 
+            DateTime? BdayDateTime = (datePickerBday.SelectedDate is not null) ? 
+                new DateTime
+                (
+                    datePickerBday.SelectedDate.Value.Year, 
+                    datePickerBday.SelectedDate.Value.Month, 
+                    datePickerBday.SelectedDate.Value.Day
+                ) : null;
+
             Contact edit = new()
             {
-                //Id = Contact.CurrentContact.Id,
+                Id = Contact.CurrentContact.Id,
                 FirstName = !string.IsNullOrWhiteSpace(txtbxFirst.Text) ? txtbxFirst.Text : null,
                 MiddleName = !string.IsNullOrWhiteSpace(txtbxMiddle.Text) ? txtbxMiddle.Text : null,
                 NickName = !string.IsNullOrWhiteSpace(txtbxNick.Text) ? txtbxNick.Text : null,
                 LastName = !string.IsNullOrWhiteSpace(txtbxLast.Text) ? txtbxLast.Text : null,
                 Title = !string.IsNullOrWhiteSpace(txtbxTitle.Text) ? txtbxTitle.Text : null,
-                //Birthday = !string.IsNullOrWhiteSpace(txtbxBirthday.Text) ? txtbxBirthday.Text : null,
+
+                Birthday = (datePickerBday.SelectedDate != null) ? BdayDateTime : null,
+
                 Email = !string.IsNullOrWhiteSpace(txtbxEmail.Text) ? txtbxEmail.Text : null,
                 PhoneNumber = !string.IsNullOrWhiteSpace(txtbxPhone.Text) ? txtbxPhone.Text : null,
                 Street = !string.IsNullOrWhiteSpace(txtbxNick.Text) ? txtbxStreet.Text : null,
@@ -63,13 +70,11 @@ namespace ContactsApp.Views
                 IsActive = 1,
                 IsFavorite = (checkbxFav.IsChecked == true) ? (byte)1 : (byte)0
             };
-
-
             DataAccess conn = new();
-            conn.AddContact(edit);
+            conn.UpdateContact(edit);
             ViewSetter.SetView(View.Contact);
             ViewSetter.ClearView(View.Edit);
-            //Contact.CurrentContact = edit;
+            Contact.CurrentContact = edit;
         }
 
         private void btnUpload_Click(object sender, RoutedEventArgs e)

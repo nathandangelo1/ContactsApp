@@ -224,7 +224,6 @@ namespace ContactsApp
             EditView.txtbxLast.Text = (cc.LastName is not null) ? cc.LastName : "";
             EditView.txtbxTitle.Text = (cc.Title is not null) ? cc.Title : "";
             EditView.datePickerBday.SelectedDate = (cc.Birthday is not null) ? cc.Birthday : null;
-            //EditView.txtbxBirthday.Text = (cc.Birthday is not null) ? cc.Birthday.ToString() : "";
             EditView.txtbxEmail.Text = (cc.Email is not null) ? cc.Email : "";
             EditView.txtbxPhone.Text = (cc.PhoneNumber is not null) ? cc.PhoneNumber : "";
             EditView.txtbxStreet.Text = (cc.Street is not null) ? cc.Street : "";
@@ -232,7 +231,6 @@ namespace ContactsApp
             EditView.txtbxState.Text = (cc.State is not null) ? cc.State : "";
             EditView.txtbxZip.Text = (cc.ZipCode is not null) ? cc.ZipCode : "";
             EditView.txtbxCountry.Text = (cc.Country is not null) ? cc.Country : "";
-
             EditView.txtbxWebsite.Text = (cc.Website is not null) ? cc.Website : "";
             EditView.txtbxNotes.Text = (cc.Notes is not null) ? cc.Notes : "";
 
