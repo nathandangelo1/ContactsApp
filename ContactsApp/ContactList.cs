@@ -1,24 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ContactsApp
 {
     public class ContactsList : ObservableCollection<Contact>
     {
-        private ObservableCollection<Contact> contacts;
+        private ObservableCollection<Contact> _contacts;
 
         public ObservableCollection<Contact> Contacts
         {
-            get { return contacts; }
+            get { return _contacts; }
             set
             {
-                contacts = value;
+                _contacts = value;
                 OnPropertyChanged(nameof(Contacts));
             }
         }

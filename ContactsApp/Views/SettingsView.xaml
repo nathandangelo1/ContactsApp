@@ -9,36 +9,93 @@
     <Grid >
 
         <StackPanel Margin="0,0,0,0"  Height="400" Width="300" >
-            <Label Margin="10,10,0,0" Content="Alphabetize By:" FontFamily="Unispace" FontSize="16"
-                   Foreground="AntiqueWhite"/>
+            <Label 
+                Margin="10,10,0,0" 
+                Content="Alphabetize By:" 
+                FontFamily="Unispace" 
+                FontSize="16"
+                Foreground="AntiqueWhite"
+                />
             <StackPanel  Margin="20,10,0,20">
-                <RadioButton x:Name="rbFirstName" IsChecked="True" Margin="0,0,0,10" Content="First Name" 
-                             GroupName="alphabet" FontFamily="Unispace" Checked="RadioButton_Checked"
-                             FontSize="16" Foreground="AntiqueWhite"/>
-                <RadioButton x:Name="rbLastName" IsChecked="False" Margin="0,0,0,0" Content="Last Name" 
-                             GroupName="alphabet" FontFamily="Unispace" Checked="RadioButton_Checked"
-                             FontSize="16" Foreground="AntiqueWhite"/>
+                <RadioButton 
+                    x:Name="rbFirstName" 
+                    IsChecked="True" 
+                    Margin="0,0,0,10" 
+                    Content="First Name" 
+                    GroupName="alphabet" 
+                    FontFamily="Unispace" 
+                    Checked="RadioButton_Checked"
+                    FontSize="16" 
+                    Foreground="AntiqueWhite"
+                    />
+                <RadioButton 
+                    x:Name="rbLastName" 
+                    IsChecked="False" 
+                    Margin="0,0,0,0" 
+                    Content="Last Name" 
+                    GroupName="alphabet" 
+                    FontFamily="Unispace" 
+                    Checked="RadioButton_Checked"
+                    FontSize="16" 
+                    Foreground="AntiqueWhite"
+                    />
             </StackPanel>
             <!--<Label Margin="10,20,0,0"  Content="Show Birthday Icon Range:" FontFamily="Unispace"/>-->
 
             <WrapPanel HorizontalAlignment="Center">
-                <Label Margin="0,20,0,0" HorizontalAlignment="Center" Content="Show birthdays within" 
-                       FontFamily="Unispace" FontSize="14" Foreground="AntiqueWhite"/>
-                <TextBlock x:Name="txtSliderValue" Margin="5,10,5,0" TextAlignment="Center" 
-                           VerticalAlignment="Center" Text="15" FontSize="16"
-                           Foreground="AntiqueWhite"/>
-                <Label Margin="0,20,0,0" Content="days." FontFamily="Unispace" FontSize="14" 
-                       Foreground="AntiqueWhite" />
+                <Label 
+                    Margin="0,20,0,0" 
+                    HorizontalAlignment="Center" 
+                    Content="Show birthdays within" 
+                    FontFamily="Unispace" 
+                    FontSize="14" 
+                    Foreground="AntiqueWhite"
+                    />
+                <TextBlock 
+                    x:Name="txtSliderValue" 
+                    Margin="5,10,5,0" 
+                    TextAlignment="Center" 
+                    VerticalAlignment="Center" 
+                    Text="15" 
+                    FontSize="16"
+                    Foreground="AntiqueWhite"
+                    />
+                <Label 
+                    Margin="0,20,0,0" 
+                    Content="days." 
+                    FontFamily="Unispace" 
+                    FontSize="14" 
+                    Foreground="AntiqueWhite" 
+                    />
             </WrapPanel>
 
-            <Slider x:Name="sliderBday" Minimum="1" Maximum="30" TickPlacement="BottomRight"  TickFrequency="3" 
-                    Margin="20,10,20,0" ValueChanged="sliderBday_ValueChanged" Value="15" />
+            <Slider 
+                x:Name="sliderBday" 
+                Minimum="1" Maximum="30" 
+                TickPlacement="BottomRight"  
+                TickFrequency="3" 
+                Margin="20,10,20,0" 
+                ValueChanged="sliderBday_ValueChanged" 
+                Value="15" 
+                />
 
-            <Button x:Name="btnCleanUp" Margin="0,70,0,0"  Content="Clean-Up Deleted Contacts" 
-                     Width="200" Height="30" Click="btnCleanUp_Click" />
+            <Button 
+                x:Name="btnCleanUp" 
+                Margin="0,70,0,0"  
+                Content="Clean-Up Deleted Contacts" 
+                Width="200" 
+                Height="30" 
+                Click="btnCleanUp_Click" 
+                />
 
-            <Button x:Name="btnExit" Margin="0,70,0,0" Content="Exit" Width="50" Height="25" 
-                     Click="btnExit_Click"  />
+            <Button 
+                x:Name="btnExit" 
+                Margin="0,70,0,0" 
+                Content="Exit" 
+                Width="50" 
+                Height="25" 
+                Click="btnExit_Click"  
+                />
 
         </StackPanel>
     </Grid>

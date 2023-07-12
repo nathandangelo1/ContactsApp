@@ -16,6 +16,7 @@
 
   <ItemGroup>
     <None Remove="Resources\AddContact.png" />
+    <None Remove="Resources\dude.jpg" />
     <None Remove="Resources\noImage.png" />
     <None Remove="Resources\SettingsGear.png" />
   </ItemGroup>
@@ -27,6 +28,9 @@
 
   <ItemGroup>
     <Resource Include="Resources\AddContact.png" />
+    <Resource Include="Resources\dude.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Resources\noImage.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>

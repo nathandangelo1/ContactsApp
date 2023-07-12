@@ -1,16 +1,8 @@
 ﻿using ContactsApp.Views;
-using Microsoft.Win32;
 using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 
 namespace ContactsApp
 {
@@ -84,7 +76,6 @@ namespace ContactsApp
             {
                 case View.Contact:
                     Contact.CurrentContact = null;
-                    //ContactView = new(); break;
                     break;
                 case View.Edit:
                     EditView.Reset();
@@ -93,7 +84,6 @@ namespace ContactsApp
                     AddView = new();
                     break;
                 case View.Home:
-                    //HomeView = new(); break;
                     break;
             }
         }
@@ -107,7 +97,6 @@ namespace ContactsApp
                 case View.Edit:
                     PopulateEditView();
                     ContentArea.Content = EditView; break;
-
                 case View.Add:
                     ContentArea.Content = AddView; break;
                 case View.Delete:
@@ -234,15 +223,12 @@ namespace ContactsApp
             EditView.txtbxWebsite.Text = (cc.Website is not null) ? cc.Website : "";
             EditView.txtbxNotes.Text = (cc.Notes is not null) ? cc.Notes : "";
 
-            //EditView.imgContact.Source = (cc.Picture is not null) ? new BitmapImage(new Uri("Resources\\noImage.png", UriKind.RelativeOrAbsolute)) : null;
             try
             {
                 EditView.imgContact.Source = new BitmapImage(new Uri(cc.Picture, UriKind.RelativeOrAbsolute));
             }
             catch
             {
-                //MessageBoxResult result = MessageBox.Show("Photo error");
-
                 EditView.imgContact.Source = new BitmapImage(new Uri("pack://application:,,,/Resources/noImage.png", UriKind.RelativeOrAbsolute));
             }
             if (EditView.imgContact.Source.ToString().Contains("noImage.png"))
