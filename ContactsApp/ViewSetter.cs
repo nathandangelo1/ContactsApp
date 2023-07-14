@@ -231,10 +231,16 @@ namespace ContactsApp
             {
                 EditView.imgContact.Source = new BitmapImage(new Uri("pack://application:,,,/Resources/noImage.png", UriKind.RelativeOrAbsolute));
             }
+            
             if (EditView.imgContact.Source.ToString().Contains("noImage.png"))
             {
                 EditView.imgContact.Height = 75;
                 EditView.imgContact.Width = 75;
+            }
+            else
+            {
+                EditView.imgContact.Height = 200;
+                EditView.imgContact.Width = 200;
             }
         }
 

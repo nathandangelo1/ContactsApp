@@ -27,23 +27,23 @@ namespace ContactsApp
     }
     public partial class MainWindow : Window 
     {
-        private CollectionViewSource _collectionViewSource;
-        public CollectionViewSource CollectionViewSource
-        {
-            get { return _collectionViewSource; }
-            set
-            {
-                if (_collectionViewSource != value)
-                {
-                    _collectionViewSource = value;
-                    OnPropertyChanged(nameof(CollectionViewSource));
-                }
-            }
-        }
+        //private CollectionViewSource _collectionViewSource;
+        //public CollectionViewSource CollectionViewSource
+        //{
+        //    get { return _collectionViewSource; }
+        //    set
+        //    {
+        //        if (_collectionViewSource != value)
+        //        {
+        //            _collectionViewSource = value;
+        //            OnPropertyChanged(nameof(CollectionViewSource));
+        //        }
+        //    }
+        //}
 
         public static ContactsList CL { get; set; }
-        public CollectionViewSource contactsViewSource;
-        public CollectionViewSource favoritesViewSource;
+        private CollectionViewSource contactsViewSource;
+        private CollectionViewSource favoritesViewSource;
 
         public MainWindow()
         {
@@ -111,7 +111,7 @@ namespace ContactsApp
             Sort();
         }
 
-        private void Sort()
+        public void Sort()
         {
             if (Settings.SortByFirstName)
             {

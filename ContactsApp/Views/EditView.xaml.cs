@@ -96,6 +96,8 @@ namespace ContactsApp.Views
                 // Set the image source to the bitmap image
                 imgContact.Source = bi;
                 Picture = ofd.FileName;
+                imgContact.Width = 200;
+                imgContact.Height = 200;
             }
         }
         public void Reset()

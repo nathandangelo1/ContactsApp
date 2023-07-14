@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace ContactsApp
 {
-    public class Contact : INotifyPropertyChanged
+    public class Contact /*: INotifyPropertyChanged*/
     {
         public static Contact CurrentContact;
 
@@ -25,7 +25,7 @@ namespace ContactsApp
                 if (id != value)
                 {
                     id = value;
-                    OnPropertyChanged(nameof(Id));
+                    //OnPropertyChanged(nameof(Id));
                 }
             }
         }
@@ -42,7 +42,7 @@ namespace ContactsApp
                 if (firstName != value)
                 {
                     firstName = value;
-                    OnPropertyChanged(nameof(FirstName));
+                    //OnPropertyChanged(nameof(FirstName));
                 }
             }
         }
@@ -59,7 +59,7 @@ namespace ContactsApp
                 if (middleName != value)
                 {
                     middleName = value;
-                    OnPropertyChanged(nameof(MiddleName));
+                    //OnPropertyChanged(nameof(MiddleName));
                 }
             }
         }
@@ -76,7 +76,7 @@ namespace ContactsApp
                 if (lastName != value)
                 {
                     lastName = value;
-                    OnPropertyChanged(nameof(LastName));
+                    //OnPropertyChanged(nameof(LastName));
                 }
             }
         }
@@ -93,7 +93,7 @@ namespace ContactsApp
                 if (nickname != value)
                 {
                     nickname = value;
-                    OnPropertyChanged(nameof(NickName));
+                    //OnPropertyChanged(nameof(NickName));
                 }
             }
         }
@@ -110,7 +110,7 @@ namespace ContactsApp
                 if (title != value)
                 {
                     title = value;
-                    OnPropertyChanged(nameof(Title));
+                    //OnPropertyChanged(nameof(Title));
                 }
             }
         }
@@ -133,7 +133,7 @@ namespace ContactsApp
                     //    birthday = new DateTime(value.Value.Year, value.Value.Month, value.Value.Day);
                     //}
                     birthday = value;
-                    OnPropertyChanged(nameof(Birthday));
+                    //OnPropertyChanged(nameof(Birthday));
                 }
             }
         }
@@ -150,7 +150,7 @@ namespace ContactsApp
                 if (email != value)
                 {
                     email = value;
-                    OnPropertyChanged(nameof(Email));
+                    //OnPropertyChanged(nameof(Email));
                 }
             }
         }
@@ -167,7 +167,7 @@ namespace ContactsApp
                 if (phoneNumber != value)
                 {
                     phoneNumber = value;
-                    OnPropertyChanged(nameof(PhoneNumber));
+                    //OnPropertyChanged(nameof(PhoneNumber));
                 }
             }
         }
@@ -184,7 +184,7 @@ namespace ContactsApp
                 if (street != value)
                 {
                     street = value;
-                    OnPropertyChanged(nameof(Street));
+                    //OnPropertyChanged(nameof(Street));
                 }
             }
         }
@@ -201,7 +201,7 @@ namespace ContactsApp
                 if (city != value)
                 {
                     city = value;
-                    OnPropertyChanged(nameof(City));
+                    //OnPropertyChanged(nameof(City));
                 }
             }
         }
@@ -218,7 +218,7 @@ namespace ContactsApp
                 if (state != value)
                 {
                     state = value;
-                    OnPropertyChanged(nameof(State));
+                    //OnPropertyChanged(nameof(State));
                 }
             }
         }
@@ -235,7 +235,7 @@ namespace ContactsApp
                 if (zipCode != value)
                 {
                     zipCode = value;
-                    OnPropertyChanged(nameof(ZipCode));
+                    //OnPropertyChanged(nameof(ZipCode));
                 }
             }
         }
@@ -252,7 +252,7 @@ namespace ContactsApp
                 if (country != value)
                 {
                     country = value;
-                    OnPropertyChanged(nameof(Country));
+                    //OnPropertyChanged(nameof(Country));
                 }
             }
         }
@@ -269,7 +269,7 @@ namespace ContactsApp
                 if (website != value)
                 {
                     website = value;
-                    OnPropertyChanged(nameof(Website));
+                    //OnPropertyChanged(nameof(Website));
                 }
             }
         }
@@ -286,7 +286,7 @@ namespace ContactsApp
                 if (notes != value)
                 {
                     notes = value;
-                    OnPropertyChanged(nameof(Notes));
+                    //OnPropertyChanged(nameof(Notes));
                 }
             }
         }
@@ -305,7 +305,7 @@ namespace ContactsApp
                 if (picture != value)
                 {
                     picture = value;
-                    OnPropertyChanged(nameof(Picture));
+                    //OnPropertyChanged(nameof(Picture));
                 }
             }
 
@@ -323,7 +323,7 @@ namespace ContactsApp
                 if (isFavorite != value)
                 {
                     isFavorite = value;
-                    OnPropertyChanged(nameof(IsFavorite));
+                    //OnPropertyChanged(nameof(IsFavorite));
                 }
             }
         }
@@ -339,15 +339,15 @@ namespace ContactsApp
                 if (isActive != value)
                 {
                     isActive = value;
-                    OnPropertyChanged(nameof(IsActive));
+                    //OnPropertyChanged(nameof(IsActive));
                 }
             }
         }
-        public event PropertyChangedEventHandler PropertyChanged;
-        protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
+        //public event PropertyChangedEventHandler PropertyChanged;
+        //protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        //{
+        //    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        //}
 
         // Displays name based on whether Contact is favorite(adds Heart emoji) and whether Contact has a nickname
         public string FullName
