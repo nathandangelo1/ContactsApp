@@ -52,11 +52,11 @@ namespace ContactsApp
             {
                 if (e.Item is Contact contact)
                 {
-                    if (string.IsNullOrEmpty(txtSearch.Text) && contact.IsActive == 1 && contact.IsFavorite == 0)
+                    if (string.IsNullOrEmpty(txtSearch.Text) && contact.IsActive == 1 /*&& contact.IsFavorite == 0*/)
                         e.Accepted = true;
                     else
                         e.Accepted = contact.FullName.Contains(txtSearch.Text, StringComparison.OrdinalIgnoreCase)
-                        && contact.IsActive == 1 && contact.IsFavorite == 0;
+                        && contact.IsActive == 1 /*&& contact.IsFavorite == 0*/;
                 }
             };
 
@@ -80,8 +80,9 @@ namespace ContactsApp
             ContactView.OnListChange += RefreshContactsList;
             DeleteView.OnListChange += RefreshContactsList;
 
-            // Event is fired below to sort and group contactsListView without a seperate function(reduce code duplication)
+            // Event is fired below to sort and group contactsListView without a seperate function
             Settings_OnSettingsChange(new object(), new EventArgs());
+
         }
         private void RefreshContactsList(object? sender, EventArgs e)
         {
@@ -100,6 +101,8 @@ namespace ContactsApp
                 favoritesViewSource.SortDescriptions.Clear();
                 favoritesViewSource.SortDescriptions.Add(new SortDescription("FirstName", ListSortDirection.Ascending));
                 favoritesViewSource.SortDescriptions.Add(new SortDescription("LastName", ListSortDirection.Ascending));
+
+                
             }
             else
             {

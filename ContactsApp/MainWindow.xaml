@@ -23,7 +23,7 @@
     <Window.Resources>
         <!-- Data template for AccountListBox grouping -->
         <DataTemplate x:Key="GroupingHeader">
-            <TextBlock Text="{Binding Path=GroupingName}" Foreground="White" />
+            <TextBlock Text="{Binding Path=GroupingName}" Background="Transparent"  Foreground="White" />
         </DataTemplate>
     </Window.Resources>
 
@@ -147,6 +147,7 @@
             </Grid>
 
             <Grid 
+                Name="contactsGrid"
                 MinHeight="350" 
                 Grid.Column="0" 
                 Grid.Row="1" 
@@ -171,7 +172,7 @@
                           Background="palevioletred" 
                           Foreground="WhiteSmoke" 
                           FontFamily="Unispace"   
-                          ItemsSource="{Binding Source= MainWindow.CL.Contacts}" 
+                          
                           PreviewMouseLeftButtonUp="listView_Click" 
                           ScrollViewer.CanContentScroll="True" 
                           >
