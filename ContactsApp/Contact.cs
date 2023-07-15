@@ -364,6 +364,22 @@ namespace ContactsApp
                 }
             }
         }
+        public string? GroupingName
+        {
+            get
+            {
+                if (Settings.SortByFirstName)
+                {
+                    return (NickName is not null) ? $"{NickName}" : (FirstName is not null) ? $"{FirstName}" : (LastName is not null) ? $"{LastName}" : null;
+                }
+                
+                else
+                {
+                    //return (LastName is not null) ? $"{LastName}" : (NickName is not null) ? $"{NickName}" : (FirstName is not null) ? $"{FirstName}" : null;
+                    return (LastName is not null) ? $"{LastName}" : null;
+                }
+            }
+        }
         public bool Equals(Contact? obj)
         {
             // Check for null values and compare types

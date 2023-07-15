@@ -18,37 +18,23 @@ using System.Windows.Shapes;
 
 namespace ContactsApp.Views
 {
-    /// <summary>
-    /// Interaction logic for EditView.xaml
-    /// </summary>
     public partial class EditView : UserControl
     {
         private string? Picture { get; set; }
         public EditView()
         {
             InitializeComponent();
-            //EditPanel = Contact.CurrentContact;
         }
 
         private void btnCancel_Click(object sender, RoutedEventArgs e)
         {
-            //ViewSetter.ClearView(View.Edit);
             Reset();
             ViewSetter.SetView(View.Contact);
         }
 
         private void btnSaveChanges_Click(object sender, RoutedEventArgs e)
         {
-            //if (!Date.TryParse(txtbxBirthday.Text, out DateOnly birthday))
-            //{
-            //    WarningException we = new("Birthday Error");
-            //};
-            //DateTime? selectedDate = datePickerBday.SelectedDate.Value.Date;
-            //if(selectedDate is not null)
-            //{
             DateTime? BdayDateTime = (datePickerBday.SelectedDate is not null) ? new DateTime(datePickerBday.SelectedDate.Value.Year, datePickerBday.SelectedDate.Value.Month, datePickerBday.SelectedDate.Value.Day) : null;
-
-            //}
 
             Contact edit = new()
             {
@@ -117,9 +103,6 @@ namespace ContactsApp.Views
         }
         private void Refresh()
         {
-            //MainWindow window = (MainWindow)Application.Current.MainWindow;
-
-            //window.RefreshListView();
             ViewSetter.PopulateContactView();
         }
     }

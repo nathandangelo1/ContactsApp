@@ -1,4 +1,7 @@
 ﻿using ContactsApp.Services;
+using System;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -20,6 +23,13 @@ namespace ContactsApp.Views
             ViewSetter.SetView(View.Edit);
         }
 
+        public static event EventHandler OnListChange;
+
+        public static void OnListChanged(string propertyName)
+        {
+            OnListChange?.Invoke(typeof(Settings), new PropertyChangedEventArgs(propertyName));
+        }
+
         private void btnDelete_Click(object sender, RoutedEventArgs e)
         {
             var contact = Contact.CurrentContact;
@@ -36,13 +46,11 @@ namespace ContactsApp.Views
                 //RefreshMainList();
                 ResetContactView();
                 ViewSetter.SetView(View.Home);
+                OnListChanged(nameof(ContactView));
             }
-            else
-            {
-                // If the user clicked No, cancel the delete operation
-                // CancelDelete();
-            }
+
         }
+
         private void DeactivateContact(Contact contact)
         {
             if (contact is not null)
@@ -53,13 +61,7 @@ namespace ContactsApp.Views
 
             }
         }
-        //private void RefreshMainList()
-        //{
-        //    MainWindow window = (MainWindow)Application.Current.MainWindow;
-        //    MainWindow.CL.Contacts = MainWindow.CL.Contacts.OrderBy(x => x.FirstName).ToList();
-        //    Contact.favorites = Contact.favorites.OrderBy(x=>x.FirstName).ToList();
-        //    window.RefreshListView();
-        //}
+
         public void ResetContactView()
         {
             foreach (var child in contactPanel.Children)

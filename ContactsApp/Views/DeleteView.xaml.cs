@@ -49,7 +49,12 @@ namespace ContactsApp.Views
             inactiveListView.ItemsSource = InactiveViewSource.View;
 
         }
+        public static event EventHandler OnListChange;
 
+        public static void OnListChanged(string propertyName)
+        {
+            OnListChange?.Invoke(typeof(Settings), new PropertyChangedEventArgs(propertyName));
+        }
         private void btnDelete_Click(object sender, RoutedEventArgs e)
         {
             Contact contact = Selected;
@@ -69,7 +74,7 @@ namespace ContactsApp.Views
                 Clear();
                 InactiveViewSource.View.Refresh();
                 itemStackPanel.Visibility = Visibility.Hidden;
-
+                OnListChanged(nameof(DeleteView));
             }
         }
         private void Clear()
@@ -111,7 +116,7 @@ namespace ContactsApp.Views
                 InactiveViewSource.View.Refresh();
 
                 itemStackPanel.Visibility = Visibility.Hidden;
-
+                OnListChanged(nameof(DeleteView));
             }
         }
         private void listView_Click(object sender, RoutedEventArgs e)
@@ -146,6 +151,7 @@ namespace ContactsApp.Views
             Clear();
             InactiveViewSource.View.Refresh();
             itemStackPanel.Visibility = Visibility.Hidden;
+            OnListChanged(nameof(DeleteView));
         }
 
         private void btnRestoreAll_Click(object sender, RoutedEventArgs e)

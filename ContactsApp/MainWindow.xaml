@@ -20,6 +20,12 @@
 
         </Style>
     </Window.Style>
+    <Window.Resources>
+        <!-- Data template for AccountListBox grouping -->
+        <DataTemplate x:Key="GroupingHeader">
+            <TextBlock Text="{Binding Path=GroupingName}" Foreground="White" />
+        </DataTemplate>
+    </Window.Resources>
 
     <Window.DataContext>
         <local:Contact />
@@ -169,6 +175,11 @@
                           PreviewMouseLeftButtonUp="listView_Click" 
                           ScrollViewer.CanContentScroll="True" 
                           >
+                    <ListView.GroupStyle>
+                        <GroupStyle 
+                            HeaderTemplate="{StaticResource ResourceKey=GroupingHeader}" />
+                    </ListView.GroupStyle>
+                    
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <TextBlock 

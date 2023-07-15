@@ -1,4 +1,5 @@
 ﻿using ContactsApp.Services;
+using ContactsApp.Views;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -12,10 +13,6 @@ using System.Windows.Input;
 
 namespace ContactsApp
 {
-    
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public enum View
     {
         Contact,
@@ -25,22 +22,8 @@ namespace ContactsApp
         Add,
         Home
     }
-    public partial class MainWindow : Window 
+    public partial class MainWindow : Window
     {
-        //private CollectionViewSource _collectionViewSource;
-        //public CollectionViewSource CollectionViewSource
-        //{
-        //    get { return _collectionViewSource; }
-        //    set
-        //    {
-        //        if (_collectionViewSource != value)
-        //        {
-        //            _collectionViewSource = value;
-        //            OnPropertyChanged(nameof(CollectionViewSource));
-        //        }
-        //    }
-        //}
-
         public static ContactsList CL { get; set; }
         private CollectionViewSource contactsViewSource;
         private CollectionViewSource favoritesViewSource;
@@ -48,7 +31,7 @@ namespace ContactsApp
         public MainWindow()
         {
             InitializeComponent();
-            
+
             // Get main content area 
             ViewSetter.ContentArea = MainWindowContentArea;
 
@@ -69,7 +52,7 @@ namespace ContactsApp
             {
                 if (e.Item is Contact contact)
                 {
-                    if (String.IsNullOrEmpty(txtSearch.Text) && contact.IsActive == 1 && contact.IsFavorite == 0)
+                    if (string.IsNullOrEmpty(txtSearch.Text) && contact.IsActive == 1 && contact.IsFavorite == 0)
                         e.Accepted = true;
                     else
                         e.Accepted = contact.FullName.Contains(txtSearch.Text, StringComparison.OrdinalIgnoreCase)
@@ -77,39 +60,32 @@ namespace ContactsApp
                 }
             };
 
-            //if (!Settings.SortByFirstName) // If NOT sort by First Name, then sort by lastname
-            //{
-            //    contactsViewSource.SortDescriptions.Add(new SortDescription("LastName", ListSortDirection.Ascending));
-            //    contactsViewSource.SortDescriptions.Add(new SortDescription("NickName", ListSortDirection.Ascending));
-            //    contactsViewSource.SortDescriptions.Add(new SortDescription("FirstName", ListSortDirection.Ascending));
-            //}
-            //else // else, sort by firstname
-            //{
-            //    contactsViewSource.SortDescriptions.Add(new SortDescription("NickName", ListSortDirection.Ascending));
-            //    contactsViewSource.SortDescriptions.Add(new SortDescription("FirstName", ListSortDirection.Ascending));
-            //    contactsViewSource.SortDescriptions.Add(new SortDescription("LastName", ListSortDirection.Ascending));
-            //}
             contactsListView.ItemsSource = contactsViewSource.View;
-
 
             favoritesViewSource = new CollectionViewSource() { Source = CL.Contacts };
             favoritesViewSource.Filter += (s, e) =>
             {
                 if (e.Item is Contact contact)
                 {
-                    if (String.IsNullOrEmpty(txtSearch.Text) && contact.IsActive == 1 && contact.IsFavorite == 1)
+                    if (string.IsNullOrEmpty(txtSearch.Text) && contact.IsActive == 1 && contact.IsFavorite == 1)
                         e.Accepted = true;
                     else
                         e.Accepted = contact.FullName.Contains(txtSearch.Text, StringComparison.OrdinalIgnoreCase)
                         && contact.IsActive == 1 && contact.IsFavorite == 1;
                 }
             };
-            //favoritesViewSource.SortDescriptions.Add(new SortDescription("NickName", ListSortDirection.Ascending));
-            //favoritesViewSource.SortDescriptions.Add(new SortDescription("FirstName", ListSortDirection.Ascending));
-            //favoritesViewSource.SortDescriptions.Add(new SortDescription("LastName", ListSortDirection.Ascending));
             favoritesListView.ItemsSource = favoritesViewSource.View;
-            Sort();
+
             Settings.OnSettingsChange += Settings_OnSettingsChange;
+            ContactView.OnListChange += RefreshContactsList;
+            DeleteView.OnListChange += RefreshContactsList;
+
+            // Event is fired below to sort and group contactsListView without a seperate function(reduce code duplication)
+            Settings_OnSettingsChange(new object(), new EventArgs());
+        }
+        private void RefreshContactsList(object? sender, EventArgs e)
+        {
+            contactsViewSource.View.Refresh();
         }
 
         private void Settings_OnSettingsChange(object? sender, EventArgs e)
@@ -117,8 +93,10 @@ namespace ContactsApp
             if (Settings.SortByFirstName)
             {
                 contactsViewSource.SortDescriptions.Clear();
+                contactsViewSource.GroupDescriptions.Clear();
                 contactsViewSource.SortDescriptions.Add(new SortDescription("FirstName", ListSortDirection.Ascending));
                 contactsViewSource.SortDescriptions.Add(new SortDescription("LastName", ListSortDirection.Ascending));
+                contactsViewSource.GroupDescriptions.Add(new PropertyGroupDescription("GroupingName", new FirstLetterConverter()));
                 favoritesViewSource.SortDescriptions.Clear();
                 favoritesViewSource.SortDescriptions.Add(new SortDescription("FirstName", ListSortDirection.Ascending));
                 favoritesViewSource.SortDescriptions.Add(new SortDescription("LastName", ListSortDirection.Ascending));
@@ -126,50 +104,20 @@ namespace ContactsApp
             else
             {
                 contactsViewSource.SortDescriptions.Clear();
+                contactsViewSource.GroupDescriptions.Clear();
                 contactsViewSource.SortDescriptions.Add(new SortDescription("LastName", ListSortDirection.Ascending));
                 contactsViewSource.SortDescriptions.Add(new SortDescription("FirstName", ListSortDirection.Ascending));
+                contactsViewSource.GroupDescriptions.Add(new PropertyGroupDescription("GroupingName", new FirstLetterConverter()));
                 favoritesViewSource.SortDescriptions.Clear();
                 favoritesViewSource.SortDescriptions.Add(new SortDescription("LastName", ListSortDirection.Ascending));
                 favoritesViewSource.SortDescriptions.Add(new SortDescription("FirstName", ListSortDirection.Ascending));
             }
             contactsViewSource.View.Refresh();
         }
-
-        public void Sort()
-        {
-            if (Settings.SortByFirstName)
-            {
-                contactsViewSource.SortDescriptions.Clear();
-                contactsViewSource.SortDescriptions.Add(new SortDescription("FirstName", ListSortDirection.Ascending));
-                contactsViewSource.SortDescriptions.Add(new SortDescription("LastName", ListSortDirection.Ascending));
-                favoritesViewSource.SortDescriptions.Clear();
-                favoritesViewSource.SortDescriptions.Add(new SortDescription("FirstName", ListSortDirection.Ascending));
-                favoritesViewSource.SortDescriptions.Add(new SortDescription("LastName", ListSortDirection.Ascending));
-            }
-            else
-            {
-                contactsViewSource.SortDescriptions.Clear();
-                contactsViewSource.SortDescriptions.Add(new SortDescription("LastName", ListSortDirection.Ascending));
-                contactsViewSource.SortDescriptions.Add(new SortDescription("FirstName", ListSortDirection.Ascending));
-                favoritesViewSource.SortDescriptions.Clear();
-                favoritesViewSource.SortDescriptions.Add(new SortDescription("LastName", ListSortDirection.Ascending));
-                favoritesViewSource.SortDescriptions.Add(new SortDescription("FirstName", ListSortDirection.Ascending));
-            }
-            contactsViewSource.View.Refresh();
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected void OnPropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-    
 
         private void txtFilter_TextChanged(object sender, TextChangedEventArgs e)
         {
             contactsViewSource.View.Refresh();
-            //CollectionViewSource.GetDefaultView(favoritesListView.ItemsSource).Refresh();
         }
 
         private void listView_Click(object sender, RoutedEventArgs e)
@@ -192,69 +140,34 @@ namespace ContactsApp
         {
             ViewSetter.SetView(View.Settings);
         }
-        //public void RefreshListView()
-        //{
-        //    //var currentFavorites = new ObservableCollection<Contact>(FL.Favorites.Where(x => x.IsFavorite == 1);
-        //    //FL.Favorites = new ObservableCollection<Contact>( CL.Contacts.Where(x => x.IsFavorite == 1));
-        //    //CL.Contacts = new ObservableCollection<Contact>( CL.Contacts.Where(x => x.IsFavorite != 1));
-        //    // contactsListView.ItemsSource = CL.Contacts;
-        //    // favoritesListView.ItemsSource = FL.Favorites;
 
-        //    //contactsListView.Items.Refresh();
-        //    // contactsCollectionView.Refresh();
+        private void MinimizeButton_Click(object sender, RoutedEventArgs e)
+        {
+            WindowState = WindowState.Minimized;
+        }
 
-        //    //favoritesListView.Items.Refresh();
-        //    favoritesListView.ItemsSource = CL.Contacts.Where(x => x.Id == 1);
-        //}
-
-
-
-            private void MinimizeButton_Click(object sender, RoutedEventArgs e)
+        private void MaximizeButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (WindowState == WindowState.Maximized)
             {
-                this.WindowState = WindowState.Minimized;
+                WindowState = WindowState.Normal;
             }
-
-            private void MaximizeButton_Click(object sender, RoutedEventArgs e)
+            else
             {
-                if (this.WindowState == WindowState.Maximized)
-                {
-                    this.WindowState = WindowState.Normal;
-                    //MaximizeButton.Content = "[ ]";
-                }
-                else
-                {
-                    this.WindowState = WindowState.Maximized;
-                    //MaximizeButton.Content = "[ ]";
-                }
+                WindowState = WindowState.Maximized;
             }
+        }
 
-            private void CloseButton_Click(object sender, RoutedEventArgs e)
-            {
-                this.Close();
-            }
-        
+        private void CloseButton_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
+        }
+
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)
         {
             if (e.ChangedButton == MouseButton.Left)
-                this.DragMove();
+                DragMove();
         }
-        //public static void UpdateSettings()
-        //{
-        //    if (Settings.SortByFirstName) // If NOT sort by First Name, then sort by lastname
-        //    {
-        //        contactsViewSource.SortDescriptions.Add(new SortDescription("LastName", ListSortDirection.Ascending));
-        //        contactsViewSource.SortDescriptions.Add(new SortDescription("NickName", ListSortDirection.Ascending));
-        //        contactsViewSource.SortDescriptions.Add(new SortDescription("FirstName", ListSortDirection.Ascending));
-        //    }
-        //    else // else, sort by firstname
-        //    {
-        //        contactsViewSource.SortDescriptions.Add(new SortDescription("NickName", ListSortDirection.Ascending));
-        //        contactsViewSource.SortDescriptions.Add(new SortDescription("FirstName", ListSortDirection.Ascending));
-        //        contactsViewSource.SortDescriptions.Add(new SortDescription("LastName", ListSortDirection.Ascending));
-        //    }
-        //    contactsViewSource.View.Refresh();
-        //}
     }
-
 }
 

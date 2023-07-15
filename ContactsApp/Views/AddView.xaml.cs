@@ -95,6 +95,8 @@ namespace ContactsApp.Views
                 string selectedFile = openFileDialog.FileName;
                 Picture = selectedFile;
                 imgContact.Source = new BitmapImage(new Uri(openFileDialog.FileName));
+                imgContact.Height = 200;
+                imgContact.Width = 200;
             }
 
         }
