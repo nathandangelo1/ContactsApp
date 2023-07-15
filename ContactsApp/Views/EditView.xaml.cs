@@ -1,20 +1,9 @@
 ﻿using ContactsApp.Services;
 using Microsoft.Win32;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace ContactsApp.Views
 {
@@ -24,6 +13,50 @@ namespace ContactsApp.Views
         public EditView()
         {
             InitializeComponent();
+        }
+        public void PopulateView()
+        {
+            Contact cc = Contact.CurrentContact;
+            if (cc.IsFavorite == 1) checkbxFav.IsChecked = true;
+
+            // If currentContact's property is not null,
+            // set the ContactView's equivalent control to value,
+            // else set it to null
+            txtbxFirst.Text = (cc.FirstName is not null) ? cc.FirstName.Trim() : "";
+            txtbxMiddle.Text = (cc.MiddleName is not null) ? cc.MiddleName : "";
+            txtbxNick.Text = (cc.NickName is not null) ? cc.NickName : "";
+            txtbxLast.Text = (cc.LastName is not null) ? cc.LastName : "";
+            txtbxTitle.Text = (cc.Title is not null) ? cc.Title : "";
+            datePickerBday.SelectedDate = (cc.Birthday is not null) ? cc.Birthday : null;
+            txtbxEmail.Text = (cc.Email is not null) ? cc.Email : "";
+            txtbxPhone.Text = (cc.PhoneNumber is not null) ? cc.PhoneNumber : "";
+            txtbxStreet.Text = (cc.Street is not null) ? cc.Street : "";
+            txtbxCity.Text = (cc.City is not null) ? cc.City : "";
+            txtbxState.Text = (cc.State is not null) ? cc.State : "";
+            txtbxZip.Text = (cc.ZipCode is not null) ? cc.ZipCode : "";
+            txtbxCountry.Text = (cc.Country is not null) ? cc.Country : "";
+            txtbxWebsite.Text = (cc.Website is not null) ? cc.Website : "";
+            txtbxNotes.Text = (cc.Notes is not null) ? cc.Notes : "";
+
+            try
+            {
+                imgContact.Source = new BitmapImage(new Uri(cc.Picture, UriKind.RelativeOrAbsolute));
+            }
+            catch
+            {
+                imgContact.Source = new BitmapImage(new Uri("pack://application:,,,/Resources/noImage.png", UriKind.RelativeOrAbsolute));
+            }
+
+            if (imgContact.Source.ToString().Contains("noImage.png"))
+            {
+                imgContact.Height = 75;
+                imgContact.Width = 75;
+            }
+            else
+            {
+                imgContact.Height = 200;
+                imgContact.Width = 200;
+            }
         }
 
         private void btnCancel_Click(object sender, RoutedEventArgs e)
@@ -62,10 +95,13 @@ namespace ContactsApp.Views
             };
             DataAccess conn = new();
             conn.UpdateContact(edit);
+
+            // Return to ContactView
             ViewSetter.SetView(View.Contact);
             ViewSetter.ClearView(View.Edit);
             Contact.CurrentContact = edit;
-            Refresh();
+            ViewSetter.PopulateContactView();
+            //Refresh();
         }
 
         private void btnUpload_Click(object sender, RoutedEventArgs e)
@@ -101,9 +137,9 @@ namespace ContactsApp.Views
             }
             if ((bool)checkbxFav.IsChecked) checkbxFav.IsChecked = false;
         }
-        private void Refresh()
-        {
-            ViewSetter.PopulateContactView();
-        }
+        //private void Refresh()
+        //{
+        //    ViewSetter.PopulateContactView();
+        //}
     }
 }

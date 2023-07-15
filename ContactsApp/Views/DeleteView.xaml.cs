@@ -1,23 +1,13 @@
 ﻿
 using ContactsApp.Services;
-using ContactsApp.Views;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using System.Windows.Shell;
 
 namespace ContactsApp.Views
 {
@@ -48,6 +38,37 @@ namespace ContactsApp.Views
             InactiveViewSource.SortDescriptions.Add(new SortDescription("LastName", ListSortDirection.Ascending));
             inactiveListView.ItemsSource = InactiveViewSource.View;
 
+        }
+        public void PopulateView()
+        {
+            Contact cc = Selected;
+
+            if (cc is not null)
+            {
+                // If currentContact's property is not null, set the ContactView's equivalent control to value, else set it to null
+                txtfullName.Text = (cc.FullName is not null) ? cc.FullName.Trim() : "";
+                txtPhone.Text = (cc.PhoneNumber is not null) ? cc.PhoneNumber : "";
+                txtStreet.Text = (cc.Street is not null) ? cc.Street : "";
+                txtCity.Text = (cc.City is not null) ? cc.City : "";
+                txtState.Text = (cc.State is not null) ? cc.State : "";
+                txtZip.Text = (cc.ZipCode is not null) ? cc.ZipCode : "";
+                try
+                {
+                    imgContact.Source = new BitmapImage(new Uri(cc.Picture, UriKind.Absolute));
+                }
+                catch
+                {
+                    MessageBoxResult result = MessageBox.Show("Photo error");
+
+                    imgContact.Source = new BitmapImage(new Uri("pack://application:,,,/Resources/noImage.png", UriKind.RelativeOrAbsolute));
+                }
+                // if stock image, make smaller
+                if (imgContact.Source.ToString().Contains("noImage.png"))
+                {
+                    imgContact.Height = 75;
+                    imgContact.Width = 75;
+                }
+            }
         }
         public static event EventHandler OnListChange;
 

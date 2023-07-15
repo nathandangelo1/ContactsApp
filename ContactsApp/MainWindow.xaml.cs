@@ -130,6 +130,7 @@ namespace ContactsApp
             {
                 var contact = item as Contact;
                 Contact.CurrentContact = contact;
+                ViewSetter.SetView(View.Contact);
                 ViewSetter.PopulateContactView();
             }
         }

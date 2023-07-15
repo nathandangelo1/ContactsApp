@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media.Imaging;
 
 namespace ContactsApp.Views
 {
@@ -12,14 +13,71 @@ namespace ContactsApp.Views
     /// </summary>
     public partial class ContactView : UserControl
     {
-        //public static Contact CurrentContact;
         public ContactView()
         {
             InitializeComponent();
         }
+        public static void PopulateView(ContactView ContactView)
+        {
+            Contact cc = Contact.CurrentContact;
+            
 
+            // If currentContact's property is not null, set the ContactView's equivalent control to value, else set it to null
+            ContactView.txtfullName.Text = (cc.FullName is not null) ? cc.FullName.Trim() : "";
+            ContactView.txtStreet.Text = (cc.Street is not null) ? cc.Street : "";
+            ContactView.txtCity.Text = (cc.City is not null) ? cc.City : "";
+            ContactView.txtState.Text = (cc.State is not null) ? cc.State : "";
+            ContactView.txtZip.Text = (cc.ZipCode is not null) ? cc.ZipCode : "";
+            ContactView.txtEmail.Text = (cc.Email is not null) ? cc.Email : "";
+            ContactView.txtPhone.Text = (cc.PhoneNumber is not null) ? cc.PhoneNumber : "";
+            ContactView.txtWebsite.Text = (cc.Website is not null) ? cc.Website : "";
+            ContactView.txtNotes.Text = (cc.Notes is not null) ? cc.Notes : "";
+            try
+            {
+                ContactView.imgContact.Source = new BitmapImage(new Uri(cc.Picture, UriKind.Absolute));
+            }
+            catch
+            {
+                MessageBoxResult result = MessageBox.Show("Photo error");
+
+                ContactView.imgContact.Source = new BitmapImage(new Uri("pack://application:,,,/Resources/noImage.png", UriKind.RelativeOrAbsolute));
+            }
+            if (ContactView.imgContact.Source.ToString().Contains("noImage.png"))
+            {
+                ContactView.imgContact.Height = 75;
+                ContactView.imgContact.Width = 75;
+            }
+            else
+            {
+                ContactView.imgContact.Height = 200;
+                ContactView.imgContact.Width = 200;
+            }
+
+            if (WithinRange(cc.Birthday))
+            {
+                ContactView.txtfullName.Text = ContactView.txtfullName.Text + $"\U0001F382";
+            }
+        }
+        private static bool WithinRange(DateTime? bday)
+        {
+            if (bday is null) return false;
+
+            DateTime birthday = (DateTime)bday;
+
+            // Get the current date
+            DateTime currentDate = DateTime.Today;
+
+            // Define the range boundaries
+            int rangeInDays = Settings.BirthdayRange;
+            DateTime rangeStart = currentDate.AddDays(-rangeInDays);
+            DateTime rangeEnd = currentDate.AddDays(rangeInDays);
+
+            // Check if the birthday's day of year is within the range
+            return birthday.DayOfYear >= rangeStart.DayOfYear && birthday.DayOfYear <= rangeEnd.DayOfYear;
+        }
         private void btnEdit_Click(object sender, RoutedEventArgs e)
         {
+            ViewSetter.PopulateEditView();
             ViewSetter.SetView(View.Edit);
         }
 
@@ -48,7 +106,6 @@ namespace ContactsApp.Views
                 ViewSetter.SetView(View.Home);
                 OnListChanged(nameof(ContactView));
             }
-
         }
 
         private void DeactivateContact(Contact contact)
@@ -58,7 +115,6 @@ namespace ContactsApp.Views
                 DataAccess da = new();
                 da.DeactivateContact(contact);
                 MainWindow.CL.Contacts[MainWindow.CL.Contacts.IndexOf(contact)].IsActive = 0;
-
             }
         }
 
@@ -83,8 +139,6 @@ namespace ContactsApp.Views
                         {
                             // Clear or reset the textblock properties
                             tb2.Text = "";
-                            //tb2.Foreground = Brushes.Black;
-                            //tb2.FontWeight = FontWeights.Normal;
                         }
                     }
                 }
