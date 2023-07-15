@@ -109,6 +109,30 @@ namespace ContactsApp
             //favoritesViewSource.SortDescriptions.Add(new SortDescription("LastName", ListSortDirection.Ascending));
             favoritesListView.ItemsSource = favoritesViewSource.View;
             Sort();
+            Settings.OnSettingsChange += Settings_OnSettingsChange;
+        }
+
+        private void Settings_OnSettingsChange(object? sender, EventArgs e)
+        {
+            if (Settings.SortByFirstName)
+            {
+                contactsViewSource.SortDescriptions.Clear();
+                contactsViewSource.SortDescriptions.Add(new SortDescription("FirstName", ListSortDirection.Ascending));
+                contactsViewSource.SortDescriptions.Add(new SortDescription("LastName", ListSortDirection.Ascending));
+                favoritesViewSource.SortDescriptions.Clear();
+                favoritesViewSource.SortDescriptions.Add(new SortDescription("FirstName", ListSortDirection.Ascending));
+                favoritesViewSource.SortDescriptions.Add(new SortDescription("LastName", ListSortDirection.Ascending));
+            }
+            else
+            {
+                contactsViewSource.SortDescriptions.Clear();
+                contactsViewSource.SortDescriptions.Add(new SortDescription("LastName", ListSortDirection.Ascending));
+                contactsViewSource.SortDescriptions.Add(new SortDescription("FirstName", ListSortDirection.Ascending));
+                favoritesViewSource.SortDescriptions.Clear();
+                favoritesViewSource.SortDescriptions.Add(new SortDescription("LastName", ListSortDirection.Ascending));
+                favoritesViewSource.SortDescriptions.Add(new SortDescription("FirstName", ListSortDirection.Ascending));
+            }
+            contactsViewSource.View.Refresh();
         }
 
         public void Sort()
