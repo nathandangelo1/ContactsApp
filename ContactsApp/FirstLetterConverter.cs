@@ -10,7 +10,7 @@ namespace ContactsApp
         {
             string s = value as string;
             if (s != null && s.Length > 0)
-                return s.Substring(0, 1);
+                return s[..1];
             return string.Empty;
         }
 

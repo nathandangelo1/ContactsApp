@@ -79,7 +79,7 @@ namespace ContactsApp
         {
             get
             {
-                if (Settings.SortByFirstName)
+                if ((bool)Settings.SortByFirstName)
                 {
                     return (NickName is not null) ? $"{NickName}" : (FirstName is not null) ? $"{FirstName}" : (LastName is not null) ? $"{LastName}" : null;
                 }

@@ -4,24 +4,30 @@ using System.Runtime.CompilerServices;
 
 namespace ContactsApp
 {
-    public static class Settings
+    public class Settings
     {
         public static event EventHandler OnSettingsChange;
+        
+        public static int BirthdayRange { get; set; } = 15;
+        private static bool? _sortByFirstName = true;
 
-        private static bool _sortByFirstName;
-        public static bool SortByFirstName
+        public static bool? SortByFirstName
         {
             get
             {
+                if (_sortByFirstName is null)
+                {
+                    return true;
+                }
                 return _sortByFirstName;
             }
             set
             {
-                if(value != null)
+                if(value != null && value != _sortByFirstName)
                 {
                     _sortByFirstName = value;
-                    //OnSettingsChange?.Invoke();
                     OnPropertyChanged(nameof(SortByFirstName));
+
                 }
             }
         }
@@ -32,7 +38,6 @@ namespace ContactsApp
             OnSettingsChange?.Invoke(typeof(Settings), new PropertyChangedEventArgs(propertyName));
         }
 
-        public static int BirthdayRange { get; set; } = 15;
 
     }
 }

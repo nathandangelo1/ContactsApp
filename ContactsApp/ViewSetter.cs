@@ -6,23 +6,40 @@ using System.Windows.Media.Imaging;
 
 namespace ContactsApp
 {
-    public sealed class ViewSetter
+    public sealed class ViewManager
     {
-        private static readonly ContactView contactView = new();
-        public static ContactView ContactView 
-        { 
-            get 
-            { 
-                return contactView; 
-            } 
+        private static ContactView contactView;
+        public static ContactView ContactView
+        {
+            get
+            {
+                if (contactView is null)
+                {
+                    return new ContactView();
+                }
+                return contactView;
+            }
+            set
+            {
+                contactView = value;
+            }
+
         }
-        private static readonly EditView editView = new();
-        public static EditView EditView 
-        { 
-            get 
-            { 
-                return editView; 
-            } 
+        private static EditView editView;
+        public static EditView EditView
+        {
+            get
+            {
+                if (editView is null)
+                {
+                    return new EditView();
+                }
+                return editView;
+            }
+            set
+            {
+                editView = value;
+            }
         }
         private static DeleteView deleteView;
         public static DeleteView DeleteView
@@ -41,32 +58,47 @@ namespace ContactsApp
             }
         }
         private static readonly SettingsView settingsView = new();
-        public static SettingsView SettingsView 
-        { 
-            get 
-            { 
-                return settingsView; 
-            } 
+        public static SettingsView SettingsView
+        {
+            get
+            {
+                if (settingsView is null)
+                {
+                    return new SettingsView();
+                }
+                return settingsView;
+            }
+
         }
-        private static AddView addView = new();
+        private static AddView addView;
         public static AddView AddView
         {
             get
             {
+                if (addView is null)
+                {
+                    return new AddView();
+                }
                 return addView;
             }
             set
             {
                 addView = value;
             }
+
         }
-        private static HomeView homeView = new();
+        private static HomeView homeView;
         public static HomeView HomeView
         {
-            get 
-            { 
-                return homeView; 
+            get
+            {
+                if (homeView is null)
+                {
+                    return new HomeView();
+                }
+                return homeView;
             }
+
         }
         public static ContentControl ContentArea { get; set; }
 
@@ -74,9 +106,6 @@ namespace ContactsApp
         {
             switch (view)
             {
-                case View.Contact:
-                    Contact.CurrentContact = null;
-                    break;
                 case View.Edit:
                     EditView.Reset();
                     break;
@@ -114,14 +143,21 @@ namespace ContactsApp
                     break;
             }
         }
-        public static void PopulateContactView()
-        {
+        //public delegate void PopulateViewDelegate();
+        
+        //public void PopulateView(PopulateViewDelegate populateView)
+        //{
+        //    populateView();
+        //}
 
-            ContactView.PopulateView(ContactView);
-        }
-        public static void PopulateEditView()
-        {
-            EditView.PopulateView();
-        }
+        //public static void PopulateContactView()
+        //{
+
+        //    ContactView.PopulateView(ContactView);
+        //}
+        //public static void PopulateEditView()
+        //{
+        //    EditView.PopulateView();
+        //}
     }
 }

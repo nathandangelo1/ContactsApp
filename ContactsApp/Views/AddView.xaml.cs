@@ -23,15 +23,16 @@ namespace ContactsApp.Views
 
         private void btnCancel_Click(object sender, RoutedEventArgs e)
         {
-            ViewSetter.ClearView(View.Add);
+            //ViewManager.ClearView(View.Add);
+            ViewManager.AddView = new();
 
             if (Contact.CurrentContact is not null)
             {
-                ViewSetter.SetView(View.Contact);
+                ViewManager.SetView(View.Contact);
             }
             else
             {
-                ViewSetter.SetView(View.Home);
+                ViewManager.SetView(View.Home);
             }
         }
 
@@ -72,8 +73,8 @@ namespace ContactsApp.Views
             };
             DataAccess conn = new();
             conn.UpdateContact(edit);
-            ViewSetter.SetView(View.Contact);
-            ViewSetter.ClearView(View.Edit);
+            ViewManager.SetView(View.Contact);
+            ViewManager.ClearView(View.Edit);
             Contact.CurrentContact = edit;
         }
 

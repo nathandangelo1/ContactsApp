@@ -10,7 +10,7 @@ namespace ContactsApp.Services
     public static class Helper
     {
         public static string CnnVal(string name)
-        {// GETS REQUESTED CONNECTION STRING ([movies]) FROM APP.CONFIG FILE
+        {// GETS REQUESTED CONNECTION STRING FROM APP.CONFIG FILE
             return ConfigurationManager.ConnectionStrings[name].ConnectionString;
         }
 

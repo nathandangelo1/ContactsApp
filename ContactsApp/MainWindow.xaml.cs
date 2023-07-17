@@ -9,7 +9,9 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
-
+using static ContactsApp.ViewManager;
+using static ContactsApp.Settings;
+using System.Linq;
 
 namespace ContactsApp
 {
@@ -33,10 +35,10 @@ namespace ContactsApp
             InitializeComponent();
 
             // Get main content area 
-            ViewSetter.ContentArea = MainWindowContentArea;
+            ContentArea = MainWindowContentArea;
 
             // Set the current view
-            ViewSetter.SetView(View.Home);
+            SetView(View.Home);
 
             // Instatiate dataAccess class
             DataAccess db = new();
@@ -46,22 +48,30 @@ namespace ContactsApp
             IEnumerable<Contact> results = db.GetContacts();
             CL.Contacts = new ObservableCollection<Contact>(results);
 
-            //var contacts = new ObservableCollection<Contact>();
+            ////Get Settings
+            //var results2 = db.GetSettings();
+            //var sortby = results2.Where(x => x.SettingId == 1).ElementAt(0);
+            //var bdayRange = results2.Where(x => x.SettingId == 2).ElementAt(0);
+            //SortByFirstName = sortby.Value == "true" ? true : false;
+            //BirthdayRange = int.Parse(bdayRange.Value);
+
+            // Create CollectionViewSource to model the collection view of main Contacts List
             contactsViewSource = new CollectionViewSource() { Source = CL.Contacts };
             contactsViewSource.Filter += (s, e) =>
             {
                 if (e.Item is Contact contact)
                 {
-                    if (string.IsNullOrEmpty(txtSearch.Text) && contact.IsActive == 1 /*&& contact.IsFavorite == 0*/)
+                    if (string.IsNullOrEmpty(txtSearch.Text) && contact.IsActive == 1)
                         e.Accepted = true;
                     else
                         e.Accepted = contact.FullName.Contains(txtSearch.Text, StringComparison.OrdinalIgnoreCase)
-                        && contact.IsActive == 1 /*&& contact.IsFavorite == 0*/;
+                        && contact.IsActive == 1;
                 }
             };
 
             contactsListView.ItemsSource = contactsViewSource.View;
 
+            // Create CollectionViewSource to model the collection view of main Favorites List
             favoritesViewSource = new CollectionViewSource() { Source = CL.Contacts };
             favoritesViewSource.Filter += (s, e) =>
             {
@@ -76,9 +86,9 @@ namespace ContactsApp
             };
             favoritesListView.ItemsSource = favoritesViewSource.View;
 
-            Settings.OnSettingsChange += Settings_OnSettingsChange;
-            ContactView.OnListChange += RefreshContactsList;
-            DeleteView.OnListChange += RefreshContactsList;
+            OnSettingsChange += Settings_OnSettingsChange;
+            Views.ContactView.OnListChange += RefreshContactsList;
+            Views.DeleteView.OnListChange += RefreshContactsList;
 
             // Event is fired below to sort and group contactsListView without a seperate function
             Settings_OnSettingsChange(new object(), new EventArgs());
@@ -91,7 +101,7 @@ namespace ContactsApp
 
         private void Settings_OnSettingsChange(object? sender, EventArgs e)
         {
-            if (Settings.SortByFirstName)
+            if ((bool)SortByFirstName)
             {
                 contactsViewSource.SortDescriptions.Clear();
                 contactsViewSource.GroupDescriptions.Clear();
@@ -128,21 +138,22 @@ namespace ContactsApp
             var item = (sender as ListView).SelectedItem;
             if (item != null)
             {
-                var contact = item as Contact;
-                Contact.CurrentContact = contact;
-                ViewSetter.SetView(View.Contact);
-                ViewSetter.PopulateContactView();
+                //var contact = item as Contact;
+                Contact.CurrentContact = item as Contact;
+                //PopulateContactView();
+                SetView(View.Contact);
+                ViewManager.ContactView = new();
             }
         }
 
         private void btnAdd_Click(object sender, RoutedEventArgs e)
         {
-            ViewSetter.SetView(View.Add);
+            SetView(View.Add);
         }
 
         private void btnSettings_Click(object sender, RoutedEventArgs e)
         {
-            ViewSetter.SetView(View.Settings);
+            SetView(View.Settings);
         }
 
         private void MinimizeButton_Click(object sender, RoutedEventArgs e)

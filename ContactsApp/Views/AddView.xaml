@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:ContactsApp.Views"
              mc:Ignorable="d" 
-            d:DesignHeight="650" d:DesignWidth="550">
+            d:DesignHeight="650" d:DesignWidth="650">
     
     <Grid Background="transparent" >
         <Grid.ColumnDefinitions>
@@ -41,8 +41,8 @@
             Grid.ColumnSpan="1"
             HorizontalAlignment="Center"
             VerticalAlignment="Top"
-            Width="220" 
-            Height="220"
+            Width="200" 
+            Height="200"
             >
             <Image 
                 x:Name="imgContact"

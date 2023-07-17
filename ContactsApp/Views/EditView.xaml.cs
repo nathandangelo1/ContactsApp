@@ -10,12 +10,11 @@ namespace ContactsApp.Views
     public partial class EditView : UserControl
     {
         private string? Picture { get; set; }
+
         public EditView()
         {
             InitializeComponent();
-        }
-        public void PopulateView()
-        {
+
             Contact cc = Contact.CurrentContact;
             if (cc.IsFavorite == 1) checkbxFav.IsChecked = true;
 
@@ -58,50 +57,101 @@ namespace ContactsApp.Views
                 imgContact.Width = 200;
             }
         }
+        //public void PopulateView()
+        //{
+        //    Contact cc = Contact.CurrentContact;
+        //    if (cc.IsFavorite == 1) checkbxFav.IsChecked = true;
+
+        //    // If currentContact's property is not null,
+        //    // set the ContactView's equivalent control to value,
+        //    // else set it to null
+        //    txtbxFirst.Text = (cc.FirstName is not null) ? cc.FirstName.Trim() : "";
+        //    txtbxMiddle.Text = (cc.MiddleName is not null) ? cc.MiddleName : "";
+        //    txtbxNick.Text = (cc.NickName is not null) ? cc.NickName : "";
+        //    txtbxLast.Text = (cc.LastName is not null) ? cc.LastName : "";
+        //    txtbxTitle.Text = (cc.Title is not null) ? cc.Title : "";
+        //    datePickerBday.SelectedDate = (cc.Birthday is not null) ? cc.Birthday : null;
+        //    txtbxEmail.Text = (cc.Email is not null) ? cc.Email : "";
+        //    txtbxPhone.Text = (cc.PhoneNumber is not null) ? cc.PhoneNumber : "";
+        //    txtbxStreet.Text = (cc.Street is not null) ? cc.Street : "";
+        //    txtbxCity.Text = (cc.City is not null) ? cc.City : "";
+        //    txtbxState.Text = (cc.State is not null) ? cc.State : "";
+        //    txtbxZip.Text = (cc.ZipCode is not null) ? cc.ZipCode : "";
+        //    txtbxCountry.Text = (cc.Country is not null) ? cc.Country : "";
+        //    txtbxWebsite.Text = (cc.Website is not null) ? cc.Website : "";
+        //    txtbxNotes.Text = (cc.Notes is not null) ? cc.Notes : "";
+
+        //    try
+        //    {
+        //        imgContact.Source = new BitmapImage(new Uri(cc.Picture, UriKind.RelativeOrAbsolute));
+        //    }
+        //    catch
+        //    {
+        //        imgContact.Source = new BitmapImage(new Uri("pack://application:,,,/Resources/noImage.png", UriKind.RelativeOrAbsolute));
+        //    }
+
+        //    if (imgContact.Source.ToString().Contains("noImage.png"))
+        //    {
+        //        imgContact.Height = 75;
+        //        imgContact.Width = 75;
+        //    }
+        //    else
+        //    {
+        //        imgContact.Height = 200;
+        //        imgContact.Width = 200;
+        //    }
+        //}
 
         private void btnCancel_Click(object sender, RoutedEventArgs e)
         {
             Reset();
-            ViewSetter.SetView(View.Contact);
+            ViewManager.SetView(View.Contact);
         }
 
         private void btnSaveChanges_Click(object sender, RoutedEventArgs e)
         {
-            DateTime? BdayDateTime = (datePickerBday.SelectedDate is not null) ? new DateTime(datePickerBday.SelectedDate.Value.Year, datePickerBday.SelectedDate.Value.Month, datePickerBday.SelectedDate.Value.Day) : null;
+            DateTime? BdayDateTime = 
+                (datePickerBday.SelectedDate is null) ? 
+                null :
+                new DateTime(datePickerBday.SelectedDate.Value.Year,
+                    datePickerBday.SelectedDate.Value.Month, 
+                    datePickerBday.SelectedDate.Value.Day);
 
             Contact edit = new()
             {
                 Id = Contact.CurrentContact.Id,
-                FirstName = !string.IsNullOrWhiteSpace(txtbxFirst.Text) ? txtbxFirst.Text : null,
-                MiddleName = !string.IsNullOrWhiteSpace(txtbxMiddle.Text) ? txtbxMiddle.Text : null,
-                NickName = !string.IsNullOrWhiteSpace(txtbxNick.Text) ? txtbxNick.Text : null,
-                LastName = !string.IsNullOrWhiteSpace(txtbxLast.Text) ? txtbxLast.Text : null,
-                Title = !string.IsNullOrWhiteSpace(txtbxTitle.Text) ? txtbxTitle.Text : null,
-                
+                FirstName = string.IsNullOrWhiteSpace(txtbxFirst.Text) ? null : txtbxFirst.Text,
+                MiddleName = string.IsNullOrWhiteSpace(txtbxMiddle.Text) ? null : txtbxMiddle.Text,
+                NickName = string.IsNullOrWhiteSpace(txtbxNick.Text) ? null : txtbxNick.Text,
+                LastName = string.IsNullOrWhiteSpace(txtbxLast.Text) ? null : txtbxLast.Text,
+                Title = string.IsNullOrWhiteSpace(txtbxTitle.Text) ? null : txtbxTitle.Text,
                 Birthday = (datePickerBday.SelectedDate != null) ? BdayDateTime : null,
-
-                Email = !string.IsNullOrWhiteSpace(txtbxEmail.Text) ? txtbxEmail.Text : null,
-                PhoneNumber = !string.IsNullOrWhiteSpace(txtbxPhone.Text) ? txtbxPhone.Text : null,
-                Street = !string.IsNullOrWhiteSpace(txtbxNick.Text) ? txtbxStreet.Text : null,
-                City = !string.IsNullOrWhiteSpace(txtbxCity.Text) ? txtbxCity.Text : null,
-                State = !string.IsNullOrWhiteSpace(txtbxState.Text) ? txtbxState.Text : null,
-                ZipCode = !string.IsNullOrWhiteSpace(txtbxZip.Text) ? txtbxZip.Text : null,
-                Country = !string.IsNullOrWhiteSpace(txtbxCountry.Text) ? txtbxCountry.Text : null,
-                Website = !string.IsNullOrWhiteSpace(txtbxWebsite.Text) ? txtbxWebsite.Text : null,
-                Notes = !string.IsNullOrWhiteSpace(txtbxNotes.Text) ? txtbxNotes.Text : null,
-                Picture = !string.IsNullOrWhiteSpace(Picture) ? Picture : null,
+                Email = string.IsNullOrWhiteSpace(txtbxEmail.Text) ? null : txtbxEmail.Text,
+                PhoneNumber = string.IsNullOrWhiteSpace(txtbxPhone.Text) ? null : txtbxPhone.Text,
+                Street = string.IsNullOrWhiteSpace(txtbxNick.Text) ? null : txtbxNick.Text,
+                City = string.IsNullOrWhiteSpace(txtbxCity.Text) ? null : txtbxCity.Text,
+                State = string.IsNullOrWhiteSpace(txtbxState.Text) ? null : txtbxState.Text,
+                ZipCode = string.IsNullOrWhiteSpace(txtbxZip.Text) ? null : txtbxZip.Text,
+                Country = string.IsNullOrWhiteSpace(txtbxCountry.Text) ? null : txtbxCountry.Text,
+                Website = string.IsNullOrWhiteSpace(txtbxWebsite.Text) ? null : txtbxWebsite.Text,
+                Notes = string.IsNullOrWhiteSpace(txtbxNotes.Text) ? null : txtbxNotes.Text,
+                Picture = string.IsNullOrWhiteSpace(Picture) ? null : Picture,
                 IsActive = 1,
                 IsFavorite = (checkbxFav.IsChecked == true) ? (byte)1 : (byte)0
             };
+            // Update Database
             DataAccess conn = new();
             conn.UpdateContact(edit);
 
             // Return to ContactView
-            ViewSetter.SetView(View.Contact);
-            ViewSetter.ClearView(View.Edit);
+            ViewManager.SetView(View.Contact);
+            // Clear current view
+            //ViewManager.ClearView(View.Edit);
+            // Update CurrentContact
             Contact.CurrentContact = edit;
-            ViewSetter.PopulateContactView();
-            //Refresh();
+            // Display Contact
+            //ViewSetter.PopulateContactView();
+            ViewManager.ContactView = new();
         }
 
         private void btnUpload_Click(object sender, RoutedEventArgs e)
@@ -137,9 +187,5 @@ namespace ContactsApp.Views
             }
             if ((bool)checkbxFav.IsChecked) checkbxFav.IsChecked = false;
         }
-        //private void Refresh()
-        //{
-        //    ViewSetter.PopulateContactView();
-        //}
     }
 }
