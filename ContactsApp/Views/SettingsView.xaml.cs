@@ -13,13 +13,16 @@ namespace ContactsApp.Views
         public SettingsView()
         {
             InitializeComponent();
-            //Get Settings
+
+            //Get/Set initial Settings
             DataAccess db = new();
             var results2 = db.GetSettings();
             var sortby = results2.Where(x => x.SettingId == 1).ElementAt(0);
             var bdayRange = results2.Where(x => x.SettingId == 2).ElementAt(0);
             Settings.SortByFirstName = sortby.Value == "true" ? true : false;
             Settings.BirthdayRange = int.Parse(bdayRange.Value);
+            
+            //Update UI
             rbFirstName.IsChecked = Settings.SortByFirstName;
             rbLastName.IsChecked = !Settings.SortByFirstName;
             sliderBday.Value = Settings.BirthdayRange;
@@ -44,7 +47,11 @@ namespace ContactsApp.Views
             var db = new DataAccess();
             db.UpdateSettings();
 
-            if (Contact.CurrentContact is null) ViewManager.SetView(View.Home); 
+            if (Contact.CurrentContact is null)
+            {
+                Contact.CurrentContact = MainWindow.GetRandomContact();
+                ViewManager.SetView(View.Contact);
+            }
             else ViewManager.SetView(View.Contact);
         }
 
@@ -60,7 +67,11 @@ namespace ContactsApp.Views
 
         private void btnExit_Click(object sender, RoutedEventArgs e)
         {
-            if (Contact.CurrentContact is null) ViewManager.SetView(View.Home);
+            if (Contact.CurrentContact is null)
+            {
+                Contact.CurrentContact = MainWindow.GetRandomContact();
+                ViewManager.SetView(View.Contact);
+            }
             else ViewManager.SetView(View.Contact);
         }
     }

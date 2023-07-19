@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Configuration;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -37,9 +36,6 @@ namespace ContactsApp
             // Get main content area 
             ContentArea = MainWindowContentArea;
 
-            // Set the current view
-            SetView(View.Home);
-
             // Instatiate dataAccess class
             DataAccess db = new();
 
@@ -47,13 +43,6 @@ namespace ContactsApp
             CL = new();
             IEnumerable<Contact> results = db.GetContacts();
             CL.Contacts = new ObservableCollection<Contact>(results);
-
-            ////Get Settings
-            //var results2 = db.GetSettings();
-            //var sortby = results2.Where(x => x.SettingId == 1).ElementAt(0);
-            //var bdayRange = results2.Where(x => x.SettingId == 2).ElementAt(0);
-            //SortByFirstName = sortby.Value == "true" ? true : false;
-            //BirthdayRange = int.Parse(bdayRange.Value);
 
             // Create CollectionViewSource to model the collection view of main Contacts List
             contactsViewSource = new CollectionViewSource() { Source = CL.Contacts };
@@ -68,10 +57,10 @@ namespace ContactsApp
                         && contact.IsActive == 1;
                 }
             };
-
+            //Set listview to corresponding view
             contactsListView.ItemsSource = contactsViewSource.View;
 
-            // Create CollectionViewSource to model the collection view of main Favorites List
+            // Create ViewSource to model the collection view of Favorites List
             favoritesViewSource = new CollectionViewSource() { Source = CL.Contacts };
             favoritesViewSource.Filter += (s, e) =>
             {
@@ -84,8 +73,10 @@ namespace ContactsApp
                         && contact.IsActive == 1 && contact.IsFavorite == 1;
                 }
             };
+            //Set listview to corresponding view
             favoritesListView.ItemsSource = favoritesViewSource.View;
 
+            // Subscribe to important events
             OnSettingsChange += Settings_OnSettingsChange;
             Views.ContactView.OnListChange += RefreshContactsList;
             Views.DeleteView.OnListChange += RefreshContactsList;
@@ -93,6 +84,19 @@ namespace ContactsApp
             // Event is fired below to sort and group contactsListView without a seperate function
             Settings_OnSettingsChange(new object(), new EventArgs());
 
+            //Get random contact for initial display
+            Contact.CurrentContact = GetRandomContact();
+            
+            // Set and populate the current view
+            SetView(View.Contact);
+            ViewManager.ContactView.PopulateView();
+        }
+        public static Contact GetRandomContact()
+        {
+            Random rnd = new Random();
+            var list = CL.Contacts.Where(x => x.IsActive == 1);
+            int randIndex = rnd.Next(list.Count());
+            return list.ElementAt(randIndex);
         }
         private void RefreshContactsList(object? sender, EventArgs e)
         {
@@ -101,36 +105,23 @@ namespace ContactsApp
 
         private void Settings_OnSettingsChange(object? sender, EventArgs e)
         {
-            if ((bool)SortByFirstName)
-            {
-                contactsViewSource.SortDescriptions.Clear();
-                contactsViewSource.GroupDescriptions.Clear();
-                contactsViewSource.SortDescriptions.Add(new SortDescription("FirstName", ListSortDirection.Ascending));
-                contactsViewSource.SortDescriptions.Add(new SortDescription("LastName", ListSortDirection.Ascending));
-                contactsViewSource.GroupDescriptions.Add(new PropertyGroupDescription("GroupingName", new FirstLetterConverter()));
-                favoritesViewSource.SortDescriptions.Clear();
-                favoritesViewSource.SortDescriptions.Add(new SortDescription("FirstName", ListSortDirection.Ascending));
-                favoritesViewSource.SortDescriptions.Add(new SortDescription("LastName", ListSortDirection.Ascending));
-
+            contactsViewSource.SortDescriptions.Clear();
+            favoritesViewSource.SortDescriptions.Clear();
+            contactsViewSource.GroupDescriptions.Clear();
                 
-            }
-            else
-            {
-                contactsViewSource.SortDescriptions.Clear();
-                contactsViewSource.GroupDescriptions.Clear();
-                contactsViewSource.SortDescriptions.Add(new SortDescription("LastName", ListSortDirection.Ascending));
-                contactsViewSource.SortDescriptions.Add(new SortDescription("FirstName", ListSortDirection.Ascending));
-                contactsViewSource.GroupDescriptions.Add(new PropertyGroupDescription("GroupingName", new FirstLetterConverter()));
-                favoritesViewSource.SortDescriptions.Clear();
-                favoritesViewSource.SortDescriptions.Add(new SortDescription("LastName", ListSortDirection.Ascending));
-                favoritesViewSource.SortDescriptions.Add(new SortDescription("FirstName", ListSortDirection.Ascending));
-            }
+            contactsViewSource.GroupDescriptions.Add(new PropertyGroupDescription("GroupingName", new FirstLetterConverter()));
+            contactsViewSource.SortDescriptions.Add(new SortDescription(((bool)SortByFirstName ? "GroupingName" : "LastName"  ), ListSortDirection.Ascending));
+            contactsViewSource.SortDescriptions.Add(new SortDescription(((bool)SortByFirstName ? "LastName"  : "GroupingName" ), ListSortDirection.Ascending));
+            favoritesViewSource.SortDescriptions.Add(new SortDescription(((bool)SortByFirstName ? "GroupingName" : "LastName" ), ListSortDirection.Ascending));
+            favoritesViewSource.SortDescriptions.Add(new SortDescription(((bool)SortByFirstName ? "LastName"  : "GroupingName"), ListSortDirection.Ascending));
+
             contactsViewSource.View.Refresh();
         }
 
         private void txtFilter_TextChanged(object sender, TextChangedEventArgs e)
         {
             contactsViewSource.View.Refresh();
+            favoritesViewSource.View.Refresh();
         }
 
         private void listView_Click(object sender, RoutedEventArgs e)
@@ -140,9 +131,8 @@ namespace ContactsApp
             {
                 //var contact = item as Contact;
                 Contact.CurrentContact = item as Contact;
-                //PopulateContactView();
+                ViewManager.ContactView.PopulateView();
                 SetView(View.Contact);
-                ViewManager.ContactView = new();
             }
         }
 

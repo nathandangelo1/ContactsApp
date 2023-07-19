@@ -86,7 +86,6 @@ namespace ContactsApp
                 
                 else
                 {
-                    //return (LastName is not null) ? $"{LastName}" : (NickName is not null) ? $"{NickName}" : (FirstName is not null) ? $"{FirstName}" : null;
                     return (LastName is not null) ? $"{LastName}" : null;
                 }
             }

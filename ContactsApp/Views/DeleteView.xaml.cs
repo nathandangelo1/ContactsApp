@@ -11,14 +11,17 @@ using System.Windows.Media.Imaging;
 
 namespace ContactsApp.Views
 {
-    /// <summary>
-    /// Interaction logic for DeleteView.xaml
-    /// </summary>
+
     public partial class DeleteView : UserControl
     {
-        //public ListCollectionView InactiveCollectionView;
         public Contact Selected;
         public CollectionViewSource InactiveViewSource;
+        public static event EventHandler OnListChange;
+
+        public static void OnListChanged(string propertyName)
+        {
+            OnListChange?.Invoke(typeof(Settings), new PropertyChangedEventArgs(propertyName));
+        }
         public DeleteView()
         {
             InitializeComponent();
@@ -68,13 +71,12 @@ namespace ContactsApp.Views
                     imgContact.Height = 75;
                     imgContact.Width = 75;
                 }
+                else
+                {
+                    imgContact.Height = 200;
+                    imgContact.Width = 200;
+                }
             }
-        }
-        public static event EventHandler OnListChange;
-
-        public static void OnListChanged(string propertyName)
-        {
-            OnListChange?.Invoke(typeof(Settings), new PropertyChangedEventArgs(propertyName));
         }
         private void btnDelete_Click(object sender, RoutedEventArgs e)
         {
@@ -98,6 +100,7 @@ namespace ContactsApp.Views
                 OnListChanged(nameof(DeleteView));
             }
         }
+        // Sets all fields to null/empty
         private void Clear()
         {
             txtfullName.Text = "";
@@ -107,16 +110,14 @@ namespace ContactsApp.Views
             txtCity.Text = "";
             txtState.Text = "";
             txtZip.Text = "";
-            //itemStackPanel.Visibility = Visibility.Hidden;
-
         }
-
+        // Permanently deletes all inactive contacts
         private void btnPurgeAll_Click(object sender, RoutedEventArgs e)
         {
             List<Contact> contacts = new();
 
             // Display a message box with Yes and No buttons and a question icon
-            MessageBoxResult result = MessageBox.Show($"Are you sure you want to permanently delete ALL?", "Confirm Delete", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            MessageBoxResult result = MessageBox.Show($"Purge ALL deleted? Are you sure?", "Confirm Delete", MessageBoxButton.YesNo, MessageBoxImage.Question);
 
             // Check the result of the message box
             if (result == MessageBoxResult.Yes)
@@ -149,12 +150,33 @@ namespace ContactsApp.Views
                 var contact = item as Contact;
                 Selected = contact;
                 txtfullName.Text = (contact.FullName is not null) ? contact.FullName : null;
-                imgContact.Source = (contact.Picture is not null) ? new BitmapImage(new Uri(Selected.Picture)) : null;
+                //imgContact.Source = (contact.Picture is not null) ? new BitmapImage(new Uri(Selected.Picture)) : null;
                 txtPhone.Text = (contact.PhoneNumber is not null) ? contact.PhoneNumber : null;
                 txtStreet.Text = (contact.Street is not null) ? contact.Street : null;
                 txtCity.Text = (contact.City is not null) ? contact.City : null;
                 txtStreet.Text = (contact.Street is not null) ? contact.Street : null;
                 txtZip.Text = (contact.ZipCode is not null) ? contact.ZipCode : null;
+                try
+                {
+                    imgContact.Source = new BitmapImage(new Uri(contact.Picture, UriKind.Absolute));
+                }
+                catch
+                {
+                    MessageBoxResult result = MessageBox.Show("Photo error");
+
+                    imgContact.Source = new BitmapImage(new Uri("pack://application:,,,/Resources/noImage.png", UriKind.RelativeOrAbsolute));
+                }
+                // if stock image, make smaller
+                if (imgContact.Source.ToString().Contains("noImage.png"))
+                {
+                    imgContact.Height = 75;
+                    imgContact.Width = 75;
+                }
+                else
+                {
+                    imgContact.Height = 200;
+                    imgContact.Width = 200;
+                }
 
             }
         }
@@ -164,9 +186,11 @@ namespace ContactsApp.Views
             Contact contact = Selected;
             // If the user clicked Yes, perform the delete operation
             DataAccess da = new();
+            // Set local copy to active
             contact.IsActive = 1;
+            // Update db
             da.UpdateContact(contact);
-
+            //Update List
             MainWindow.CL.Contacts[MainWindow.CL.Contacts.IndexOf(contact)].IsActive = 1;
             Selected = null;
             Clear();
@@ -177,22 +201,26 @@ namespace ContactsApp.Views
 
         private void btnRestoreAll_Click(object sender, RoutedEventArgs e)
         {
+            // Used to tally up all Contacts in inactiveListView
             List<Contact> contacts = new();
 
             // Display a message box with Yes and No buttons and a question icon
             MessageBoxResult result = MessageBox.Show($"Are you sure you want to restore ALL?", "Confirm Restore", MessageBoxButton.YesNo, MessageBoxImage.Question);
 
             // Check the result of the message box
+            // If the user clicked Yes, perform the delete operation
             if (result == MessageBoxResult.Yes)
             {
                 DataAccess da = new();
-                // If the user clicked Yes, perform the delete operation
+
+                // Collect all inactive Contacts
                 foreach (var item in inactiveListView.Items)
                 {
                     Contact contact = item as Contact;
                     contact.IsActive = 1;
                     contacts.Add(contact);
                 }
+                // Set all inactive in DB to active
                 foreach (var contact in contacts)
                 {
                     da.UpdateContact(contact);

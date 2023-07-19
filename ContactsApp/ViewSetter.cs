@@ -8,39 +8,35 @@ namespace ContactsApp
 {
     public sealed class ViewManager
     {
-        private static ContactView contactView;
+        public static ContentControl ContentArea { get; set; }
+        
+        private static readonly ContactView contactView = new();
         public static ContactView ContactView
         {
-            get
+            get 
             {
-                if (contactView is null)
-                {
-                    return new ContactView();
-                }
                 return contactView;
-            }
-            set
-            {
-                contactView = value;
-            }
+            } 
 
         }
+        
         private static EditView editView;
         public static EditView EditView
         {
-            get
+            get 
             {
                 if (editView is null)
                 {
                     return new EditView();
                 }
                 return editView;
-            }
+            } 
             set
             {
                 editView = value;
             }
         }
+        
         private static DeleteView deleteView;
         public static DeleteView DeleteView
         {
@@ -57,7 +53,8 @@ namespace ContactsApp
                 deleteView = value;
             }
         }
-        private static readonly SettingsView settingsView = new();
+        
+        private static SettingsView settingsView = new();
         public static SettingsView SettingsView
         {
             get
@@ -70,6 +67,7 @@ namespace ContactsApp
             }
 
         }
+        
         private static AddView addView;
         public static AddView AddView
         {
@@ -87,20 +85,6 @@ namespace ContactsApp
             }
 
         }
-        private static HomeView homeView;
-        public static HomeView HomeView
-        {
-            get
-            {
-                if (homeView is null)
-                {
-                    return new HomeView();
-                }
-                return homeView;
-            }
-
-        }
-        public static ContentControl ContentArea { get; set; }
 
         public static void ClearView(View view)
         {
@@ -112,8 +96,6 @@ namespace ContactsApp
                 case View.Add:
                     AddView = new();
                     break;
-                case View.Home:
-                    break;
             }
         }
         public static void SetView(View view)
@@ -121,7 +103,8 @@ namespace ContactsApp
             switch (view)
             {
                 case View.Contact:
-                    ContentArea.Content = ContactView; 
+                    ContentArea.Content = ContactView;
+                    ContactView.PopulateView();
                     break;
                 case View.Edit:
                     ContentArea.Content = EditView; 
@@ -135,29 +118,10 @@ namespace ContactsApp
                 case View.Settings:
                     ContentArea.Content = SettingsView; 
                     break;
-                case View.Home:
-                    ContentArea.Content = HomeView; 
-                    break;
                 default:
                     ContentArea.Content = ContactView; 
                     break;
             }
         }
-        //public delegate void PopulateViewDelegate();
-        
-        //public void PopulateView(PopulateViewDelegate populateView)
-        //{
-        //    populateView();
-        //}
-
-        //public static void PopulateContactView()
-        //{
-
-        //    ContactView.PopulateView(ContactView);
-        //}
-        //public static void PopulateEditView()
-        //{
-        //    EditView.PopulateView();
-        //}
     }
 }

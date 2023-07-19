@@ -6,7 +6,6 @@ namespace ContactsApp
 {
     public class Settings
     {
-        public static event EventHandler OnSettingsChange;
         
         public static int BirthdayRange { get; set; } = 15;
         private static bool? _sortByFirstName = true;
@@ -32,7 +31,8 @@ namespace ContactsApp
             }
         }
 
-        //public static event PropertyChangedEventHandler PropertyChanged;
+        public static event EventHandler OnSettingsChange;
+        
         private static void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             OnSettingsChange?.Invoke(typeof(Settings), new PropertyChangedEventArgs(propertyName));

@@ -6,74 +6,79 @@
              xmlns:local="clr-namespace:ContactsApp.Views"
              mc:Ignorable="d" 
              d:DesignHeight="650" d:DesignWidth="550">
+    <Grid Margin="0,0,0,0">
 
-    <Grid >
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
-        </Grid.RowDefinitions>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
 
-        <Border 
-            BorderThickness="1" 
-            BorderBrush="AntiqueWhite"
-            Grid.Column="0"
-            Grid.Row="0"
-            Grid.RowSpan="2"
-            Grid.ColumnSpan="1"
-            Height="220"
-            Width="220"
-            >
-            <Image  
-                x:Name="imgContact" 
-                VerticalAlignment="Center" 
-                HorizontalAlignment="Center" 
-                Margin="0,0,0,0" 
-                Height="200" Width="200"  
-                Grid.Row="0" Grid.Column="0" 
-                Grid.RowSpan="2" Grid.ColumnSpan="1"
-                Source="/Resources/noImage.png"/>
-        </Border>
+            </Grid.RowDefinitions>
 
-        <StackPanel 
-            x:Name="contactPanel" 
-            Margin="10,30,10,10" 
-            Grid.Column="1" 
-            Grid.Row="0" 
-            Grid.RowSpan="3" 
-            Grid.ColumnSpan="3" 
-            >
+            <Border 
+                BorderThickness="1" 
+                BorderBrush="AntiqueWhite"
+                Grid.Column="0"
+                Grid.Row="0"
+                Grid.RowSpan="2"
+                Grid.ColumnSpan="1"
+                Height="210"
+                Width="210"
+                >
+                <Image  
+                    x:Name="imgContact" 
+                    VerticalAlignment="Center" 
+                    HorizontalAlignment="Center" 
+                    Margin="0,0,0,0" 
+                    Height="200" 
+                    Width="200"  
+                    Grid.Row="0" 
+                    Grid.Column="0" 
+                    Grid.RowSpan="2" 
+                    Grid.ColumnSpan="1"
+                    Source="/Resources/noImage.png"/>
+            </Border>
+            <StackPanel 
+                x:Name="contactPanel" 
+                Margin="10,50,10,10" 
+                Grid.Column="1" 
+                Grid.Row="0" 
+                Grid.RowSpan="3" 
+                Grid.ColumnSpan="3" 
+                >
             <TextBlock  
                 x:Name="txtfullName" 
-                Margin="0,0,0,10" 
+                Margin="0,0,50,0"
+                TextAlignment="Left"
                 FontFamily="Unispace" 
-                HorizontalAlignment="Left" 
                 TextWrapping="Wrap" 
-                Text="Full Name"  
+                Text="Full Name"
+                Grid.ColumnSpan="2"
                 MinWidth="88" 
                 Foreground="white" 
-                FontSize="18" 
+                FontSize="24" 
                 />
-            <TextBlock  
-                x:Name="txtStreet" 
-                FontFamily="Unispace" 
-                HorizontalAlignment="Left"  
-                TextWrapping="Wrap" 
-                Text="Street"  
-                MinWidth="88" 
-                Foreground="white" 
-                FontSize="14" 
-                />
-            <StackPanel 
-                Margin="0,5,0,0" 
-                >
-                <TextBlock  
+
+                <StackPanel 
+                    Margin="0,15,0,0" 
+                    >
+                    <TextBlock  
+                    x:Name="txtStreet" 
+                    FontFamily="Unispace" 
+                    HorizontalAlignment="Left"  
+                    TextWrapping="Wrap" 
+                    Text="Street"  
+                    MinWidth="88" 
+                    Foreground="white" 
+                    FontSize="14" 
+                    />
+                    <TextBlock  
                     x:Name="txtCity" 
                     FontFamily="Unispace" 
                     HorizontalAlignment="Left" 
@@ -83,7 +88,7 @@
                     Foreground="white" 
                     FontSize="14" 
                     />
-                <TextBlock  
+                    <TextBlock  
                     x:Name="txtState"
                     Text="State"  
                     FontFamily="Unispace" 
@@ -93,8 +98,8 @@
                     Foreground="white" 
                     FontSize="14" 
                     />
-            </StackPanel>
-            <TextBlock  
+                </StackPanel>
+                <TextBlock  
                 x:Name="txtZip" 
                 FontFamily="Unispace" 
                 Padding="0,10,0,0" 
@@ -105,7 +110,7 @@
                 Foreground="white"
                 FontSize="14" 
                 />
-            <TextBlock  
+                <TextBlock  
                 x:Name="txtEmail" 
                 Margin="0,10,0,0" 
                 FontFamily="Unispace" 
@@ -116,7 +121,7 @@
                 Foreground="white" 
                 FontSize="14"  
                 />
-            <TextBlock  
+                <TextBlock  
                 x:Name="txtPhone" 
                 Margin="0,10,0,0" 
                 FontFamily="Unispace" 
@@ -127,22 +132,22 @@
                 Foreground="white" 
                 FontSize="14" 
                 />
-        </StackPanel>
+            </StackPanel>
 
-        <StackPanel 
+            <StackPanel 
             Grid.Column="0" 
             Grid.Row="2" 
             Margin="40,10,60,0" 
             Grid.ColumnSpan="3" 
             Grid.RowSpan="2"
             >
-            <Label  
+                <Label  
                 Content="Website" 
                 FontFamily="Unispace" 
                 Foreground="white" 
                 FontSize="14" 
                 />
-            <TextBlock  
+                <TextBlock  
                 x:Name="txtWebsite" 
                 Grid.ColumnSpan="2" 
                 Margin="5,0,0,0" 
@@ -155,14 +160,14 @@
                 FontSize="14" 
                 />
 
-            <Label  
+                <Label  
                 Content="Notes:" 
                 Margin="0,15,0,5" 
                 FontFamily="Unispace" 
                 Foreground="white" 
                 FontSize="14" 
                 />
-            <TextBlock  
+                <TextBlock  
                 x:Name="txtNotes" 
                 Grid.ColumnSpan="2" 
                 Margin="5,0,0,0" 
@@ -174,14 +179,14 @@
                 Foreground="white" 
                 FontSize="14" 
                 />
-        </StackPanel>
-        <StackPanel     
+            </StackPanel>
+            <StackPanel     
             Orientation="Horizontal" 
             Grid.Row="4" Grid.Column="0"
             Grid.RowSpan="3" 
             Grid.ColumnSpan="2"
             >
-            <Button 
+                <Button 
                 x:Name="btnEdit" 
                 Content="Edit Contact" 
                 Click="btnEdit_Click" 
@@ -194,7 +199,7 @@
                 Background="White" 
                 FontSize="14"
                 />
-            <Button 
+                <Button 
                 x:Name="btnDelete" 
                 Content="Delete Contact" 
                 Margin="40,0,0,0"
@@ -208,6 +213,7 @@
                 FontSize="14" 
                 Padding="5"
                 />
-        </StackPanel>
+            </StackPanel>
+        </Grid>
     </Grid>
 </UserControl>

@@ -21,9 +21,12 @@
         </Style>
     </Window.Style>
     <Window.Resources>
+
+
+        <local:FirstLetterConverter x:Key="FirstLetterConverter"/>
         <!-- Data template for AccountListBox grouping -->
         <DataTemplate x:Key="GroupingHeader">
-            <TextBlock Text="{Binding Path=GroupingName}" Background="Transparent"  Foreground="White" />
+            <TextBlock DataContext="{Binding Source=GroupingName}"  Background="Transparent"  Foreground="White" />
         </DataTemplate>
     </Window.Resources>
 
@@ -82,6 +85,7 @@
                Margin="15,0,0,0"
                />
         <TextBox x:Name="txtSearch" 
+                 TextChanged="txtFilter_TextChanged" 
                  Grid.Column="0" Grid.Row="2" 
                  TextWrapping="Wrap" 
                  Text="" 
@@ -90,7 +94,6 @@
                  VerticalAlignment="Center" 
                  HorizontalAlignment="Left" 
                  Margin="70,0,0,0" 
-                 TextChanged="txtFilter_TextChanged" 
                  />
 
         <Grid x:Name="miniGrid" 
@@ -130,6 +133,7 @@
                     PreviewMouseLeftButtonUp="listView_Click" 
                     Background="darkviolet" 
                     Margin="0,0,0,0"
+                    ScrollViewer.CanContentScroll="true"
                     >
                     <ListView.ItemTemplate>
                         <DataTemplate>
@@ -143,6 +147,7 @@
                                 />
                         </DataTemplate>
                     </ListView.ItemTemplate>
+                    
                 </ListView>
             </Grid>
 

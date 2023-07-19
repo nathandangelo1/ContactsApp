@@ -4,7 +4,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:ContactsApp.Views"
-             xmlns:ContactsApp="clr-namespace:ContactsApp" x:Class="ContactsApp.Views.SettingsView"
+             xmlns:ContactsApp="clr-namespace:ContactsApp" 
+             x:Class="ContactsApp.Views.SettingsView"
              mc:Ignorable="d" 
              d:DesignHeight="650" d:DesignWidth="500">
 
@@ -16,13 +17,16 @@
             Width="300"
             >
             <Label 
-                Margin="10,10,0,0" 
+                Margin="0,10,0,0" 
                 Content="Alphabetize By:" 
                 FontFamily="Unispace" 
                 FontSize="16"
                 Foreground="AntiqueWhite"
+                HorizontalAlignment="Center"
                 />
-            <StackPanel  Margin="20,10,0,20">
+            <StackPanel  Margin="0,10,0,20"
+                         HorizontalAlignment="Center"
+                         >
                 <RadioButton 
                     x:Name="rbFirstName" 
                     IsChecked="true"
@@ -89,7 +93,7 @@
 
             <Button 
                 x:Name="btnCleanUp" 
-                Margin="0,70,0,0"  
+                Margin="0,90,0,0"  
                 Content="Clean-Up Deleted Contacts" 
                 Width="200" 
                 Height="30" 
@@ -98,7 +102,7 @@
             
             <StackPanel 
                 Orientation="Vertical" 
-                Margin="0,60,0,0" 
+                Margin="0,80,0,0" 
                 HorizontalAlignment="Center"
                 >
                 
@@ -112,7 +116,7 @@
                     />
                 <Button 
                     x:Name="btnExit" 
-                    Margin="0,50,0,0" 
+                    Margin="0,35,0,0" 
                     Content="Exit Without Saving" 
                     Width="120" 
                     Height="25" 

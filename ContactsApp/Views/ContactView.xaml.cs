@@ -8,15 +8,15 @@ using System.Windows.Media.Imaging;
 
 namespace ContactsApp.Views
 {
-    /// <summary>
-    /// Interaction logic for ContactControl.xaml
-    /// </summary>
     public partial class ContactView : UserControl
     {
         public ContactView()
         {
             InitializeComponent();
+        }
 
+        public void PopulateView()
+        {
             Contact cc = Contact.CurrentContact;
 
             // If currentContact's property is not null, set the ContactView's equivalent control to value, else set it to null
@@ -55,48 +55,6 @@ namespace ContactsApp.Views
                 txtfullName.Text = txtfullName.Text + $"\U0001F382";
             }
         }
-
-        //public void PopulateView(ContactView ContactView)
-        //{
-        //    Contact cc = Contact.CurrentContact;
-            
-
-        //    // If currentContact's property is not null, set the ContactView's equivalent control to value, else set it to null
-        //    ContactView.txtfullName.Text = (cc.FullName is not null) ? cc.FullName.Trim() : "";
-        //    ContactView.txtStreet.Text = (cc.Street is not null) ? cc.Street : "";
-        //    ContactView.txtCity.Text = (cc.City is not null) ? cc.City : "";
-        //    ContactView.txtState.Text = (cc.State is not null) ? cc.State : "";
-        //    ContactView.txtZip.Text = (cc.ZipCode is not null) ? cc.ZipCode : "";
-        //    ContactView.txtEmail.Text = (cc.Email is not null) ? cc.Email : "";
-        //    ContactView.txtPhone.Text = (cc.PhoneNumber is not null) ? cc.PhoneNumber : "";
-        //    ContactView.txtWebsite.Text = (cc.Website is not null) ? cc.Website : "";
-        //    ContactView.txtNotes.Text = (cc.Notes is not null) ? cc.Notes : "";
-        //    try
-        //    {
-        //        ContactView.imgContact.Source = new BitmapImage(new Uri(cc.Picture, UriKind.Absolute));
-        //    }
-        //    catch
-        //    {
-        //        MessageBoxResult result = MessageBox.Show("Photo error");
-
-        //        ContactView.imgContact.Source = new BitmapImage(new Uri("pack://application:,,,/Resources/noImage.png", UriKind.RelativeOrAbsolute));
-        //    }
-        //    if (ContactView.imgContact.Source.ToString().Contains("noImage.png"))
-        //    {
-        //        ContactView.imgContact.Height = 75;
-        //        ContactView.imgContact.Width = 75;
-        //    }
-        //    else
-        //    {
-        //        ContactView.imgContact.Height = 200;
-        //        ContactView.imgContact.Width = 200;
-        //    }
-
-        //    if (WithinRange(cc.Birthday))
-        //    {
-        //        ContactView.txtfullName.Text = ContactView.txtfullName.Text + $"\U0001F382";
-        //    }
-        //}
         private static bool WithinRange(DateTime? bday)
         {
             if (bday is null) return false;
@@ -116,9 +74,7 @@ namespace ContactsApp.Views
         }
         private void btnEdit_Click(object sender, RoutedEventArgs e)
         {
-            //ViewManager.PopulateEditView();
             ViewManager.SetView(View.Edit);
-            ViewManager.EditView = new();
         }
 
         public static event EventHandler OnListChange;
@@ -139,24 +95,21 @@ namespace ContactsApp.Views
             if (result == MessageBoxResult.Yes)
             {
                 // If the user clicked Yes, perform the delete operation
-                DeactivateContact(contact);
+                //DeactivateContact(contact);
+                if (contact is not null)
+                {
+                    DataAccess da = new();
+                    da.DeactivateContact(contact);
+                    MainWindow.CL.Contacts[MainWindow.CL.Contacts.IndexOf(contact)].IsActive = 0;
+                }
                 Contact.CurrentContact = null;
-                //RefreshMainList();
                 ResetContactView();
-                ViewManager.SetView(View.Home);
+                Contact.CurrentContact = MainWindow.GetRandomContact();
+                ViewManager.SetView(View.Contact);
                 OnListChanged(nameof(ContactView));
             }
         }
 
-        private void DeactivateContact(Contact contact)
-        {
-            if (contact is not null)
-            {
-                DataAccess da = new();
-                da.DeactivateContact(contact);
-                MainWindow.CL.Contacts[MainWindow.CL.Contacts.IndexOf(contact)].IsActive = 0;
-            }
-        }
 
         public void ResetContactView()
         {

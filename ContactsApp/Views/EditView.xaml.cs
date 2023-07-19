@@ -57,50 +57,6 @@ namespace ContactsApp.Views
                 imgContact.Width = 200;
             }
         }
-        //public void PopulateView()
-        //{
-        //    Contact cc = Contact.CurrentContact;
-        //    if (cc.IsFavorite == 1) checkbxFav.IsChecked = true;
-
-        //    // If currentContact's property is not null,
-        //    // set the ContactView's equivalent control to value,
-        //    // else set it to null
-        //    txtbxFirst.Text = (cc.FirstName is not null) ? cc.FirstName.Trim() : "";
-        //    txtbxMiddle.Text = (cc.MiddleName is not null) ? cc.MiddleName : "";
-        //    txtbxNick.Text = (cc.NickName is not null) ? cc.NickName : "";
-        //    txtbxLast.Text = (cc.LastName is not null) ? cc.LastName : "";
-        //    txtbxTitle.Text = (cc.Title is not null) ? cc.Title : "";
-        //    datePickerBday.SelectedDate = (cc.Birthday is not null) ? cc.Birthday : null;
-        //    txtbxEmail.Text = (cc.Email is not null) ? cc.Email : "";
-        //    txtbxPhone.Text = (cc.PhoneNumber is not null) ? cc.PhoneNumber : "";
-        //    txtbxStreet.Text = (cc.Street is not null) ? cc.Street : "";
-        //    txtbxCity.Text = (cc.City is not null) ? cc.City : "";
-        //    txtbxState.Text = (cc.State is not null) ? cc.State : "";
-        //    txtbxZip.Text = (cc.ZipCode is not null) ? cc.ZipCode : "";
-        //    txtbxCountry.Text = (cc.Country is not null) ? cc.Country : "";
-        //    txtbxWebsite.Text = (cc.Website is not null) ? cc.Website : "";
-        //    txtbxNotes.Text = (cc.Notes is not null) ? cc.Notes : "";
-
-        //    try
-        //    {
-        //        imgContact.Source = new BitmapImage(new Uri(cc.Picture, UriKind.RelativeOrAbsolute));
-        //    }
-        //    catch
-        //    {
-        //        imgContact.Source = new BitmapImage(new Uri("pack://application:,,,/Resources/noImage.png", UriKind.RelativeOrAbsolute));
-        //    }
-
-        //    if (imgContact.Source.ToString().Contains("noImage.png"))
-        //    {
-        //        imgContact.Height = 75;
-        //        imgContact.Width = 75;
-        //    }
-        //    else
-        //    {
-        //        imgContact.Height = 200;
-        //        imgContact.Width = 200;
-        //    }
-        //}
 
         private void btnCancel_Click(object sender, RoutedEventArgs e)
         {
@@ -116,6 +72,11 @@ namespace ContactsApp.Views
                 new DateTime(datePickerBday.SelectedDate.Value.Year,
                     datePickerBday.SelectedDate.Value.Month, 
                     datePickerBday.SelectedDate.Value.Day);
+
+            if (Picture is null && Contact.CurrentContact is not null)
+            {
+                Picture = Contact.CurrentContact.Picture;
+            }
 
             Contact edit = new()
             {
@@ -142,16 +103,12 @@ namespace ContactsApp.Views
             // Update Database
             DataAccess conn = new();
             conn.UpdateContact(edit);
+            
+            // Update CurrentContact
+            Contact.CurrentContact = edit;
 
             // Return to ContactView
             ViewManager.SetView(View.Contact);
-            // Clear current view
-            //ViewManager.ClearView(View.Edit);
-            // Update CurrentContact
-            Contact.CurrentContact = edit;
-            // Display Contact
-            //ViewSetter.PopulateContactView();
-            ViewManager.ContactView = new();
         }
 
         private void btnUpload_Click(object sender, RoutedEventArgs e)
@@ -185,7 +142,7 @@ namespace ContactsApp.Views
                     }
                 }
             }
-            if ((bool)checkbxFav.IsChecked) checkbxFav.IsChecked = false;
+            checkbxFav.IsChecked = false;
         }
     }
 }

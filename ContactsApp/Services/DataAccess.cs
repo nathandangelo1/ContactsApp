@@ -171,8 +171,6 @@ namespace ContactsApp.Services
                     Val = Settings.BirthdayRange.ToString()
                 };
 
-
-
                 var result = connection.Query(sql, values);
                 var result2 = connection.Query(sql2, values2);
 
@@ -182,12 +180,14 @@ namespace ContactsApp.Services
                 }
             }
         }
+
         public class SettingsModel
         {
             public int SettingId { get; set; }
             public string SettingName { get; set; }
             public string Value { get; set; }
         }
+
         public List<SettingsModel> GetSettings()
         {
             int success;
@@ -202,11 +202,7 @@ namespace ContactsApp.Services
                 //2         BdayRange       ***     2023 - 07 - 17 00:07:59.707
 
                 return connection.Query<SettingsModel>(sql).ToList();
-                //var sortby = result.Where(x => x.SettingId == 1).ElementAt(0);
-                //var bdayRange = result.Where(x => x.SettingId == 2).ElementAt(0);
-                //Settings.SortByFirstName = sortby.Value == "true" ? true : false;
-                //Settings.BirthdayRange = int.Parse(bdayRange.Value);
-                
+               
             }
         }
     }
