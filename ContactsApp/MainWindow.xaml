@@ -26,7 +26,7 @@
         <local:FirstLetterConverter x:Key="FirstLetterConverter"/>
         <!-- Data template for AccountListBox grouping -->
         <DataTemplate x:Key="GroupingHeader">
-            <TextBlock DataContext="{Binding Source=GroupingName}"  Background="Transparent"  Foreground="White" />
+            <TextBlock  Text="{Binding Path=GroupingName, Converter={StaticResource FirstLetterConverter}}"  Background="Transparent"  Foreground="White" />
         </DataTemplate>
     </Window.Resources>
 

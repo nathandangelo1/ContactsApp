@@ -36,9 +36,7 @@ namespace ContactsApp.Views
                 }
             };
             InactiveViewSource.IsLiveFilteringRequested = true;
-            InactiveViewSource.SortDescriptions.Add(new SortDescription("NickName", ListSortDirection.Ascending));
-            InactiveViewSource.SortDescriptions.Add(new SortDescription("FirstName", ListSortDirection.Ascending));
-            InactiveViewSource.SortDescriptions.Add(new SortDescription("LastName", ListSortDirection.Ascending));
+            InactiveViewSource.SortDescriptions.Add(new SortDescription("GroupingName", ListSortDirection.Ascending));
             inactiveListView.ItemsSource = InactiveViewSource.View;
 
         }

@@ -21,21 +21,21 @@ namespace ContactsApp.Views
             // If currentContact's property is not null,
             // set the ContactView's equivalent control to value,
             // else set it to null
-            txtbxFirst.Text = (cc.FirstName is not null) ? cc.FirstName.Trim() : "";
-            txtbxMiddle.Text = (cc.MiddleName is not null) ? cc.MiddleName : "";
-            txtbxNick.Text = (cc.NickName is not null) ? cc.NickName : "";
-            txtbxLast.Text = (cc.LastName is not null) ? cc.LastName : "";
-            txtbxTitle.Text = (cc.Title is not null) ? cc.Title : "";
-            datePickerBday.SelectedDate = (cc.Birthday is not null) ? cc.Birthday : null;
-            txtbxEmail.Text = (cc.Email is not null) ? cc.Email : "";
-            txtbxPhone.Text = (cc.PhoneNumber is not null) ? cc.PhoneNumber : "";
-            txtbxStreet.Text = (cc.Street is not null) ? cc.Street : "";
-            txtbxCity.Text = (cc.City is not null) ? cc.City : "";
-            txtbxState.Text = (cc.State is not null) ? cc.State : "";
-            txtbxZip.Text = (cc.ZipCode is not null) ? cc.ZipCode : "";
-            txtbxCountry.Text = (cc.Country is not null) ? cc.Country : "";
-            txtbxWebsite.Text = (cc.Website is not null) ? cc.Website : "";
-            txtbxNotes.Text = (cc.Notes is not null) ? cc.Notes : "";
+            txtbxFirst.Text = (cc.FirstName is null) ? "" : cc.FirstName.Trim()  ;
+            txtbxMiddle.Text = (cc.MiddleName is null) ? "" : cc.MiddleName;
+            txtbxNick.Text = (cc.NickName is null) ? "" : cc.NickName;
+            txtbxLast.Text = (cc.LastName is null) ? "" : cc.LastName;
+            txtbxTitle.Text = (cc.Title is null) ? "" : cc.Title;
+            datePickerBday.SelectedDate = (cc.Birthday is null) ? null : cc.Birthday;
+            txtbxEmail.Text = (cc.Email is null) ?  "" : cc.Email;
+            txtbxPhone.Text = (cc.PhoneNumber is null) ? "" : cc.PhoneNumber;
+            txtbxStreet.Text = (cc.Street is null) ? "" : cc.Street;
+            txtbxCity.Text = (cc.City is null) ? "" : cc.City;
+            txtbxState.Text = (cc.State is null) ? "" : cc.State;
+            txtbxZip.Text = (cc.ZipCode is null) ? "" : cc.ZipCode;
+            txtbxCountry.Text = (cc.Country is null) ? "" : cc.Country;
+            txtbxWebsite.Text = (cc.Website is null) ? "" : cc.Website;
+            txtbxNotes.Text = (cc.Notes is null) ? "" : cc.Notes;
 
             try
             {

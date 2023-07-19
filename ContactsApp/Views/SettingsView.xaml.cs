@@ -19,7 +19,7 @@ namespace ContactsApp.Views
             var results2 = db.GetSettings();
             var sortby = results2.Where(x => x.SettingId == 1).ElementAt(0);
             var bdayRange = results2.Where(x => x.SettingId == 2).ElementAt(0);
-            Settings.SortByFirstName = sortby.Value == "true" ? true : false;
+            Settings.SortByFirstName = (sortby.Value == "True");
             Settings.BirthdayRange = int.Parse(bdayRange.Value);
             
             //Update UI

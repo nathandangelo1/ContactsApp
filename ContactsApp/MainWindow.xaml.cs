@@ -11,6 +11,7 @@ using System.Windows.Input;
 using static ContactsApp.ViewManager;
 using static ContactsApp.Settings;
 using System.Linq;
+using System.IO;
 
 namespace ContactsApp
 {
@@ -57,6 +58,7 @@ namespace ContactsApp
                         && contact.IsActive == 1;
                 }
             };
+            contactsViewSource.GroupDescriptions.Add(new PropertyGroupDescription("GroupingName", new FirstLetterConverter()));
             //Set listview to corresponding view
             contactsListView.ItemsSource = contactsViewSource.View;
 
@@ -108,12 +110,13 @@ namespace ContactsApp
             contactsViewSource.SortDescriptions.Clear();
             favoritesViewSource.SortDescriptions.Clear();
             contactsViewSource.GroupDescriptions.Clear();
-                
+            
             contactsViewSource.GroupDescriptions.Add(new PropertyGroupDescription("GroupingName", new FirstLetterConverter()));
+
             contactsViewSource.SortDescriptions.Add(new SortDescription(((bool)SortByFirstName ? "GroupingName" : "LastName"  ), ListSortDirection.Ascending));
-            contactsViewSource.SortDescriptions.Add(new SortDescription(((bool)SortByFirstName ? "LastName"  : "GroupingName" ), ListSortDirection.Ascending));
+            //contactsViewSource.SortDescriptions.Add(new SortDescription(((bool)SortByFirstName ? "LastName"  : "GroupingName" ), ListSortDirection.Ascending));
             favoritesViewSource.SortDescriptions.Add(new SortDescription(((bool)SortByFirstName ? "GroupingName" : "LastName" ), ListSortDirection.Ascending));
-            favoritesViewSource.SortDescriptions.Add(new SortDescription(((bool)SortByFirstName ? "LastName"  : "GroupingName"), ListSortDirection.Ascending));
+            //favoritesViewSource.SortDescriptions.Add(new SortDescription(((bool)SortByFirstName ? "LastName"  : "GroupingName"), ListSortDirection.Ascending));
 
             contactsViewSource.View.Refresh();
         }
