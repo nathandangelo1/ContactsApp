@@ -4,26 +4,17 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using System.Windows.Shell;
-
+using static ContactsApp.ViewManager;
+using static ContactsApp.Settings;
+using System.Linq;
+using System.IO;
 
 namespace ContactsApp
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public enum View
     {
         Contact,
@@ -33,70 +24,107 @@ namespace ContactsApp
         Add,
         Home
     }
-    public partial class MainWindow : Window 
+    public partial class MainWindow : Window
     {
-        //  U+1F382
-        //contacts = new();
-        //public static Contact CurrentContact { get; set; }
-        //  default view of the favoritesListView.ItemsSource using the CollectionViewSource.GetDefaultView method
-        //  and assigns it to the favoritesCollectionView variable. A view is a layer on top of a collection that
-        //  allows you to sort, filter, group, or navigate the items in the collection. A collection can have multiple
-        //  views associated with it, but only one default view.
-        public ICollectionView contactsCollectionView;
-        public ICollectionView favoritesCollectionView;
         public static ContactsList CL { get; set; }
+        private CollectionViewSource contactsViewSource;
+        private CollectionViewSource favoritesViewSource;
 
-        public static class Icons
-        {
-            public const string IconName = "\u25A1";
-        }
         public MainWindow()
         {
             InitializeComponent();
 
-            ViewSetter.ContentArea = MainWindowContentArea;
-            ViewSetter.SetView(View.Home);
+            // Get main content area 
+            ContentArea = MainWindowContentArea;
 
+            // Instatiate dataAccess class
             DataAccess db = new();
 
+            // Populate list of contacts based on query results
             CL = new();
             IEnumerable<Contact> results = db.GetContacts();
             CL.Contacts = new ObservableCollection<Contact>(results);
 
-            contactsListView.ItemsSource = CL.Contacts ;
-            var sortDescription1 = new SortDescription("NickName", ListSortDirection.Ascending);
-            var sortDescription2 = new SortDescription("FirstName", ListSortDirection.Ascending);
-            var sortDescription3 = new SortDescription("LastName", ListSortDirection.Ascending);
-            contactsCollectionView = CollectionViewSource.GetDefaultView(contactsListView.ItemsSource);
-            contactsCollectionView.SortDescriptions.Add(sortDescription1);
-            contactsCollectionView.SortDescriptions.Add(sortDescription2);
-            contactsCollectionView.SortDescriptions.Add(sortDescription3);
-            contactsCollectionView.Filter = i => ((Contact)i).IsActive != 0;
-            
-            contactsCollectionView.Filter = UserFilter;
+            // Create CollectionViewSource to model the collection view of main Contacts List
+            contactsViewSource = new CollectionViewSource() { Source = CL.Contacts };
+            contactsViewSource.Filter += (s, e) =>
+            {
+                if (e.Item is Contact contact)
+                {
+                    if (string.IsNullOrEmpty(txtSearch.Text) && contact.IsActive == 1)
+                        e.Accepted = true;
+                    else
+                        e.Accepted = contact.FullName.Contains(txtSearch.Text, StringComparison.OrdinalIgnoreCase)
+                        && contact.IsActive == 1;
+                }
+            };
+            contactsViewSource.GroupDescriptions.Add(new PropertyGroupDescription("GroupingName", new FirstLetterConverter()));
+            //Set listview to corresponding view
+            contactsListView.ItemsSource = contactsViewSource.View;
 
+            // Create ViewSource to model the collection view of Favorites List
+            favoritesViewSource = new CollectionViewSource() { Source = CL.Contacts };
+            favoritesViewSource.Filter += (s, e) =>
+            {
+                if (e.Item is Contact contact)
+                {
+                    if (string.IsNullOrEmpty(txtSearch.Text) && contact.IsActive == 1 && contact.IsFavorite == 1)
+                        e.Accepted = true;
+                    else
+                        e.Accepted = contact.FullName.Contains(txtSearch.Text, StringComparison.OrdinalIgnoreCase)
+                        && contact.IsActive == 1 && contact.IsFavorite == 1;
+                }
+            };
+            //Set listview to corresponding view
+            favoritesListView.ItemsSource = favoritesViewSource.View;
 
-            favoritesCollectionView = new ListCollectionView(CL.Contacts);
-            favoritesCollectionView.Filter = item => (item as Contact).IsFavorite == 1;
-            favoritesListView.ItemsSource = favoritesCollectionView;
+            // Subscribe to important events
+            OnSettingsChange += Settings_OnSettingsChange;
+            Views.ContactView.OnListChange += RefreshContactsList;
+            Views.DeleteView.OnListChange += RefreshContactsList;
+
+            // Event is fired below to sort and group contactsListView without a seperate function
+            Settings_OnSettingsChange(new object(), new EventArgs());
+
+            //Get random contact for initial display
+            Contact.CurrentContact = GetRandomContact();
             
-            //favoritesCollectionView.Filter = UserFilter;
-            
-            //this.DataContext = this;
+            // Set and populate the current view
+            SetView(View.Contact);
+            ViewManager.ContactView.PopulateView();
+        }
+        public static Contact GetRandomContact()
+        {
+            Random rnd = new Random();
+            var list = CL.Contacts.Where(x => x.IsActive == 1);
+            int randIndex = rnd.Next(list.Count());
+            return list.ElementAt(randIndex);
+        }
+        private void RefreshContactsList(object? sender, EventArgs e)
+        {
+            contactsViewSource.View.Refresh();
         }
 
-        private bool UserFilter(object item)
+        private void Settings_OnSettingsChange(object? sender, EventArgs e)
         {
-            if (String.IsNullOrEmpty(txtSearch.Text))
-                return true;
-            else
-                return ((item as Contact).FullName.Contains(txtSearch.Text, StringComparison.OrdinalIgnoreCase));
+            contactsViewSource.SortDescriptions.Clear();
+            favoritesViewSource.SortDescriptions.Clear();
+            contactsViewSource.GroupDescriptions.Clear();
+            
+            contactsViewSource.GroupDescriptions.Add(new PropertyGroupDescription("GroupingName", new FirstLetterConverter()));
+
+            contactsViewSource.SortDescriptions.Add(new SortDescription(((bool)SortByFirstName ? "GroupingName" : "LastName"  ), ListSortDirection.Ascending));
+            //contactsViewSource.SortDescriptions.Add(new SortDescription(((bool)SortByFirstName ? "LastName"  : "GroupingName" ), ListSortDirection.Ascending));
+            favoritesViewSource.SortDescriptions.Add(new SortDescription(((bool)SortByFirstName ? "GroupingName" : "LastName" ), ListSortDirection.Ascending));
+            //favoritesViewSource.SortDescriptions.Add(new SortDescription(((bool)SortByFirstName ? "LastName"  : "GroupingName"), ListSortDirection.Ascending));
+
+            contactsViewSource.View.Refresh();
         }
 
         private void txtFilter_TextChanged(object sender, TextChangedEventArgs e)
         {
-            CollectionViewSource.GetDefaultView(contactsListView.ItemsSource).Refresh();
-            //CollectionViewSource.GetDefaultView(favoritesListView.ItemsSource).Refresh();
+            contactsViewSource.View.Refresh();
+            favoritesViewSource.View.Refresh();
         }
 
         private void listView_Click(object sender, RoutedEventArgs e)
@@ -104,68 +132,50 @@ namespace ContactsApp
             var item = (sender as ListView).SelectedItem;
             if (item != null)
             {
-                var contact = item as Contact;
-                Contact.CurrentContact = contact;
-                ViewSetter.PopulateContactView();
+                //var contact = item as Contact;
+                Contact.CurrentContact = item as Contact;
+                ViewManager.ContactView.PopulateView();
+                SetView(View.Contact);
             }
         }
 
         private void btnAdd_Click(object sender, RoutedEventArgs e)
         {
-            ViewSetter.SetView(View.Add);
+            SetView(View.Add);
         }
 
         private void btnSettings_Click(object sender, RoutedEventArgs e)
         {
-            ViewSetter.SetView(View.Settings);
+            SetView(View.Settings);
         }
-        public void RefreshListView()
+
+        private void MinimizeButton_Click(object sender, RoutedEventArgs e)
         {
-            //var currentFavorites = new ObservableCollection<Contact>(FL.Favorites.Where(x => x.IsFavorite == 1);
-            //FL.Favorites = new ObservableCollection<Contact>( CL.Contacts.Where(x => x.IsFavorite == 1));
-            //CL.Contacts = new ObservableCollection<Contact>( CL.Contacts.Where(x => x.IsFavorite != 1));
-            // contactsListView.ItemsSource = CL.Contacts;
-            // favoritesListView.ItemsSource = FL.Favorites;
-
-            //contactsListView.Items.Refresh();
-            // contactsCollectionView.Refresh();
-
-            //favoritesListView.Items.Refresh();
-            favoritesListView.ItemsSource = CL.Contacts.Where(x => x.Id == 1);
+            WindowState = WindowState.Minimized;
         }
 
-
-
-            private void MinimizeButton_Click(object sender, RoutedEventArgs e)
+        private void MaximizeButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (WindowState == WindowState.Maximized)
             {
-                this.WindowState = WindowState.Minimized;
+                WindowState = WindowState.Normal;
             }
-
-            private void MaximizeButton_Click(object sender, RoutedEventArgs e)
+            else
             {
-                if (this.WindowState == WindowState.Maximized)
-                {
-                    this.WindowState = WindowState.Normal;
-                    //MaximizeButton.Content = "[ ]";
-                }
-                else
-                {
-                    this.WindowState = WindowState.Maximized;
-                    //MaximizeButton.Content = "[ ]";
-                }
+                WindowState = WindowState.Maximized;
             }
+        }
 
-            private void CloseButton_Click(object sender, RoutedEventArgs e)
-            {
-                this.Close();
-            }
-        
+        private void CloseButton_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
+        }
+
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)
         {
             if (e.ChangedButton == MouseButton.Left)
-                this.DragMove();
+                DragMove();
         }
     }
-
 }
 

@@ -1,61 +1,78 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using ContactsApp.Services;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Controls.Ribbon;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using System.Linq;
+
 
 namespace ContactsApp.Views
 {
     public partial class SettingsView : UserControl
     {
-        public int bdaySliderValue { get; set; } = 15;
-        public bool IsFirstName 
-        {
-            get
-            {
-                return (bool)rbFirstName.IsChecked;
-            }
-        }
-        
+        public bool SortByFirstTemp { get; set; }
+        public bool SortByLastTemp { get; set; }
         public SettingsView()
         {
             InitializeComponent();
 
-            Settings.BirthdayRange = bdaySliderValue;
-            Settings.SortByFirstName = IsFirstName;
+            //Get/Set initial Settings
+            DataAccess db = new();
+            var results2 = db.GetSettings();
+            var sortby = results2.Where(x => x.SettingId == 1).ElementAt(0);
+            var bdayRange = results2.Where(x => x.SettingId == 2).ElementAt(0);
+            Settings.SortByFirstName = (sortby.Value == "True");
+            Settings.BirthdayRange = int.Parse(bdayRange.Value);
+            
+            //Update UI
+            rbFirstName.IsChecked = Settings.SortByFirstName;
+            rbLastName.IsChecked = !Settings.SortByFirstName;
+            sliderBday.Value = Settings.BirthdayRange;
         }
         private void sliderBday_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            int value = ((int)e.NewValue);
+            int value = (int)e.NewValue;
             txtSliderValue.Text = value.ToString();
-            bdaySliderValue = value;
-            Settings.BirthdayRange = bdaySliderValue;
-        }
-        private void RadioButton_Checked(object sender, RoutedEventArgs e)
-        {
-            RadioButton rb = sender as RadioButton;
-            Settings.SortByFirstName = IsFirstName;
+            //Settings.BirthdayRange = value;
         }
 
         private void btnCleanUp_Click(object sender, RoutedEventArgs e)
         {
-            ViewSetter.ClearView(View.Settings);
-            ViewSetter.SetView(View.Delete);
+            ViewManager.SetView(View.Delete);
+        }
+
+        private void btnSaveExit_Click(object sender, RoutedEventArgs e)
+        {
+            Settings.SortByFirstName = (bool)rbFirstName.IsChecked;
+            Settings.BirthdayRange = (int)sliderBday.Value;
+
+            var db = new DataAccess();
+            db.UpdateSettings();
+
+            if (Contact.CurrentContact is null)
+            {
+                Contact.CurrentContact = MainWindow.GetRandomContact();
+                ViewManager.SetView(View.Contact);
+            }
+            else ViewManager.SetView(View.Contact);
+        }
+
+        private void rbLastName_Checked(object sender, RoutedEventArgs e)
+        {
+            SortByLastTemp = (bool)rbLastName.IsChecked;
+        }
+
+        private void rbFirstName_Checked(object sender, RoutedEventArgs e)
+        {
+            SortByFirstTemp = (bool)rbFirstName.IsChecked;
         }
 
         private void btnExit_Click(object sender, RoutedEventArgs e)
         {
-            ViewSetter.SetView(View.Home);
+            if (Contact.CurrentContact is null)
+            {
+                Contact.CurrentContact = MainWindow.GetRandomContact();
+                ViewManager.SetView(View.Contact);
+            }
+            else ViewManager.SetView(View.Contact);
         }
     }
 }

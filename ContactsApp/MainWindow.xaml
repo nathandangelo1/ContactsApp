@@ -20,6 +20,15 @@
 
         </Style>
     </Window.Style>
+    <Window.Resources>
+
+
+        <local:FirstLetterConverter x:Key="FirstLetterConverter"/>
+        <!-- Data template for AccountListBox grouping -->
+        <DataTemplate x:Key="GroupingHeader">
+            <TextBlock  Text="{Binding Path=GroupingName, Converter={StaticResource FirstLetterConverter}}"  Background="Transparent"  Foreground="White" />
+        </DataTemplate>
+    </Window.Resources>
 
     <Window.DataContext>
         <local:Contact />
@@ -76,15 +85,15 @@
                Margin="15,0,0,0"
                />
         <TextBox x:Name="txtSearch" 
+                 TextChanged="txtFilter_TextChanged" 
                  Grid.Column="0" Grid.Row="2" 
                  TextWrapping="Wrap" 
                  Text="" 
-                 Width="125" 
+                 Width="140" 
                  Height="18"
                  VerticalAlignment="Center" 
                  HorizontalAlignment="Left" 
                  Margin="70,0,0,0" 
-                 TextChanged="txtFilter_TextChanged" 
                  />
 
         <Grid x:Name="miniGrid" 
@@ -124,6 +133,7 @@
                     PreviewMouseLeftButtonUp="listView_Click" 
                     Background="darkviolet" 
                     Margin="0,0,0,0"
+                    ScrollViewer.CanContentScroll="true"
                     >
                     <ListView.ItemTemplate>
                         <DataTemplate>
@@ -137,10 +147,12 @@
                                 />
                         </DataTemplate>
                     </ListView.ItemTemplate>
+                    
                 </ListView>
             </Grid>
 
             <Grid 
+                Name="contactsGrid"
                 MinHeight="350" 
                 Grid.Column="0" 
                 Grid.Row="1" 
@@ -165,10 +177,15 @@
                           Background="palevioletred" 
                           Foreground="WhiteSmoke" 
                           FontFamily="Unispace"   
-                          ItemsSource="{Binding Source= MainWindow.CL.Contacts}" 
+                          
                           PreviewMouseLeftButtonUp="listView_Click" 
                           ScrollViewer.CanContentScroll="True" 
                           >
+                    <ListView.GroupStyle>
+                        <GroupStyle 
+                            HeaderTemplate="{StaticResource ResourceKey=GroupingHeader}" />
+                    </ListView.GroupStyle>
+                    
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <TextBlock 
@@ -189,13 +206,14 @@
                 Background="WhiteSmoke" 
                 Grid.Column="1" 
                 Grid.Row="5"
-                Height="30" 
-                Width="30" 
+                Height="35" 
+                Width="35" 
                 HorizontalAlignment="Right"
                 VerticalAlignment="Bottom"
                 Margin="10"
                 Click="btnSettings_Click"
                 Foreground="Black" 
+                Padding="1"
                 >
             <Image Source="Resources\SettingsGear.png"/>
         </Button>

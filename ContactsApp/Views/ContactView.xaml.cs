@@ -1,35 +1,87 @@
 ﻿using ContactsApp.Services;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace ContactsApp.Views
 {
-    /// <summary>
-    /// Interaction logic for ContactControl.xaml
-    /// </summary>
     public partial class ContactView : UserControl
     {
-        //public static Contact CurrentContact;
         public ContactView()
         {
             InitializeComponent();
         }
 
+        public void PopulateView()
+        {
+            Contact cc = Contact.CurrentContact;
+
+            // If currentContact's property is not null, set the ContactView's equivalent control to value, else set it to null
+            txtfullName.Text = (cc.FullName is not null) ? cc.FullName.Trim() : "";
+            txtStreet.Text = (cc.Street is not null) ? cc.Street : "";
+            txtCity.Text = (cc.City is not null) ? cc.City : "";
+            txtState.Text = (cc.State is not null) ? cc.State : "";
+            txtZip.Text = (cc.ZipCode is not null) ? cc.ZipCode : "";
+            txtEmail.Text = (cc.Email is not null) ? cc.Email : "";
+            txtPhone.Text = (cc.PhoneNumber is not null) ? cc.PhoneNumber : "";
+            txtWebsite.Text = (cc.Website is not null) ? cc.Website : "";
+            txtNotes.Text = (cc.Notes is not null) ? cc.Notes : "";
+            try
+            {
+                imgContact.Source = new BitmapImage(new Uri(cc.Picture, UriKind.Absolute));
+            }
+            catch
+            {
+                MessageBoxResult result = MessageBox.Show("Photo error");
+
+                imgContact.Source = new BitmapImage(new Uri("pack://application:,,,/Resources/noImage.png", UriKind.RelativeOrAbsolute));
+            }
+            if (imgContact.Source.ToString().Contains("noImage.png"))
+            {
+                imgContact.Height = 75;
+                imgContact.Width = 75;
+            }
+            else
+            {
+                imgContact.Height = 200;
+                imgContact.Width = 200;
+            }
+
+            if (WithinRange(cc.Birthday))
+            {
+                txtfullName.Text = txtfullName.Text + $"\U0001F382";
+            }
+        }
+        private static bool WithinRange(DateTime? bday)
+        {
+            if (bday is null) return false;
+
+            DateTime birthday = (DateTime)bday;
+
+            // Get the current date
+            DateTime currentDate = DateTime.Today;
+
+            // Define the range boundaries
+            int rangeInDays = Settings.BirthdayRange;
+            DateTime rangeStart = currentDate.AddDays(-rangeInDays);
+            DateTime rangeEnd = currentDate.AddDays(rangeInDays);
+
+            // Check if the birthday's day of year is within the range
+            return birthday.DayOfYear >= rangeStart.DayOfYear && birthday.DayOfYear <= rangeEnd.DayOfYear;
+        }
         private void btnEdit_Click(object sender, RoutedEventArgs e)
         {
-            ViewSetter.SetView(View.Edit);
+            ViewManager.SetView(View.Edit);
+        }
+
+        public static event EventHandler OnListChange;
+
+        public static void OnListChanged(string propertyName)
+        {
+            OnListChange?.Invoke(typeof(Settings), new PropertyChangedEventArgs(propertyName));
         }
 
         private void btnDelete_Click(object sender, RoutedEventArgs e)
@@ -43,35 +95,22 @@ namespace ContactsApp.Views
             if (result == MessageBoxResult.Yes)
             {
                 // If the user clicked Yes, perform the delete operation
-                DeactivateContact(contact);
+                //DeactivateContact(contact);
+                if (contact is not null)
+                {
+                    DataAccess da = new();
+                    da.DeactivateContact(contact);
+                    MainWindow.CL.Contacts[MainWindow.CL.Contacts.IndexOf(contact)].IsActive = 0;
+                }
                 Contact.CurrentContact = null;
-                //RefreshMainList();
                 ResetContactView();
-                ViewSetter.SetView(View.Home);
-            }
-            else
-            {
-                // If the user clicked No, cancel the delete operation
-               // CancelDelete();
+                Contact.CurrentContact = MainWindow.GetRandomContact();
+                ViewManager.SetView(View.Contact);
+                OnListChanged(nameof(ContactView));
             }
         }
-        private void DeactivateContact(Contact contact)
-        {
-            if (contact is not null)
-            {
-                DataAccess da = new();
-                da.DeactivateContact(contact);
-                MainWindow.CL.Contacts.Remove(contact);
-                
-            }
-        }
-        //private void RefreshMainList()
-        //{
-        //    MainWindow window = (MainWindow)Application.Current.MainWindow;
-        //    MainWindow.CL.Contacts = MainWindow.CL.Contacts.OrderBy(x => x.FirstName).ToList();
-        //    Contact.favorites = Contact.favorites.OrderBy(x=>x.FirstName).ToList();
-        //    window.RefreshListView();
-        //}
+
+
         public void ResetContactView()
         {
             foreach (var child in contactPanel.Children)
@@ -93,8 +132,6 @@ namespace ContactsApp.Views
                         {
                             // Clear or reset the textblock properties
                             tb2.Text = "";
-                            //tb2.Foreground = Brushes.Black;
-                            //tb2.FontWeight = FontWeights.Normal;
                         }
                     }
                 }

@@ -19,13 +19,7 @@ namespace ContactsApp
             set
             {
                 favorites = value;
-                OnPropertyChanged(nameof(Favorites));
             }
-        }
-        public event PropertyChangedEventHandler PropertyChanged;
-        protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }
