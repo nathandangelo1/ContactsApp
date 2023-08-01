@@ -23,33 +23,41 @@ namespace ContactsApp.Views
 
         private void btnCancel_Click(object sender, RoutedEventArgs e)
         {
-            ViewSetter.ClearView(View.Add);
+            //ViewManager.ClearView(View.Add);
+            ViewManager.AddView = new();
 
             if (Contact.CurrentContact is not null)
             {
-                ViewSetter.SetView(View.Contact);
+                ViewManager.SetView(View.Contact);
             }
             else
             {
-                ViewSetter.SetView(View.Home);
+                ViewManager.SetView(View.Home);
             }
         }
 
         private void btnSaveChanges_Click(object sender, RoutedEventArgs e)
         {
-            //if (!DateOnly.TryParse(txtbxBirthday.Text, out DateOnly birthday))
-            //{
-            //    WarningException we = new("Birthday Error");
-            //};
+            // If 
+            DateTime? BdayDateTime = (datePickerBday.SelectedDate is not null) ? 
+                new DateTime
+                (
+                    datePickerBday.SelectedDate.Value.Year, 
+                    datePickerBday.SelectedDate.Value.Month, 
+                    datePickerBday.SelectedDate.Value.Day
+                ) : null;
+
             Contact edit = new()
             {
-                //Id = Contact.CurrentContact.Id,
+                Id = Contact.CurrentContact.Id,
                 FirstName = !string.IsNullOrWhiteSpace(txtbxFirst.Text) ? txtbxFirst.Text : null,
                 MiddleName = !string.IsNullOrWhiteSpace(txtbxMiddle.Text) ? txtbxMiddle.Text : null,
                 NickName = !string.IsNullOrWhiteSpace(txtbxNick.Text) ? txtbxNick.Text : null,
                 LastName = !string.IsNullOrWhiteSpace(txtbxLast.Text) ? txtbxLast.Text : null,
                 Title = !string.IsNullOrWhiteSpace(txtbxTitle.Text) ? txtbxTitle.Text : null,
-                Birthday = !string.IsNullOrWhiteSpace(txtbxBirthday.Text) ? txtbxBirthday.Text : null,
+
+                Birthday = (datePickerBday.SelectedDate != null) ? BdayDateTime : null,
+
                 Email = !string.IsNullOrWhiteSpace(txtbxEmail.Text) ? txtbxEmail.Text : null,
                 PhoneNumber = !string.IsNullOrWhiteSpace(txtbxPhone.Text) ? txtbxPhone.Text : null,
                 Street = !string.IsNullOrWhiteSpace(txtbxNick.Text) ? txtbxStreet.Text : null,
@@ -61,15 +69,13 @@ namespace ContactsApp.Views
                 Notes = !string.IsNullOrWhiteSpace(txtbxNotes.Text) ? txtbxNotes.Text : null,
                 Picture = !string.IsNullOrWhiteSpace(Picture) ? Picture : null,
                 IsActive = 1,
-                IsFavorite = (checkbxFav.IsChecked==true) ? (byte)1 : (byte)0
+                IsFavorite = (checkbxFav.IsChecked == true) ? (byte)1 : (byte)0
             };
-            
-
             DataAccess conn = new();
-            conn.AddContact(edit);
-            ViewSetter.SetView(View.Contact);
-            ViewSetter.ClearView(View.Edit);
-            //Contact.CurrentContact = edit;
+            conn.UpdateContact(edit);
+            ViewManager.SetView(View.Contact);
+            ViewManager.ClearView(View.Edit);
+            Contact.CurrentContact = edit;
         }
 
         private void btnUpload_Click(object sender, RoutedEventArgs e)
@@ -90,8 +96,10 @@ namespace ContactsApp.Views
                 string selectedFile = openFileDialog.FileName;
                 Picture = selectedFile;
                 imgContact.Source = new BitmapImage(new Uri(openFileDialog.FileName));
+                imgContact.Height = 200;
+                imgContact.Width = 200;
             }
-            
+
         }
     }
 }

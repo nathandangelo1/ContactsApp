@@ -3,19 +3,10 @@ using Microsoft.Data.SqlClient;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data.Common;
 using System.Data;
-using System.IO;
 using System.Linq;
-using System.Reflection;
-using System.Reflection.Emit;
-using System.Runtime.ExceptionServices;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Documents;
-
-using System.Collections.ObjectModel;
+using static ContactsApp.MainWindow;
+using static Dapper.SqlMapper;
 
 namespace ContactsApp.Services
 {
@@ -26,7 +17,6 @@ namespace ContactsApp.Services
             // GETS CONNECTION STRING FOR CONTACT DB FROM HELPER CLASS
             using (var connection = new SqlConnection(Helper.CnnVal("contacts")))
             {
-               // return connection.Query<Contact>("SELECT * FROM dbo.tblContacts WHERE FirstName LIKE @FirstName", new { FirstName = contactSearch }).ToList();
                 return connection.Query<Contact>("[dbo].[spGetContacts]").ToList();
             }
         }
@@ -37,105 +27,79 @@ namespace ContactsApp.Services
             // GETS CONNECTION STRING FOR MOVIES DB FROM HELPER CLASS
             using (var connection = new SqlConnection(Helper.CnnVal("contacts")))
             {
-                //foreach (PropertyInfo propertyInfo in edit.GetType().GetProperties())
-                //{
-                //    // do stuff here
-                //}
                 // Create a DynamicParameters object
                 var parameters = new DynamicParameters();
+
                 // Add input parameters
                 parameters.Add("@id", edit.Id);
 
-                // Add output parameter for new ID
-                //parameters.Add("@returnId", dbType: DbType.Int32, direction: ParameterDirection.Output);
                 // Execute the command using Dapper
                 var returns = connection.Execute("spDeleteContact", parameters, commandType: CommandType.StoredProcedure);
-                // Get the output parameter value using Dapper
-                //newId = parameters.Get<int>("returnId");
-
-                if (returns == -1)
-                {
-
-                }
             }
         }
 
         public void UpdateContact(Contact edit)
         {
             int success;
+
             // GETS CONNECTION STRING FOR MOVIES DB FROM HELPER CLASS
             using (var connection = new SqlConnection(Helper.CnnVal("contacts")))
             {
-                //foreach (PropertyInfo propertyInfo in edit.GetType().GetProperties())
-                //{
-                //    // do stuff here
-                //}
                 var sql = " exec [dbo].[spUpdateContact] " +
                     "@Id,@FirstName,@MiddleName,@NickName,@LastName,@Title,@Birthday," +
                     "@Email,@PhoneNumber,@Street,@City,@State,@ZipCode,@Country," +
-                    "@Website,@Notes,@IsFavorite";
+                    "@Website,@Notes,@IsFavorite,@Picture";
 
-                var values = new { 
-                    edit.Id, edit.FirstName, 
-                    edit.MiddleName, edit.NickName, 
-                    edit.LastName, edit.Title, 
-                    edit.Birthday, edit.Email, 
-                    edit.PhoneNumber, edit.Street, 
-                    edit.City, edit.State, 
-                    edit.ZipCode, edit.Country, 
-                    edit.Website, edit.Notes, 
-                    edit.IsFavorite 
+                var values = new
+                {
+                    edit.Id,
+                    edit.FirstName,
+                    edit.MiddleName,
+                    edit.NickName,
+                    edit.LastName,
+                    edit.Title,
+                    edit.Birthday,
+                    edit.Email,
+                    edit.PhoneNumber,
+                    edit.Street,
+                    edit.City,
+                    edit.State,
+                    edit.ZipCode,
+                    edit.Country,
+                    edit.Website,
+                    edit.Notes,
+                    edit.IsFavorite,
+                    edit.Picture
                 };
 
                 var result = connection.Query(sql, values);
 
-                if(result is not null) 
-                { 
+                if (result is not null)
+                {
+                    // Update currently selected contact
                     Contact.CurrentContact = edit;
-                    int editId = edit.Id;
-                    for (int i = 0; i < MainWindow.CL.Contacts.Count; i++)
-                    {
-                        Contact con = MainWindow.CL.Contacts[i];
-                        int conId = con.Id;
-                        if (conId == editId)
-                        {
-                            MainWindow.CL.Contacts[i] = edit;
-                            break;
-                        }
-                    }
-                    
-                   // Contact.favorites[Contact.favorites.FindIndex(x => x.Id == edit.Id)] = edit;
-                    //Refresh();
+
+                    // Update ContactsList element
+                    CL.Contacts[CL.Contacts.IndexOf(CL.Contacts.Single(x => x.Id == edit.Id))] = edit;
                 }
-                //Refresh();
             }
         }
         public void DeactivateContact(Contact edit)
         {
             int newId;
+
             // GETS CONNECTION STRING FOR MOVIES DB FROM HELPER CLASS
             using (var connection = new SqlConnection(Helper.CnnVal("contacts")))
             {
-                //foreach (PropertyInfo propertyInfo in edit.GetType().GetProperties())
-                //{
-                //    // do stuff here
-                //}
                 // Create a DynamicParameters object
                 var parameters = new DynamicParameters();
+
                 // Add input parameters
                 parameters.Add("@id", edit.Id);
-                
-                // Add output parameter for new ID
-                //parameters.Add("@returnId", dbType: DbType.Int32, direction: ParameterDirection.Output);
+
                 // Execute the command using Dapper
                 var returns = connection.Execute("spDeactivateContact", parameters, commandType: CommandType.StoredProcedure);
-                // Get the output parameter value using Dapper
-                //newId = parameters.Get<int>("returnId");
 
-                if (returns == -1)
-                {
-                    
-                }
             }
         }
 
@@ -145,12 +109,10 @@ namespace ContactsApp.Services
             // GETS CONNECTION STRING FOR MOVIES DB FROM HELPER CLASS
             using (var connection = new SqlConnection(Helper.CnnVal("contacts")))
             {
-                //foreach (PropertyInfo propertyInfo in edit.GetType().GetProperties())
-                //{
-                //    // do stuff here
-                //}
                 // Create a DynamicParameters object
                 var parameters = new DynamicParameters();
+
+                #region // region: Input Parameters
                 // Add input parameters
                 parameters.Add("@first", edit.FirstName);
                 parameters.Add("@middle", edit.MiddleName);
@@ -169,30 +131,79 @@ namespace ContactsApp.Services
                 parameters.Add("@notes", edit.Notes);
                 parameters.Add("@fav", edit.IsFavorite);
                 parameters.Add("@pic", edit.Picture);
+                #endregion
+
                 // Add output parameter for new ID
                 parameters.Add("@returnId", dbType: DbType.Int32, direction: ParameterDirection.Output);
+
                 // Execute the command using Dapper
                 var returns = connection.Execute("spAddContact", parameters, commandType: CommandType.StoredProcedure);
+
                 // Get the output parameter value using Dapper
                 newId = parameters.Get<int>("returnId");
-                         
+
                 if (newId > 0)
                 {
                     edit.Id = newId;
                     Contact.CurrentContact = edit;
-                    MainWindow.CL.Contacts.Add(edit);
-                    //MainWindow.CL.Contacts = new ObservableCollection<Contact>(MainWindow.CL.Contacts.OrderBy(x => x.FirstName));
-                    //Contact.favorites = Contact.contacts.Where(x => x.IsFavorite == 1).ToList();
-                    //Refresh();
-                } 
+                    CL.Contacts.Add(edit);
+                }
             }
         }
-        //private void Refresh()
-        //{
-        //    MainWindow window = (MainWindow)Application.Current.MainWindow;
+        public void UpdateSettings()
+        {
+            int success;
 
-        //    window.RefreshListView();
-        //    ViewSetter.PopulateContactView();  <<<---- you need this
-        //}
+            // GETS CONNECTION STRING FOR MOVIES DB FROM HELPER CLASS
+            using (var connection = new SqlConnection(Helper.CnnVal("contacts")))
+            {
+                var sql = " EXEC [dbo].[UpdateSettings] @SettingName,@Val;";
+                var sql2 = " EXEC [dbo].[UpdateSettings] @SettingName,@Val";
+
+                var values = new
+                {
+                    SettingName = "SortByFirstName",
+                    Val = Settings.SortByFirstName.ToString()
+                };
+                var values2 = new
+                {
+                    SettingName = "BdayRange",
+                    Val = Settings.BirthdayRange.ToString()
+                };
+
+                var result = connection.Query(sql, values);
+                var result2 = connection.Query(sql2, values2);
+
+                if (result == null || result2 == null)
+                {
+                    throw new NotImplementedException();
+                }
+            }
+        }
+
+        public class SettingsModel
+        {
+            public int SettingId { get; set; }
+            public string SettingName { get; set; }
+            public string Value { get; set; }
+        }
+
+        public List<SettingsModel> GetSettings()
+        {
+            int success;
+
+            // GETS CONNECTION STRING FOR MOVIES DB FROM HELPER CLASS
+            using (var connection = new SqlConnection(Helper.CnnVal("contacts")))
+            {
+                var sql = "SELECT * FROM dbo.Settings";
+
+                //SettingId SettingName     Value   LastModified
+                //1         SortByFirstName ***     2023 - 07 - 17 00:07:59.123
+                //2         BdayRange       ***     2023 - 07 - 17 00:07:59.707
+
+                return connection.Query<SettingsModel>(sql).ToList();
+               
+            }
+        }
     }
 }

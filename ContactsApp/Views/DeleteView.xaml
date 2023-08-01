@@ -17,12 +17,12 @@
                    Foreground="AntiqueWhite"
                    HorizontalAlignment="Left"
                    FontSize="16"
-                   Margin="0,150,0,0"
+                   Margin="0,140,0,0"
                    />
             <ListView 
                     Grid.Row="1"      
                     x:Name="inactiveListView" 
-                    ItemsSource="{ Binding Source= MainWindow.CL.Contacts }" 
+                   
                     FontFamily="Unispace" 
                     PreviewMouseLeftButtonUp="listView_Click" 
                     Background="DarkSalmon"
@@ -45,69 +45,99 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
+            <Button x:Name="btnRestoreAll" 
+                    Margin="0,20,0,0"
+                    Padding="5"
+                    Content="Restore All" 
+                    HorizontalAlignment="Left" 
+                    VerticalAlignment="Top" Click="btnRestoreAll_Click" 
+                
+            />
             <Button x:Name="btnPurgeAll" 
-                    Content="Empty Recycle Bin" 
-                    HorizontalAlignment="Center" 
+                    Margin="0,90,0,0"
+                    Padding="5"
+                    Content="Purge All" 
+                    HorizontalAlignment="Left" 
                     VerticalAlignment="Top" 
                     Click="btnPurgeAll_Click" 
+                    Background="Red"
                 
             />
         </StackPanel>
 
-        <StackPanel Margin="20,30,10,2" Grid.Column="1">
-            <TextBlock x:Name="txtfullName" 
-                       Margin="0,0,0,10" 
+        <StackPanel 
+            Name="itemStackPanel"
+            Visibility="Hidden"
+            Margin="0,0,0,0" 
+            Grid.Column="1" 
+            Background="AliceBlue" 
+            Height="475" 
+             >
+            <Border 
+                BorderThickness="1" 
+                BorderBrush="Black" 
+                Grid.Column="1" 
+                Grid.Row="0"
+                Height="200" 
+                Width="200"
+                Background="AliceBlue"
+                Margin="20"
+                >
+                <Image x:Name="imgContact" 
+                       Width="100" Height="100"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       Grid.Column="1" 
+                       />
+            </Border>
+
+            <StackPanel Margin="20,0,0,20">
+                <!--<Label Content="Full Name" FontFamily="Unispace" />-->
+                <TextBlock x:Name="txtfullName" 
+                       
                        FontFamily="Unispace" 
                        HorizontalAlignment="Left" 
                        TextWrapping="Wrap" 
                        Text="Full Name"  
                        MinWidth="88" 
-                       Foreground="AntiqueWhite"
-                       />
-            <Image x:Name="imgContact" 
-                   Margin="12,60,0,0" 
-                   HorizontalAlignment="Right" 
-                   VerticalAlignment="Top" 
-                   Width="200" Height="200" 
-                   Grid.Column="1" 
-                   />
-            <TextBlock x:Name="txtPhone" 
+                       Foreground="Black"
+                       
+                    />
+                <TextBlock x:Name="txtPhone" 
                        Margin="0,0,0,0" 
                        FontFamily="Unispace" 
                        HorizontalAlignment="Left" 
                        TextWrapping="Wrap" 
                        Text="Phone Number"  
                        MinWidth="40" 
-                       Foreground="AntiqueWhite"
+                       Foreground="Black"
                        />
 
-            <TextBlock x:Name="txtStreet" 
+                <TextBlock x:Name="txtStreet" 
                        FontFamily="Unispace" 
                        HorizontalAlignment="Left"  
                        TextWrapping="Wrap" 
                        Text="Street"  
                        MinWidth="88" 
-                       Foreground="AntiqueWhite"
+                       Foreground="Black"
                        />
-            <WrapPanel Margin="0,5,0,0">
                 <TextBlock x:Name="txtCity" 
                            FontFamily="Unispace" 
                            HorizontalAlignment="Left" 
                            TextWrapping="Wrap" 
                            Text="City"  
                            MinWidth="30" 
-                           Foreground="AntiqueWhite"
+                           Foreground="Black"
                            />
-                <TextBlock Margin="0"  Text=", "/>
+
                 <TextBlock x:Name="txtState" 
                            FontFamily="Unispace" 
                            HorizontalAlignment="Left" 
                            TextWrapping="Wrap" Text="State"  MinWidth="40" 
-                           Foreground="AntiqueWhite"
+                           Foreground="Black"
                            />
-            </WrapPanel>
-            <TextBlock x:Name="txtZip" 
-                       Foreground="AntiqueWhite" 
+                <TextBlock x:Name="txtZip" 
+                       Foreground="Black"
                        FontFamily="Unispace" 
                        Padding="0,0,0,0"  
                        HorizontalAlignment="Left" 
@@ -115,13 +145,24 @@
                        Text="Zipcode"  
                        MinWidth="40" 
                        />
-            <Button x:Name="btnDelete" 
+                <Button x:Name="btnRestore" 
+                    Content="Restore Contact" 
+                    HorizontalAlignment="Center" 
+                    Padding="5"
+                    Grid.Column="1" 
+                    VerticalAlignment="Top"  
+                    Margin="0,20,0,0" Click="btnRestore_Click"
+                    />
+                <Button x:Name="btnDelete" 
                     Content="Permanently Delete Contact" 
-                    HorizontalAlignment="Left"  
+                    HorizontalAlignment="Center" 
+                    Padding="5"
                     Grid.Column="1" 
                     VerticalAlignment="Top" 
                     Click="btnDelete_Click" 
+                    Margin="0,30,0,0"
                     />
+            </StackPanel>
         </StackPanel>
 
 
